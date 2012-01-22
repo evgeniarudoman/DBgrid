@@ -52,18 +52,18 @@ class Account extends Data_Row {
         $this->row->id_account_type = $value;
     }
     
-    public function getIdCompany() {
-        return $this->row->id_company;
+    public function getFirstName() {
+        return $this->row->first_name;
     }
 
-    public function setIdCompany($value) {
-        $this->row->id_company = $value;
+    public function setFirstName($value) {
+        $this->row->first_name = $value;
     }
     
    
 
     public static function table_name() {
-        return 'ci_accounts';
+        return 'users';
     }
 
 }

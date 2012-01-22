@@ -5,9 +5,11 @@ if (!defined('BASEPATH'))
 
 interface I_Data_Row {
 
-    public function select($where);
+    public function select($db,$where);
 
     public function insert();
+    
+    public function show_tables($db);
 
     public function update();
     

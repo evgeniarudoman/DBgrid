@@ -12,6 +12,7 @@ class Grid extends CI_Controller
     {
         parent::__construct();
         $this->load->helper(array('form', 'url', 'html'));
+        $this->load->library('session');
     }
 
     public function templates($title)
@@ -23,17 +24,21 @@ class Grid extends CI_Controller
                 '3' => "/js/validation.js"),
             'styles' => array(
                 '1' => "/css/jquery-ui-1.8.16.custom.css",
-                '2' => "/css/style.css"));
+                '2' => "/css/style.css")
+        );
 
         $this->load->view('head', $this->template);
     }
 
     public function register()
     {
-        //$this->CI->session->set_userdata('account', $account);
+        $this->load->model('user/account', 'account');
+        $acc = $this->account->select('all_users',1);
+        $acc = $this->account->getId();
+
         $account = $this->session->userdata('account');
 
-        if (isset($account))
+        if (isset($account) && $account == TRUE)
         {
             redirect(site_url('grid/login'));
         }
@@ -72,6 +77,21 @@ class Grid extends CI_Controller
     {
         $this->templates('ERROR');
         $this->load->view('error');
+    }
+    
+    public function tables()
+    {
+        
+        $this->load->model('query');
+        $tables = $this->query->show_tables($_GET['database']);
+        $databases = mysql_query('SHOW DATABASES');
+        
+        if (isset($_GET['table']) && $_GET['table'])
+            $result = mysql_query("SELECT * FROM " .$_GET['database'].'.'.$_GET['table']);
+        else
+            $result=NULL;
+        $this->templates('table');
+        $this->load->view('tables', array('all_tables' => $tables->result_id,'result'=>$result,'databases'=>$databases));
     }
 
 }

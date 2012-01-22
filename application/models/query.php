@@ -6,12 +6,11 @@ class Query extends CI_Model
     function __construct()
     {
         parent::__construct();
+        $this->load->database();
     }
 
     public function create_db($db_name, $table_name, $user_data)
     {
-        $this->load->database();
-
         $this->db->query('CREATE DATABASE IF NOT EXISTS ' . $db_name . ' 
                         CHARACTER SET utf8 
                         COLLATE utf8_general_ci');
@@ -32,6 +31,12 @@ class Query extends CI_Model
             return TRUE;
         else
             return FALSE;        
+    }
+    
+    public function show_tables($db)
+    {
+        $query = $this->db->query('SHOW TABLES FROM '. $db);
+        return $query;
     }
 
 }

@@ -10,9 +10,9 @@ abstract class Data_Row extends CI_Model implements I_Data_Row
 
     protected $row;
 
-    public function getEntityId()
+    public function getId()
     {
-        return $this->row->entity_id;
+        return $this->row->id;
     }
 
     public function getSessionHash()
@@ -25,18 +25,20 @@ abstract class Data_Row extends CI_Model implements I_Data_Row
         $this->row = $row;
     }
 
-    public function select($where)
+    public function select($db,$where)
     {
         $class_name = get_called_class();
+        
         if (is_array($where))
         {
             $this->db->where($where);
         }
         else
         {
-            $this->db->where('entity_id', $where);
+            $this->db->where('id', $where);
         }
-        $query = $this->db->get($class_name::table_name());  //die(var_dump($where));
+
+        $query = $this->db->get($db.'.'.$class_name::table_name());  //die(var_dump($query));
         if ($query->num_rows() == 1)
             $this->row = $query->row();
         else
@@ -67,6 +69,13 @@ _EXC_MESSAGE;
         $this->db->insert($class_name::table_name(), (array) $this->row);
         $id = $this->db->insert_id();
         return $id;
+    }
+    
+    public function show_tables($db)
+    {
+       // $class_name = get_called_class();
+        $query= $this->db->query('SHOW TABLES FROM'.$db);
+        return $query;
     }
 
     public function update()
