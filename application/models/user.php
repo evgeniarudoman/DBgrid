@@ -5,7 +5,7 @@ if (!defined('BASEPATH'))
 
 include_once getenv("DOCUMENT_ROOT") . '/' . APPPATH . 'models/basic/data_row.php';
 
-class Account extends Data_Row {
+class User extends Data_Row {
 
     public function __construct() {
         parent::__construct();
@@ -44,20 +44,20 @@ class Account extends Data_Row {
         $this->row->email = $value;
     }
 
-    public function getAccountType() {
-        return $this->row->id_account_type;
+    public function getThemeId() {
+        return $this->row->theme_id;
     }
 
-    public function setAccountType($value) {
-        $this->row->id_account_type = $value;
+    public function setThemeId($value) {
+        $this->row->theme_id = $value;
     }
     
-    public function getFirstName() {
-        return $this->row->first_name;
+    public function getNumberOfDb() {
+        return $this->row->number_of_db;
     }
 
-    public function setFirstName($value) {
-        $this->row->first_name = $value;
+    public function setNumberOfDb($value) {
+        $this->row->number_of_db = $value;
     }
     
    

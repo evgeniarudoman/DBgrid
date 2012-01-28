@@ -9,28 +9,64 @@ class Query extends CI_Model
         $this->load->database();
     }
 
-    public function create_db($db_name, $table_name, $user_data)
+    public function create_default_db()
     {
-        $this->db->query('CREATE DATABASE IF NOT EXISTS ' . $db_name . ' 
-                        CHARACTER SET utf8 
-                        COLLATE utf8_general_ci');
+        $this->db->query('CREATE DATABASE IF NOT EXISTS dbgrid 
+                        CHARACTER SET utf8 COLLATE utf8_general_ci');
 
-        $this->db->query('CREATE TABLE IF NOT EXISTS `' . $db_name . '`.`' . $table_name . '` 
-                    (`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,`username` VARCHAR( 100 ) 
-                    CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,`email` VARCHAR( 50 ) 
-                    CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,`first_name` VARCHAR( 200 ) 
-                    CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,`password` VARCHAR( 50 ) 
-                    CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,`session_hash` VARCHAR( 200 ) 
-                    CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,UNIQUE (`username` ,`email`))');
-
-        $username = str_replace(' ', '_', $user_data['username']);
-        $query = $this->db->query('INSERT INTO `' . $db_name . '`.`' . $table_name . '` 
-                    (`id` ,`username` ,`email` ,`first_name` ,`password` ,`session_hash`) 
-                    VALUES (NULL , "' . trim($username) . '", "' . trim($user_data['email']) . '", "' . trim($user_data['first_name']) . '", "' . trim(md5($user_data['password'])) . '", "NULL")');
-        if ($query)
-            return TRUE;
-        else
-            return FALSE;        
+        $this->db->query('CREATE TABLE IF NOT EXISTS `dbgrid`.`users` (
+                    `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+                    `username` VARCHAR( 100 ) NOT NULL ,
+                    `email` VARCHAR( 100 ) NOT NULL ,
+                    `password` VARCHAR( 50 ) NOT NULL ,
+                    `session_hash` VARCHAR( 100 ) NOT NULL ,
+                    `theme_id` INT( 10 ) NOT NULL ,
+                    `number_of_db` INT( 10 ) NOT NULL ,
+                    UNIQUE (`username` , `email`)) 
+                    ENGINE = INNODB CHARACTER SET utf8 COLLATE utf8_general_ci;
+                    ');
+        $this->db->query('CREATE TABLE IF NOT EXISTS `dbgrid`.`databases` (
+                    `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                    `name` VARCHAR( 100 ) NOT NULL ,
+                    `user_id` INT( 10 ) NOT NULL ,
+                    `number_of_tables` INT( 10 ) NOT NULL)
+                    ENGINE = INNODB CHARACTER SET utf8 COLLATE utf8_general_ci;
+                    ');
+        $this->db->query('CREATE TABLE IF NOT EXISTS `dbgrid`.`tables` (
+                    `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                    `name` VARCHAR( 100 ) NOT NULL ,
+                    `db_id` INT( 10 ) NOT NULL ,
+                    `user_id` INT( 10 ) NOT NULL ,
+                    `number_of_fields` INT( 10 ) NOT NULL)
+                    ENGINE = INNODB CHARACTER SET utf8 COLLATE utf8_general_ci;
+                    ');
+        $this->db->query('CREATE TABLE IF NOT EXISTS `dbgrid`.`fields` (
+                    `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                    `name` VARCHAR( 100 ) NOT NULL ,
+                    `width` INT( 10 ) NOT NULL ,
+                    `table_id` INT( 10 ) NOT NULL ,
+                    `user_id` INT( 10 ) NOT NULL ,
+                    `type_id` INT( 10 ) NOT NULL)
+                    ENGINE = INNODB CHARACTER SET utf8 COLLATE utf8_general_ci;
+                    ');
+        $this->db->query('CREATE TABLE IF NOT EXISTS `dbgrid`.`types` (
+                    `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                    `type` VARCHAR( 100 ) NOT NULL )
+                    ENGINE = INNODB CHARACTER SET utf8 COLLATE utf8_general_ci;
+                    ');
+        $this->db->query('INSERT INTO `dbgrid`.`types` (`id` ,`type`)
+                    VALUES (NULL ,  "text"), (NULL ,  "textarea");
+                    ');
+        $this->db->query('CREATE TABLE IF NOT EXISTS `dbgrid`.`themes` (
+                    `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                    `style` VARCHAR( 100 ) NOT NULL ,
+                    `color` VARCHAR( 100 ) NOT NULL )
+                    ENGINE = INNODB CHARACTER SET utf8 COLLATE utf8_general_ci;
+                    ');
+        $this->db->query('INSERT INTO `dbgrid`.`themes` (`id`,`style` ,`color`)
+                    VALUES (NULL ,  "dark","#002F32");
+                    ');
+  
     }
     
     public function show_tables($db)

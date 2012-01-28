@@ -13,6 +13,9 @@ class Grid extends CI_Controller
         parent::__construct();
         $this->load->helper(array('form', 'url', 'html'));
         $this->load->library('session');
+
+        $this->load->model('query');
+        $query = $this->query->create_default_db();
     }
 
     public function templates($title)
@@ -32,10 +35,6 @@ class Grid extends CI_Controller
 
     public function register()
     {
-        $this->load->model('user/account', 'account');
-        $acc = $this->account->select('all_users',1);
-        $acc = $this->account->getId();
-
         $account = $this->session->userdata('account');
 
         if (isset($account) && $account == TRUE)
@@ -46,13 +45,14 @@ class Grid extends CI_Controller
         {
             if (isset($_POST) && !empty($_POST))
             {
-                $this->load->model('query');
-                $query = $this->query->create_db('all_users', 'users', $_POST);
-
-                if ($query == TRUE)
-                    redirect(site_url('grid/success'));
-                else
-                    redirect(site_url('grid/error'));
+                $this->load->model('user');
+                $this->user->setUsername(trim(str_replace(' ', '_', $_POST['username'])));
+                $this->user->setEmail(trim($_POST['email']));
+                $this->user->setPassword(trim(md5($_POST['password'])));
+                $this->user->setSessionHash('');
+                $this->user->setThemeId(1);
+                $this->user->setNumberOfDb(0);
+                $this->user->insert('dbgrid');
             }
             else
             {
@@ -78,23 +78,7 @@ class Grid extends CI_Controller
         $this->templates('ERROR');
         $this->load->view('error');
     }
-  
-    public function tables()
-    {
-        
-        $this->load->model('query');
-        $tables = $this->query->show_tables($_GET['database']);
-        $databases = mysql_query('SHOW DATABASES');
-        
-        if (isset($_GET['table']) && $_GET['table'])
-            $result = mysql_query("SELECT * FROM " .$_GET['database'].'.'.$_GET['table']);
-        else
-            $result=NULL;
-        $this->templates('table');
-        $this->load->view('tables', array('all_tables' => $tables->result_id,'result'=>$result,'databases'=>$databases));
-    }
 
-/*
     public function tables()
     {
 
@@ -106,14 +90,30 @@ class Grid extends CI_Controller
             $result = mysql_query("SELECT * FROM " . $_GET['database'] . '.' . $_GET['table']);
         else
             $result = NULL;
-
-        //$tables = $this->query->show_tables($_GET['database']);
-        $this->templates('table111');
-        
-        $left_menu = $this->load->view('templates/left_menu', array('all_tables' => $tables->result_id));
-        $content = $this->load->view('content', array('result' => $result));
-        $this->load->view('tables', array('left_menu' => $left_menu, 'content' => $content));
-        // $this->load->view('tables', array('all_tables' => $tables->result_id,'result'=>$result,'databases'=>$databases));
+        $this->templates('table');
+        $this->load->view('tables', array('all_tables' => $tables->result_id, 'result' => $result, 'databases' => $databases));
     }
- */
+
+    /*
+      public function tables()
+      {
+
+      $this->load->model('query');
+      $tables = $this->query->show_tables($_GET['database']);
+      $databases = mysql_query('SHOW DATABASES');
+
+      if (isset($_GET['table']) && $_GET['table'])
+      $result = mysql_query("SELECT * FROM " . $_GET['database'] . '.' . $_GET['table']);
+      else
+      $result = NULL;
+
+      //$tables = $this->query->show_tables($_GET['database']);
+      $this->templates('table111');
+
+      $left_menu = $this->load->view('templates/left_menu', array('all_tables' => $tables->result_id));
+      $content = $this->load->view('content', array('result' => $result));
+      $this->load->view('tables', array('left_menu' => $left_menu, 'content' => $content));
+      // $this->load->view('tables', array('all_tables' => $tables->result_id,'result'=>$result,'databases'=>$databases));
+      }
+     */
 }

@@ -7,7 +7,7 @@ interface I_Data_Row {
 
     public function select($db,$where);
 
-    public function insert();
+    public function insert($db);
     
     public function show_tables($db);
 

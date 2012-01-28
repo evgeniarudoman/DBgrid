@@ -63,10 +63,10 @@ _EXC_MESSAGE;
         }
     }
 
-    public function insert()
+    public function insert($db)
     {
         $class_name = get_called_class();
-        $this->db->insert($class_name::table_name(), (array) $this->row);
+        $this->db->insert($db.'.'.$class_name::table_name(), (array) $this->row);
         $id = $this->db->insert_id();
         return $id;
     }
