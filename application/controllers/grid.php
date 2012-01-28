@@ -27,7 +27,7 @@ class Grid extends CI_Controller
                 '2' => "/css/style.css")
         );
 
-        $this->load->view('head', $this->template);
+        $this->load->view('templates/head', $this->template);
     }
 
     public function register()
@@ -78,7 +78,7 @@ class Grid extends CI_Controller
         $this->templates('ERROR');
         $this->load->view('error');
     }
-    
+  
     public function tables()
     {
         
@@ -94,4 +94,26 @@ class Grid extends CI_Controller
         $this->load->view('tables', array('all_tables' => $tables->result_id,'result'=>$result,'databases'=>$databases));
     }
 
+/*
+    public function tables()
+    {
+
+        $this->load->model('query');
+        $tables = $this->query->show_tables($_GET['database']);
+        $databases = mysql_query('SHOW DATABASES');
+
+        if (isset($_GET['table']) && $_GET['table'])
+            $result = mysql_query("SELECT * FROM " . $_GET['database'] . '.' . $_GET['table']);
+        else
+            $result = NULL;
+
+        //$tables = $this->query->show_tables($_GET['database']);
+        $this->templates('table111');
+        
+        $left_menu = $this->load->view('templates/left_menu', array('all_tables' => $tables->result_id));
+        $content = $this->load->view('content', array('result' => $result));
+        $this->load->view('tables', array('left_menu' => $left_menu, 'content' => $content));
+        // $this->load->view('tables', array('all_tables' => $tables->result_id,'result'=>$result,'databases'=>$databases));
+    }
+ */
 }

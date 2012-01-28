@@ -1,7 +1,5 @@
-<!doctype html public "-//W3C//DTD HTML 4.0 //EN">
-<html>
-    <head>
-        <script language="javascript">
+    <body>
+                <script language="javascript">
             $(document).ready(function() {
                 $(".resDiv").resizable({ 
                     handles: 'e'
@@ -10,10 +8,10 @@
             
             $(document).ready(function(){
                 $("input[type='checkbox']").change(function(){
-                    $("input[type='checkbox']:checked").parent('td').parent('tr').addClass('check')
+                    $("input[type='checkbox']:checked").parent('div').addClass('icon checked').parent('td').parent('tr').addClass('check');
                     if ($("input[type='checkbox']:not(:checked)"))
                     {
-                        $("input[type='checkbox']:not(:checked)").parent('td').parent('tr').attr({class: ''});
+                        $("input[type='checkbox']:not(:checked)").parent('div').attr({class: 'icon checkbox'}).parent('td').parent('tr').attr({class: ''});
                     }
                 })
             });
@@ -21,12 +19,12 @@
             $(document).ready(function(){
                 $($('.new_table input')[0]).click(function(){
                     $($('.new_table input')[0]).val('');
-                    $($('.new_table')[0]).attr({class: 'new_table new'});;
+                    $($('.new_table')[0]).attr({class: 'new_table new'});
                 })
                 $($('.new_table input')[1]).click(function(){
                     $($('.new_table input')[1]).val('');
-                    $($('.new_table')[1]).attr({class: 'new_table new'});;
-                })
+                    $($('.new_table')[1]).attr({class: 'new_table new'});
+                })    
             });
             
             function add_field(){
@@ -89,16 +87,16 @@
                 }
             }
         </script>
-    </head>
-    <body>
         <div id="dialog-cancel"  style="display: none">
             Are you sure want delete rows?
         </div>
-        <?php if ($_GET):
-            if ($_GET['database'] && !isset($_GET['table'])):
+        <?php if (isset($_GET) && !empty($_GET)):
+            if (isset($_GET['database']) && !empty($_GET['database'])):
                 ?>
                 <table class='table'>
                     <tr>
+                        <?php //echo $left_menu;?>
+                        
                         <td class='tab width' bgcolor='#002F32'>
                             <div class='base'>
                                 <table class='linked'>
@@ -107,98 +105,21 @@
                                             </tr>
                                         <?php while ($row = mysql_fetch_array($all_tables)):?>
                                            <tr>
-                                               <td><div class='tabl'><img src='/image/table.png'></td>
+                                               <td><div class="icon table"></div></td>
                                         <?php for ($i = 0; $i < mysql_num_fields($all_tables); $i++):?>
-                                           <td class ='href'><a href='/grid/tables?database=<?php echo $_GET['database'] ?>&table=<?php echo $row[mysql_field_name($all_tables, $i)] ?>'><?php echo $row[mysql_field_name($all_tables, $i)] ?></a></div></td>
+                                                           <?php $count_field = mysql_query("SELECT * FROM " .$_GET['database'].'.'.$row[mysql_field_name($all_tables, $i)]);?>
+                                           <td class ='href'><a href='/grid/tables?database=<?php echo $_GET['database'] ?>&table=<?php echo $row[mysql_field_name($all_tables, $i)] ?>'><?php echo $row[mysql_field_name($all_tables, $i)];echo ' (<i>'.mysql_num_fields($count_field).'</i>)'; ?></a></div></td>
                                         <?php endfor;
-                                            endwhile;
-                                        if ($all_tables):
-                                            if (mysql_num_rows($all_tables) < 1):?>
-                                                <tr><td colspan=2 class='no_table'>No tables found in database.</td></tr>
-                                            <?php endif;?>
-                                            <tr><td colspan=2 class='label_table'>You can create new table</td></tr>
-                                            <tr><td colspan=2 class='new_table'><input type='text' name='new_table' value='table name'/></td></tr>
-                                            <tr><td colspan=2 class='new_table'><input type='text' name='num_table' value='number of fields'/></td></tr>
-                                            <tr><td colspan=2 class='create_button'><input type='button' name='create_button' value='create'/></td></tr>
-                                        <?php endif; ?>
+                                            endwhile;?>
                                     </tr>
                                 </table>
                             </div>
                         </td>
-                        <td class="buttons">
-                            <table>
-                                <tr>
-                                    <td>
-                                        <a href=""><button type="button" name="button" class="menu" ><img src='/image/4.png'/><br/>reload</button></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <a href=""><button type="button" name="button" class="menu"><img src='/image/7.png'/><br/>help</button></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <a href="/grid/logout.php"><button type="button" name="button" class="menu" ><img src='/image/3.png'/><br/>exit</button></a>
-                                    </td>
-                                </tr>
-
-                            </table>
-                        </td>
-                        <td class="buttonsH">
-                            <table>
-                                <tr>
-                                    <td>
-                                        <button type="button" name="button" class="menu" onclick="add_field();"><img src='/image/1.png'/><br/>add</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <button type="submit" class="menu"><img src='/image/4.png'/><br/>edit</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <button type="button" class="menu" id="cancel"><img src='/image/3.png'/><br/>delete</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <button type="submit" class="menu"><img src='/image/6.png'/><br/>save</button>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                        <td id="nav">
-                            <input type="button" name="nav" onclick="display_menu();"/>
-                            <div id="hidden">
-                                <input type="hidden" class="hide"/>
-                            </div>
-                        </td>
-                        <?php endif;
-                            if (isset($_GET['table']) && $_GET['table']):
-                        ?>
-                    <form action='' method='post'>
-                        <table class='table'>
-                            <tr>
-                                <td class='tab width' bgcolor='#002F32'>
-                                    <div class='base'>
-                                        <table class='linked'>
-                                            <tr>
-                                                <td class='data' colspan=2>database "<?php echo $_GET['database'] ?>"</td>
-                                            </tr>
-                                              <?php while ($row = mysql_fetch_array($all_tables)):?>
-                                            <tr>
-                                                <td><div class='tabl'><img src='/image/table.png'></td>
-                                                <?php for ($i = 0; $i < mysql_num_fields($all_tables); $i++):?>
-                                                <td class ='href'><a href='/grid/tables?database=<?php echo $_GET['database'] ?>&table=<?php echo $row[mysql_field_name($all_tables, $i)] ?>'><?php echo $row[mysql_field_name($all_tables, $i)]; echo ' ('.mysql_num_fields($result).')';?></a></div></td>
-                                                <?php endfor;?>
-                                              <?php endwhile;?>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </td>
-                                <td class='tub'>
+                        
+                        <?php if (isset($_GET['table']) && !empty($_GET['table'])):?>
+                        <?php //echo $content;?>
+                        
+                        <td class='tub'>
                                     <table class='tables fff'>
                                         <tr>
                                             <td class ='disp'></td><td bgcolor='#002F32'>#</td>
@@ -209,7 +130,7 @@
                                         <?php  $j = 1;
                                         while ($row = mysql_fetch_array($result)):?>
                                         <tr>
-                                            <td><input type='checkbox'></td>
+                                            <td><div class="icon checkbox"><input type='checkbox'></div></td>
                                             <td class='id'><?php echo $j ?></td>
                                         <?php for ($i = 0; $i < mysql_num_fields($result); $i++):?>
                                             <td><div class ='href inp'><?php echo $row[mysql_field_name($result, $i)] ?></div></td>
@@ -219,21 +140,36 @@
                                         <?php endwhile;?>
                                     </table>
                                 </td>
-                                <td class="buttons">
+                        
+                        <?php endif;?>
+                        <td class="buttons">
                                     <table>
                                         <tr>
                                             <td>
-                                                <a href=""><button type="button" name="button" class="menu" ><img src='/image/4.png'/><br/>reload</button></a>
+                                                <a href="">
+                                                    <div class="icon home"></div>
+                                                </a>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                <a href=""><button type="button" name="button" class="menu"><img src='/image/7.png'/><br/>help</button></a>
+                                                <a href="">
+                                                    <div class="icon reload"></div>
+                                                </a>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                <a href="/grid/logout.php"><button type="button" name="button" class="menu" ><img src='/image/3.png'/><br/>exit</button></a>
+                                                <a href="">
+                                                    <div class="icon help"></div>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <a href="">
+                                                    <div class="icon exit"></div>
+                                                </a>
                                             </td>
                                         </tr>
                                     </table>
@@ -242,38 +178,58 @@
                                     <table>
                                         <tr>
                                             <td>
-                                                <button type="button" name="button" class="menu" onclick="add_field();"><img src='/image/1.png'/><br/>add</button>
+                                                <a href="">
+                                                    <div class="icon add"></div>
+                                                </a>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                <button type="submit" class="menu"><img src='/image/4.png'/><br/>edit</button>
+                                                <a href="">
+                                                    <div class="icon edit"></div>
+                                                </a>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                <button type="button" class="menu" id="cancel"><img src='/image/3.png'/><br/>delete</button>
+                                                <a href="">
+                                                    <div class="icon delete"></div>
+                                                </a>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                <button type="submit" class="menu"><img src='/image/6.png'/><br/>save</button>
+                                                <a href="">
+                                                    <div class="icon save"></div>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <a href="">
+                                                    <div class="icon search"></div>
+                                                </a>
                                             </td>
                                         </tr>
                                     </table>
                                 </td>
-                                <td id="nav">
-                                    <input type="button" name="nav" onclick="display_menu();"/>
-                                </td>
+                        <td id="nav">
+                            <input type="button" name="nav" onclick="display_menu();"/>
+                            <div id="hidden">
+                                <input type="hidden" class="hide"/>
+                            </div>
+                        </td>
+                        <?php endif;
+                            
+                        ?>
                             </tr>
-                        </table>
-                    </form>
+                </table>
                     <div id="hidden">
                         <input type="hidden" class="hide"/>
                     </div>
                     <?php
                 endif;
-            endif;
+            
             ?>
 <?php
             function insert($result)

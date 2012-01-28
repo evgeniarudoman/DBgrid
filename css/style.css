@@ -141,7 +141,7 @@ body {
     /*   -webkit-border-radius: 5px 5px 5px 5px;*/
 }
 .tables {
-    font-size: 14px;
+    font-size: 12px;
     border: medium none;
 }
 .tables tr{
@@ -172,7 +172,7 @@ body {
 .tub {
     -moz-border-radius: 5px 5px 5px 5px;
     background: url("/image/stripe_b.png") repeat scroll 0 0 transparent;
-    left: 360px;
+    left: 280px;
     position: absolute;
     -webkit-border-radius: 5px 5px 5px 5px;
     z-index: 1001;
@@ -187,7 +187,7 @@ body {
 }
 .width {
     position: fixed;
-    width: 250px;
+    width: 200px;
     height: 96%;
     border: 1px solid #FFFFFF;
 }
@@ -220,12 +220,14 @@ a:visited {
 }
 .linked {
     width: 100%;
-    font-size:14px;
+    font-size:12px;
 }
 .tables input {
     background: none repeat scroll 0 0 transparent;
     border: medium none;
-
+    margin-left: 1px;
+   opacity: 0;
+   z-index: 2;
 }
 .disp {
     visibility: hidden;
@@ -235,7 +237,7 @@ a:visited {
     color:#fff;
 }
 .buttons {
-    left: 267px;
+    left: 216px;
     position: fixed;
     border: 1px solid #FFFFFF;
 
@@ -254,8 +256,8 @@ span{
     font-size: 13px;
 }
 .buttonsH {
-    bottom: 2%;
-    left: 267px;
+    top: 110px;
+    left: 216px;
     border: 1px solid #FFFFFF;
 
     position: fixed;
@@ -268,8 +270,8 @@ span{
     width: 40px;
 }
 .menu {
-    height: 76px;
-    width: 60px;
+    height: 50px;
+    width: 50px;
 }
 .in {
     text-align: center;
@@ -291,7 +293,7 @@ span{
     width: 40px;
 }
 .newbuttonsH {
-    bottom: 15px;
+    top: 110px;
 
     border: 1px solid #FFFFFF;
 
@@ -306,9 +308,7 @@ span{
 }
 .data {
     background: none repeat scroll 0 0 #C84663;
-    border: 1px solid #FFFFFF;
     text-align: center;
-    text-transform: uppercase;
     -moz-border-radius:5px 5px 5px 5px;
     -webkit-border-radius: 5px 5px 5px 5px;
 }
@@ -356,7 +356,7 @@ span{
 
 }
 #nav {
-    left: 339px;
+    left: 245px;
     position: fixed;
     top: 40%;
 }
@@ -373,7 +373,7 @@ span{
     border:none;
 }
 #newnav {
-    left: 90px;
+    left: 50px;
     position: fixed;
     top: 40%;
 }
@@ -388,4 +388,53 @@ span{
     height: 35px;
     width: 30px;
     border:none;
+}
+
+.icon {
+    background-image: url("/image/icons.png");
+    background-repeat: no-repeat; 
+    width: 16px;
+    height: 16px;
+    cursor:pointer;
+}
+.search {
+    background-position: -160px -112px;
+}
+.reload {
+    background-position: -64px -80px;
+}
+.help {
+    background-position: -48px -146px;
+}
+.exit {
+    background-position: 0px -177px;
+}
+.home {
+    background-position: 0px -114px;
+}
+.add {
+    background-position: -16px -127px;
+}
+.edit {
+    background-position: -64px -112px;
+}
+.delete {
+    background-position: -177px -97px;
+}
+.save {
+    background-position: -97px -112px;
+}
+.table {
+    background-position: -113px -112px;
+}
+.checkbox {
+    background-position: -113px -144px;
+    z-index: 1;
+}
+.checkbox:hover {
+    background-position: -97px -144px;
+    z-index: 1;
+}
+.checked {
+    background-position: -80px -144px;
 }
