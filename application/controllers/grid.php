@@ -15,10 +15,10 @@ class Grid extends CI_Controller
         $this->load->library('session');
 
         $this->load->model('query');
-        $query = $this->query->create_default_db();
+        $this->query->create_default_db();
     }
 
-    public function templates($title)
+    public function header($title)
     {
         $this->template = array('title' => $title,
             'scripts' => array(
@@ -56,7 +56,7 @@ class Grid extends CI_Controller
             }
             else
             {
-                $this->templates('REGISTRATION');
+                $this->header('REGISTRATION');
                 $this->load->view('auth');
             }
         }
@@ -64,34 +64,35 @@ class Grid extends CI_Controller
 
     public function login()
     {
-        $this->templates('AUTHORIZATION');
+        $this->header('AUTHORIZATION');
         $this->load->view('signin');
     }
 
     public function success()
     {
-        $this->templates('SUCCESS');
+        $this->header('SUCCESS');
     }
 
     public function error()
     {
-        $this->templates('ERROR');
+        $this->header('ERROR');
         $this->load->view('error');
     }
 
     public function tables()
     {
-
+        $this->header('table');
+        
         $this->load->model('query');
         $tables = $this->query->show_tables($_GET['database']);
-        $databases = mysql_query('SHOW DATABASES');
+        //  $databases = mysql_query('SHOW DATABASES');
 
-        if (isset($_GET['table']) && $_GET['table'])
+        if (isset($_GET['table']) && !empty($_GET['table']))
             $result = mysql_query("SELECT * FROM " . $_GET['database'] . '.' . $_GET['table']);
         else
             $result = NULL;
-        $this->templates('table');
-        $this->load->view('tables', array('all_tables' => $tables->result_id, 'result' => $result, 'databases' => $databases));
+
+        $this->load->view('tables', array('all_tables' => $tables->result_id, 'result' => $result));
     }
 
     /*
@@ -108,7 +109,7 @@ class Grid extends CI_Controller
       $result = NULL;
 
       //$tables = $this->query->show_tables($_GET['database']);
-      $this->templates('table111');
+      $this->header('table111');
 
       $left_menu = $this->load->view('templates/left_menu', array('all_tables' => $tables->result_id));
       $content = $this->load->view('content', array('result' => $result));

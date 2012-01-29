@@ -1,15 +1,10 @@
     <body>
         <script>
-            
-            
             $(document).ready(function(){
                 
                 $("#form").validate({
  
                     rules: {
-                        first_name: {
-                            required: true
-                        },
                         email: {
                             required: true,
                             email:true
@@ -32,7 +27,6 @@
                         }
                     },
                     messages: {
-                        first_name: "<img src='/image/warning.png'>This field is required",
                         email: {
                             required: "<img src='/image/warning.png'>This field is required",
                             email: "<img src='/image/warning.png'>Please enter a valid email"
@@ -55,22 +49,13 @@
                         }                       
                     }
                 });
-              
             });
-            
-            
         </script>
-        <table id="auth" >
+        <table id="auth">
             <tr>
                 <td>
                     <form id="form" action="" method="post">
                         <table >
-                            <tr>
-                                <td><span>First name <b>*</b></span></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" name="first_name" class="val"/></td>
-                            </tr>
                             <tr>
                                 <td><span>E-mail <b>*</b></span></td>
                             </tr>
@@ -104,14 +89,13 @@
                 </td>
                 <td>
                     <div id="right">
-                        <span>Registration</span><br/><br/>                        
-                        If you are already have an account, <br/>
-                        please <a href="/grid/login">SIGN IN</a><br/><br/>
-
+                        <span>Registration</span>
+                        <br/><br/>                        
+                        <p>If you are already have an account,</p>
+                        <p>please <a href="/grid/login">SIGN IN</a></p>
                     </div>
                 </td>
             </tr>
         </table>
-
     </body>
 </html>

@@ -1,12 +1,10 @@
+/*--------body--------*/
 body {
     background: url("/image/stripe_b.png") repeat scroll 0 0 transparent;
     font-family: "Trebuchet MS",sans-serif;
 }
-.table{
-    height: 100%;
-    /* width: 100%;*/
 
-}
+/*--------right side of registration and authorisation--------*/
 #right {
     color: white;
     font-size: 12px;
@@ -25,18 +23,25 @@ body {
 #right .little {
     font-size: 10px;
 }
-#form {
 
+/*--------used for form--------*/
+#form {
     background-image: url("/image/vert_line.png");
     background-position: right center;
     background-repeat: no-repeat;
     padding-left: 15px;
     padding-right: 18px;
 }
+/*--------use for all span--------*/
+#form span{
+    color: white;
+    font-size: 13px;
+}
+
+/*--------login--------*/
 #login {
     background: #002F32;
     border: 1px solid #fff;
-
     -moz-border-radius:5px 5px 5px 5px;
     -webkit-border-radius: 5px 5px 5px 5px;
     position: fixed;
@@ -50,7 +55,6 @@ body {
     -moz-border-radius:5px 5px 5px 5px;
     -webkit-border-radius: 5px 5px 5px 5px;
     text-align: center;
-
     width: 250px;
     margin-bottom: 15px;
     position: relative;
@@ -84,10 +88,11 @@ body {
 #login b {
     color:#C84663;
 }
+
+/*--------registration--------*/
 #auth {
     background: #002F32;
     border: 1px solid #fff;
-
     -moz-border-radius:5px 5px 5px 5px;
     -webkit-border-radius: 5px 5px 5px 5px;
     position: fixed;
@@ -104,10 +109,9 @@ body {
     -moz-border-radius:5px 5px 5px 5px;
     -webkit-border-radius: 5px 5px 5px 5px;
     text-align: center;
-
     width: 250px;
     margin-bottom: 15px;
-  /*  position: relative;*/
+    /*  position: relative;*/
 }
 
 #auth label {
@@ -136,40 +140,14 @@ body {
     position: relative;
     text-align: center;
 }
-.table td{
-    /*  -moz-border-radius:5px 5px 5px 5px;*/
-    /*   -webkit-border-radius: 5px 5px 5px 5px;*/
+
+/*--------use for left menu table--------*/
+#table{
+    height: 100%;
+    /* width: 100%;*/
 }
-.tables {
-    font-size: 12px;
-    border: medium none;
-}
-.tables tr{
-    background-color: #74998C;
-}
-.tables tr:nth-child(odd){
-    background-color: #80997C;
-}
-.tables tr:first-child{
-    background: none;
-}
-.tables td{
-    border: 1px solid #002F32;
-}
-.tables tr:first-child td{
-    position: relative;
-    color:white;
-    padding: 0 5px;
-    text-align: center;
-    /* background-color: #002F32;*/
-    border: 1px solid #FFFFFF;
-}
-.tab {
-    -moz-border-radius:5px 5px 5px 5px;
-    -webkit-border-radius: 5px 5px 5px 5px;
-    /*background-color: #002F32;*/
-}
-.tub {
+/*--------use for td in table--------*/
+#content {
     -moz-border-radius: 5px 5px 5px 5px;
     background: url("/image/stripe_b.png") repeat scroll 0 0 transparent;
     left: 280px;
@@ -177,186 +155,108 @@ body {
     -webkit-border-radius: 5px 5px 5px 5px;
     z-index: 1001;
 }
-.newtub {
-    -moz-border-radius: 5px 5px 5px 5px;
-    background: url("/image/stripe_b.png") repeat scroll 0 0 transparent;
-    left: 100px;
-    position: absolute;
-    -webkit-border-radius: 5px 5px 5px 5px;
-    z-index: 1001;
+/*--------use for right side of table--------*/
+
+#content table {
+    font-size: 12px;
+    border: medium none;
 }
-.width {
+#content table tr{
+    background-color: #74998C;
+}
+#content table tr:nth-child(odd){
+    background-color: #80997C;
+}
+#content table tr:first-child{
+    background: none;
+}
+#content table td{
+    border: 1px solid #002F32;
+}
+#content table tr:first-child td{
+    position: relative;
+    color:white;
+    padding: 0 5px;
+    text-align: center;
+    /* background-color: #002F32;*/
+    border: 1px solid #FFFFFF;
+}
+#content table input {
+    background: none repeat scroll 0 0 transparent;
+    border: medium none;
+    margin-left: 1px;
+    opacity: 0;
+    z-index: 2;
+}
+#content table tr:hover td{
+    background:#C84663; 
+
+}
+#content table tr:first-child:hover	{
+    background:none; 
+}
+
+/*--------use for td in table--------*/
+.left_menu {
+    -moz-border-radius:5px 5px 5px 5px;
+    -webkit-border-radius: 5px 5px 5px 5px;
     position: fixed;
     width: 200px;
     height: 96%;
     border: 1px solid #FFFFFF;
+    color: #FFF;
+    /*background-color: #002F32;*/
 }
-.tabl {
-    color: white;
-    font-size: 14px;
-    width: 15px;
-}
-.base {
-    color: white;
-    margin-bottom: 15px;
-}
-a:link {
-    text-decoration: none;
-    color: white;
-}
-a:visited {
-    text-decoration: none;
-    color: white;
-}
-.fff tr:hover td{
-    background:#C84663; 
 
-}
-.fff tr:first-child:hover	{
-    background:none; 
-}
-.linked tr .href:hover	{
+/*--------use for left menu table for link--------*/
+.left_menu table tr td:hover	{
     background-color:grey; 
 }
-.linked {
+.left_menu table {
     width: 100%;
     font-size:12px;
 }
-.tables input {
-    background: none repeat scroll 0 0 transparent;
-    border: medium none;
-    margin-left: 1px;
-   opacity: 0;
-   z-index: 2;
-}
-.disp {
-    visibility: hidden;
-}
-.check td{
-    background:#4B5657; 
-    color:#fff;
-}
-.buttons {
-    left: 216px;
-    position: fixed;
-    border: 1px solid #FFFFFF;
 
-    position: fixed;
-    -moz-border-radius:5px 5px 5px 5px;
-    -webkit-border-radius: 5px 5px 5px 5px;
-    background-color: #002F32;
-    color:#fff;
-}
-.buttons img{
-    border:none;
-    width: 40px;
-}
-span{
-    color: white;
-    font-size: 13px;
-}
-.buttonsH {
-    top: 110px;
-    left: 216px;
-    border: 1px solid #FFFFFF;
-
-    position: fixed;
-    -moz-border-radius:5px 5px 5px 5px;
-    -webkit-border-radius: 5px 5px 5px 5px;
-    background-color: #002F32;
-    color:#fff;
-}
-.buttonsH img{
-    width: 40px;
-}
-.menu {
-    height: 50px;
-    width: 50px;
-}
-.in {
-    text-align: center;
-}
-
-.newbuttons {
-
-    position: fixed;
-    border: 1px solid #FFFFFF;
-
-    position: fixed;
-    -moz-border-radius:5px 5px 5px 5px;
-    -webkit-border-radius: 5px 5px 5px 5px;
-    background-color: #002F32;
-    color:#fff;
-}
-.newbuttons img{
-    border:none;
-    width: 40px;
-}
-.newbuttonsH {
-    top: 110px;
-
-    border: 1px solid #FFFFFF;
-
-    position: fixed;
-    -moz-border-radius:5px 5px 5px 5px;
-    -webkit-border-radius: 5px 5px 5px 5px;
-    background-color: #002F32;
-    color:#fff;
-}
-.newbuttonsH img{
-    width: 40px;
-}
-.data {
+/*--------use for database name on the left menu--------*/
+.database_title {
     background: none repeat scroll 0 0 #C84663;
     text-align: center;
     -moz-border-radius:5px 5px 5px 5px;
     -webkit-border-radius: 5px 5px 5px 5px;
 }
-.no_table {
-    font-size: 12px;
-    padding-bottom: 20px;
-    padding-top: 20px;
-    text-align: center;
-    font-style: italic;
+/*--------use for all links--------*/
+a:link, a:visited {
+    text-decoration: none;
+    color: white;
 }
-.new_table {
-    text-align: center;
+
+/*--------use for checked by checkbox td--------*/
+.check td{
+    background:#4B5657; 
+    color:#fff;
 }
-.new_table input{
-    -moz-border-radius: 5px 5px 5px 5px;
-    border: 2px solid #C84663;
-    color: gray;
-    font-size: 10px;
-    font-style: italic;
-    height: 15px;
-    text-align: center;
-    width: 200px;
-}
-.label_table {
-    font-size: 12px;
-    padding-top: 20px;
-    text-align: center;
-    color:#C84663;
-}
-.create_button {
-    padding-right: 22px;
-    text-align: right;
-}
-.create_button input{
-    background: #C84663;
+
+/*--------use for buttons--------*/
+.menu_button {
+    left: 216px;
+    position: fixed;
+    border: 1px solid #FFFFFF;
     -moz-border-radius:5px 5px 5px 5px;
     -webkit-border-radius: 5px 5px 5px 5px;
-    color:white;
+    background-color: #002F32;
+}
+.second {
+    top: 110px;
+}
+.first {
+    left: 216px;
+}
+.left {
+    left: 10px;
 }
 
-.new input{
-    color: #000000;
-    font-size: 11px;
-    font-style: inherit;
-
-}
+/*--------use for navigation when we hide--------*/
 #nav {
-    left: 245px;
     position: fixed;
     top: 40%;
 }
@@ -372,24 +272,15 @@ span{
     width: 30px;
     border:none;
 }
-#newnav {
+
+.nav_right {
+    left: 245px;
+}
+.nav_left {
     left: 50px;
-    position: fixed;
-    top: 40%;
-}
-#newnav input{
-    background: url("/image/nav.png") repeat scroll 0 0 transparent;
-    height: 35px;
-    width: 30px;
-    border:none;
-}
-#newnav input:hover{
-    background: url("/image/nav1.png") repeat scroll 0 0 transparent;
-    height: 35px;
-    width: 30px;
-    border:none;
 }
 
+/*--------use for icons-buttons--------*/
 .icon {
     background-image: url("/image/icons.png");
     background-repeat: no-repeat; 

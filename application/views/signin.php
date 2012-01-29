@@ -1,8 +1,5 @@
-    <body>
-        
-        <script>
-            
-            
+    <body>   
+        <script>  
             $(document).ready(function(){
                 
                 $("#form").validate({
@@ -29,14 +26,10 @@
                             required: "<img src='/image/warning.png'>This field is required",
                             minlength:"<img src='/image/warning.png'>Please enter at least 6 characters.",
                             maxlength:"<img src='/image/warning.png'>Please enter no more than 12 characters."
-                        }
-                        
+                        }        
                     }
                 });
-              
             });
-            
-            
         </script>
         <table id="login" >
             <tr>
@@ -66,14 +59,13 @@
                 </td>
                 <td>
                     <div id="right">
-                        <span>Authorization</span><br/><br/>                        
-                        If you are not an authorized user, <br/>
-                        please <a href="/grid/register">REGISTER</a><br/><br/>
-
+                        <span>Authorization</span>
+                        <br/><br/>                        
+                        <p>If you are not an authorized user,</p>
+                        <p>please <a href="/grid/register">REGISTER</a></p>
                     </div>
                 </td>
             </tr>
         </table>
-
     </body>
 </html>

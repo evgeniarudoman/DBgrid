@@ -54,24 +54,35 @@ class Query extends CI_Model
                     `type` VARCHAR( 100 ) NOT NULL )
                     ENGINE = INNODB CHARACTER SET utf8 COLLATE utf8_general_ci;
                     ');
-        $this->db->query('INSERT INTO `dbgrid`.`types` (`id` ,`type`)
-                    VALUES (NULL ,  "text"), (NULL ,  "textarea");
-                    ');
         $this->db->query('CREATE TABLE IF NOT EXISTS `dbgrid`.`themes` (
                     `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
                     `style` VARCHAR( 100 ) NOT NULL ,
                     `color` VARCHAR( 100 ) NOT NULL )
                     ENGINE = INNODB CHARACTER SET utf8 COLLATE utf8_general_ci;
                     ');
-        $this->db->query('INSERT INTO `dbgrid`.`themes` (`id`,`style` ,`color`)
+        
+        $query = $this->db->query('SELECT * FROM `dbgrid`.`types`');
+        if (mysql_num_rows($query->result_id) < 6)
+        {
+            $this->db->query('INSERT INTO `dbgrid`.`types` (`id` ,`type`)
+                    VALUES (NULL ,  "text"), (NULL ,  "textarea"),
+                    (NULL, "file"), (NULL, "radio"), 
+                    (NULL, "checkbox"), (NULL, "select");
+                    ');
+        }
+        unset($query);
+        $query = $this->db->query('SELECT * FROM `dbgrid`.`themes`');
+        if (mysql_num_rows($query->result_id) < 1)
+        {
+            $this->db->query('INSERT INTO `dbgrid`.`themes` (`id`,`style` ,`color`)
                     VALUES (NULL ,  "dark","#002F32");
                     ');
-  
+        }
     }
-    
+
     public function show_tables($db)
     {
-        $query = $this->db->query('SHOW TABLES FROM '. $db);
+        $query = $this->db->query('SHOW TABLES FROM ' . $db);
         return $query;
     }
 
