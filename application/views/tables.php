@@ -6,9 +6,27 @@
             });
         //--------------------------------------
             $("#content div.checkbox input[type='checkbox']").change(function(){
-                $("#content div.checkbox input[type='checkbox']:checked").parent('div').addClass('icon checked').parent('td').parent('tr').addClass('check');
+                $("#content div.checkbox input[type='checkbox']:checked").parent('div').addClass('checked').parent('td').parent('tr').addClass('check');
                 $("#content div.checkbox input[type='checkbox']:not(:checked)").parent('div').removeClass('checked').parent('td').parent('tr').removeClass('check');
             }) 
+        //--------------------------------------
+            $("#content div.checkbox_all input[type='checkbox']").change(function(){
+                $("#content div.checkbox_all input[type='checkbox']:checked").val(1);
+                $("#content div.checkbox_all input[type='checkbox']:not(:checked)").val(0);
+                
+                if ($("#content div.checkbox_all input[type='checkbox']").val()==1)
+                    {
+                        $("#content tr").addClass('check');
+                        $("#content tr:first-child").removeClass('check');
+                        $("#content tr td div").addClass('checked');
+                    }
+                if($("#content div.checkbox_all input[type='checkbox']").val()==0)
+                    {
+                        $("#content tr").removeClass('check');
+                        $("#content tr td div").removeClass('checked');
+                    }
+                   
+               }) 
         });
         
           /*  
@@ -77,10 +95,7 @@
         <?php if (isset($_GET['database']) && !empty($_GET['database'])): ?>
             <table id='table'>
                 <tr>
-                    <?php //echo $left_menu;?>
-
-                    <td class='left_menu' bgcolor='#002F32'>
-                       
+                    <td class='left_menu' bgcolor='#002F32'>   
                             <table>
                                 <tr>
                                     <td class='database_title' colspan=2>database "<?php echo $_GET['database'] ?>"</td>
@@ -96,24 +111,20 @@
                                 <?php endwhile; ?>
                                 </tr>
                             </table>
-                      
                     </td>
-
                     <?php if (isset($_GET['table']) && !empty($_GET['table'])): ?>
-                    <?php //echo $content; ?>
-
                         <td id='content'>
                             <table>
                                 <tr>
-                                    <td bgcolor='#002F32'></td><td bgcolor='#002F32'>#</td>
+                                    <td bgcolor='#002F32'><div class="icon checkbox_all"><input type='checkbox'></div></td><td bgcolor='#002F32'>#</td>
                                     <?php for ($i = 0; $i < mysql_num_fields($result); $i++): ?>
                                         <td bgcolor='#002F32' name='<?php echo $i ?>'><div class='resize'><?php echo mysql_field_name($result, $i); ?></div></td>
-                                <?php endfor; ?>
+                                    <?php endfor; ?>
                                 </tr>
                                 <?php $j = 1;?>
                                 <?php while ($row = mysql_fetch_array($result)):?>
                                     <tr>
-                                        <td><div class="icon checkbox"><input type='checkbox'></div></td>
+                                        <td><div class="icon checkbox"><input type='checkbox' value=""></div></td>
                                         <td class='id'><?php echo $j ?></td>
                                         <?php for ($i = 0; $i < mysql_num_fields($result); $i++): ?>
                                             <td><?php echo $row[mysql_field_name($result, $i)] ?></td>
@@ -123,7 +134,6 @@
                                 <?php endwhile; ?>
                             </table>
                         </td>
-
                     <?php endif; ?>
                     <td class="menu_button first">
                         <table>

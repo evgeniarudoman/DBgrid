@@ -181,6 +181,9 @@ body {
     /* background-color: #002F32;*/
     border: 1px solid #FFFFFF;
 }
+#content table tr:first-child td:first-child{
+   padding: 0;
+ }
 #content table input {
     background: none repeat scroll 0 0 transparent;
     border: medium none;
@@ -328,4 +331,15 @@ a:link, a:visited {
 }
 .checked {
     background-position: -80px -144px;
+}
+.checkbox_all {
+    background-position: -112px -144px;
+    z-index: 1;
+}
+.checkbox_all:hover {
+    background-position: -96px -144px;
+    z-index: 1;
+}
+.checked {
+    background-position: -79px -144px;
 }
