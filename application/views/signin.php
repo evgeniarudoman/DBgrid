@@ -37,16 +37,31 @@
                     <form id="form" action="" method="post">
                         <table >
                             <tr>
+                                <td>
+                                    <span>
+                                        <b>
+                                        <?php
+                                            $error = $this->session->userdata('error');
+                                            if (isset($error) && !empty($error))
+                                            {
+                                                echo $error;
+                                            }
+                                        ?>
+                                        </b>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
                                 <td><span>Username <b>*</b></span></td>
                             </tr>
                             <tr>
-                                <td><input type="text" name="login" class="val" value=""/></td>
+                                <td><input type="text" name="username" class="val" value=""/></td>
                             </tr>
                             <tr>
                                 <td><span>Password <b>*</b></span></td>
                             </tr>
                             <tr>
-                                <td><input type="password" name="pass" class="val"/></td>
+                                <td><input type="password" name="password" class="val"/></td>
                             </tr>
                             <tr id="right">
                                 <td class="little">Forgot your password? <a href="/grid/forgot.php">CLICK HERE</a></td>

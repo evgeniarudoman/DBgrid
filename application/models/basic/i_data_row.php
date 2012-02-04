@@ -5,11 +5,9 @@ if (!defined('BASEPATH'))
 
 interface I_Data_Row {
 
-    public function select($db,$where);
+    public function select($where);
 
-    public function insert($db);
-    
-    public function show_tables($db);
+    public function insert();
 
     public function update();
     
@@ -19,5 +17,5 @@ interface I_Data_Row {
 
     public static function table_name();
 
-    public static function load_collection($where = NULL, $order_by = NULL);
+    public static function load_collection($db_name, $where = NULL, $order_by = NULL);
 }

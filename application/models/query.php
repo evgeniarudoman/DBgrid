@@ -9,6 +9,8 @@ class Query extends CI_Model
         $this->load->database();
     }
 
+    public $db_name="";
+
     public function create_default_db()
     {
         $this->db->query('CREATE DATABASE IF NOT EXISTS dbgrid 
@@ -80,9 +82,9 @@ class Query extends CI_Model
         }
     }
 
-    public function show_tables($db)
+    public function show_tables()
     {
-        $query = $this->db->query('SHOW TABLES FROM ' . $db);
+        $query = $this->db->query('SHOW TABLES FROM ' . $this->db_name);
         return $query;
     }
 

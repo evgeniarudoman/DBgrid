@@ -35,9 +35,10 @@ class Grid extends CI_Controller
 
     public function register()
     {
-        $account = $this->session->userdata('account');
+        $session_hash = $this->session->userdata('session_hash');
+        $this->session->set_userdata('error', '');
 
-        if (isset($account) && $account == TRUE)
+        if (isset($session_hash) && $session_hash == TRUE)
         {
             redirect(site_url('grid/login'));
         }
@@ -46,53 +47,120 @@ class Grid extends CI_Controller
             if (isset($_POST) && !empty($_POST))
             {
                 $this->load->model('user');
-                $this->user->setUsername(trim(str_replace(' ', '_', $_POST['username'])));
-                $this->user->setEmail(trim($_POST['email']));
-                $this->user->setPassword(trim(md5($_POST['password'])));
-                $this->user->setSessionHash('');
-                $this->user->setThemeId(1);
-                $this->user->setNumberOfDb(0);
-                $this->user->insert('dbgrid');
+                $this->user->db_name = "dbgrid";
+
+                try
+                {
+                    $this->user->get_unique(array('email' => $_POST['email']), array('username' => $_POST['username']));
+                }
+                catch (Exception $e)
+                {
+                    $this->user->setUsername(trim(str_replace(' ', '_', $_POST['username'])));
+                    $this->user->setEmail(trim($_POST['email']));
+                    $this->user->setPassword(trim(md5($_POST['password'])));
+                    $this->user->setSessionHash('');
+                    $this->user->setThemeId(1);
+                    $this->user->setNumberOfDb(0);
+                    $this->user->insert('dbgrid');
+
+                    redirect(site_url('grid/login'));
+                }
+
+                $this->session->set_userdata('error', 'Username or email is already exist.');
             }
-            else
-            {
-                $this->header('REGISTRATION');
-                $this->load->view('auth');
-            }
+
+            $this->header('REGISTRATION');
+            $this->load->view('auth');
         }
     }
 
     public function login()
     {
-        $this->header('AUTHORIZATION');
-        $this->load->view('signin');
-    }
+        $session_hash = $this->session->userdata('session_hash');
+        $this->session->set_userdata('error', '');
 
-    public function success()
-    {
-        $this->header('SUCCESS');
-    }
+        if (isset($session_hash) && $session_hash == TRUE)
+        {
+            redirect(site_url('grid/tables'));
+        }
+        else
+        {
+            if (isset($_POST) && !empty($_POST))
+            {
+                $this->load->model('user');
+                $this->user->db_name = "dbgrid";
 
-    public function error()
-    {
-        $this->header('ERROR');
-        $this->load->view('error');
+                try
+                {
+                    $this->user->select(array('username' => $_POST['username'], 'password' => md5($_POST['password'])));
+                    $session_hash = md5($_POST['username'] . md5($_POST['password']));
+                    $this->user->setSessionHash($session_hash);
+                    $this->user->update();
+
+                    $this->session->set_userdata('user_id', $this->user->getId());
+                    $this->session->set_userdata('username', $this->user->getUsername());
+                    $this->session->set_userdata('session_hash', $session_hash);
+
+                    redirect(site_url('grid/tables'));
+                }
+                catch (Exception $e)
+                {
+                    $this->session->set_userdata('error', 'Username or password is not correct.');
+                }
+            }
+
+            $this->header('AUTHORIZATION');
+            $this->load->view('signin');
+        }
     }
 
     public function tables()
     {
-        $this->header('table');
-        
-        $this->load->model('query');
-        $tables = $this->query->show_tables($_GET['database']);
-        //  $databases = mysql_query('SHOW DATABASES');
+        $session_hash = $this->session->userdata('session_hash');
 
-        if (isset($_GET['table']) && !empty($_GET['table']))
-            $result = mysql_query("SELECT * FROM " . $_GET['database'] . '.' . $_GET['table']);
+        if (isset($session_hash) && !empty($session_hash))
+        {
+            $username = $this->session->userdata('username');
+            $this->header($username);
+
+            try
+            {
+                $this->load->model('database');
+                $databases = $this->database->load_collection("dbgrid", array('user_id' => $this->session->userdata('user_id')));
+
+                foreach ($databases as $database)
+                { 
+                    $database_name[$database->getId()] = $database->getName();
+                }
+                
+            }
+            catch (Exception $e)
+            {
+                
+            }
+
+            if (isset($_GET) && !empty($_GET))
+            {
+                $this->load->model('query');
+                $this->query->db_name = $_GET['database'];
+                $tables = $this->query->show_tables();
+
+                if (isset($_GET['table']) && !empty($_GET['table']))
+                    $result = mysql_query("SELECT * FROM " . $_GET['database'] . '.' . $_GET['table']);
+                else
+                    $result = NULL;
+            }
+
+            $this->load->view('tables', array(
+                'databases' => $database_name,
+                'all_tables' => $tables->result_id,
+                'result' => $result,
+            ));
+        }
         else
-            $result = NULL;
-
-        $this->load->view('tables', array('all_tables' => $tables->result_id, 'result' => $result));
+        {
+            redirect(site_url('grid/login'));
+        }
     }
 
     /*

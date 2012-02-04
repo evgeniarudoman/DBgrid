@@ -9,6 +9,7 @@ abstract class Data_Row extends CI_Model implements I_Data_Row
 {
 
     protected $row;
+    public $db_name = "";
 
     public function getId()
     {
@@ -25,10 +26,10 @@ abstract class Data_Row extends CI_Model implements I_Data_Row
         $this->row = $row;
     }
 
-    public function select($db,$where)
+    public function select($where)
     {
         $class_name = get_called_class();
-        
+
         if (is_array($where))
         {
             $this->db->where($where);
@@ -38,9 +39,29 @@ abstract class Data_Row extends CI_Model implements I_Data_Row
             $this->db->where('id', $where);
         }
 
-        $query = $this->db->get($db.'.'.$class_name::table_name());  //die(var_dump($query));
+        $query = $this->db->get($this->db_name . '.' . $class_name::table_name());      //  $die = die(var_dump($query));
         if ($query->num_rows() == 1)
             $this->row = $query->row();
+        else
+        {
+            $message = <<<_EXC_MESSAGE
+Count of rows are less or more than 1. Please use $class_name::load_collection(); to get collection or check params.
+_EXC_MESSAGE;
+            throw new Exception($message);
+        }
+    }
+
+    public function get_unique($where, $or_where)
+    {
+        $class_name = get_called_class();
+
+        $this->db->where($where);
+        $this->db->or_where($or_where);
+
+        $query = $this->db->get($this->db_name . '.' . $class_name::table_name());      //  $die = die(var_dump($query));
+
+        if ($query->num_rows() > 0)
+            $this->row = $query->result();
         else
         {
             $message = <<<_EXC_MESSAGE
@@ -63,19 +84,12 @@ _EXC_MESSAGE;
         }
     }
 
-    public function insert($db)
+    public function insert()
     {
         $class_name = get_called_class();
-        $this->db->insert($db.'.'.$class_name::table_name(), (array) $this->row);
+        $this->db->insert($this->db_name . '.' . $class_name::table_name(), (array) $this->row);
         $id = $this->db->insert_id();
         return $id;
-    }
-    
-    public function show_tables($db)
-    {
-       // $class_name = get_called_class();
-        $query= $this->db->query('SHOW TABLES FROM'.$db);
-        return $query;
     }
 
     public function update()
@@ -83,9 +97,9 @@ _EXC_MESSAGE;
         $class_name = get_called_class();
         $data = (array) $this->row;
         //$data['session_hash']=0;
-        $this->db->where('entity_id', $data['entity_id']);
+        $this->db->where('id', $data['id']);
         //unset($data['entity_id']);
-        $this->db->update($class_name::table_name(), $data);
+        $this->db->update($this->db_name . '.' . $class_name::table_name(), $data);
         //$id = $this->db->insert_id();
         return $data['entity_id'];
     }
@@ -114,7 +128,7 @@ _EXC_MESSAGE;
             $this->load->database();
     }
 
-    public static function load_collection($where = NULL, $order_by = NULL, $number = NULL, $status = NULL, $start = NULL, $end = NULL, $client = NULL)
+    public static function load_collection($db_name, $where = NULL, $order_by = NULL)
     {
         $result = array();
         $db = &get_instance()->db;
@@ -123,19 +137,9 @@ _EXC_MESSAGE;
             $db->where($where);
         if ($order_by != NULL)
             $db->order_by($order_by);
-        if ($number != NULL)
-            $db->like($number);
-        if ($status != NULL)
-            $db->like($status);
-        if ($start != NULL)
-            $db->having(array('issuance_date >=' => $start));
+        
+        $query = $db->get($db_name.'.'.$class_name::table_name());
 
-        if ($end != NULL)
-            $db->having(array('issuance_date <=' => $end));
-
-        if ($client != NULL)
-            $db->having(array('entity_id <>' => $client));
-        $query = $db->get($class_name::table_name());
         $i = 0;
         foreach ($query->result() as $row)
         {
@@ -143,6 +147,7 @@ _EXC_MESSAGE;
             $result[$i]->setRow($row);
             $i++;
         }
+        
         return $result;
     }
 
