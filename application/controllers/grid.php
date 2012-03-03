@@ -6,12 +6,10 @@ if (!defined('BASEPATH'))
 class Grid extends CI_Controller
 {
 
-    public $template;
-
     public function __construct()
     {
         parent::__construct();
-        $this->load->helper(array('form', 'url', 'html'));
+        $this->load->helper(array('form', 'url', 'html', 'database_tree'));
         $this->load->library('session');
 
         $this->load->model('query');
@@ -81,7 +79,7 @@ class Grid extends CI_Controller
 
         if (isset($session_hash) && $session_hash == TRUE)
         {
-            redirect(site_url('grid/tables'));
+            redirect(site_url('grid/index'));
         }
         else
         {
@@ -101,7 +99,7 @@ class Grid extends CI_Controller
                     $this->session->set_userdata('username', $this->user->getUsername());
                     $this->session->set_userdata('session_hash', $session_hash);
 
-                    redirect(site_url('grid/tables'));
+                    redirect(site_url('grid/index'));
                 }
                 catch (Exception $e)
                 {
@@ -114,75 +112,46 @@ class Grid extends CI_Controller
         }
     }
 
-    public function tables()
+    public function index()
     {
         $session_hash = $this->session->userdata('session_hash');
+        $user_id = $this->session->userdata('user_id');
 
-        if (isset($session_hash) && !empty($session_hash))
+        if (isset($session_hash) && $session_hash != TRUE)
+        {
+            redirect(site_url('grid/login'));
+        }
+        else
         {
             $username = $this->session->userdata('username');
             $this->header($username);
 
+            $result = get_database_tree($user_id);
+
             try
             {
-                $this->load->model('database');
-                $databases = $this->database->load_collection("dbgrid", array('user_id' => $this->session->userdata('user_id')));
-
-                foreach ($databases as $database)
-                { 
-                    $database_name[$database->getId()] = $database->getName();
+                if (isset($_GET['database']) && !empty($_GET['database']) && isset($_GET['table']) && !empty($_GET['table']))
+                {
+                    $err = db_table_exists($user_id, $_GET['database'], $_GET['table']);
+                    $result['result'] = mysql_query("SELECT * FROM " . $_GET['database'] . '.' . $_GET['table']);
                 }
-                
+                else
+                {
+                    $err = 0;
+                }
             }
             catch (Exception $e)
             {
                 
             }
 
-            if (isset($_GET) && !empty($_GET))
-            {
-                $this->load->model('query');
-                $this->query->db_name = $_GET['database'];
-                $tables = $this->query->show_tables();
-
-                if (isset($_GET['table']) && !empty($_GET['table']))
-                    $result = mysql_query("SELECT * FROM " . $_GET['database'] . '.' . $_GET['table']);
-                else
-                    $result = NULL;
-            }
-
-            $this->load->view('tables', array(
-                'databases' => $database_name,
-                'all_tables' => $tables->result_id,
+            $this->load->view('templates/scripts');
+            $this->load->view('content', array(
                 'result' => $result,
+                'err' => $err,
             ));
-        }
-        else
-        {
-            redirect(site_url('grid/login'));
+            $this->load->view('templates/menu_button');
         }
     }
 
-    /*
-      public function tables()
-      {
-
-      $this->load->model('query');
-      $tables = $this->query->show_tables($_GET['database']);
-      $databases = mysql_query('SHOW DATABASES');
-
-      if (isset($_GET['table']) && $_GET['table'])
-      $result = mysql_query("SELECT * FROM " . $_GET['database'] . '.' . $_GET['table']);
-      else
-      $result = NULL;
-
-      //$tables = $this->query->show_tables($_GET['database']);
-      $this->header('table111');
-
-      $left_menu = $this->load->view('templates/left_menu', array('all_tables' => $tables->result_id));
-      $content = $this->load->view('content', array('result' => $result));
-      $this->load->view('tables', array('left_menu' => $left_menu, 'content' => $content));
-      // $this->load->view('tables', array('all_tables' => $tables->result_id,'result'=>$result,'databases'=>$databases));
-      }
-     */
 }

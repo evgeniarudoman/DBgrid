@@ -87,6 +87,19 @@ class Query extends CI_Model
         $query = $this->db->query('SHOW TABLES FROM ' . $this->db_name);
         return $query;
     }
+    
+    public function create_database($db_name){
+        $this->db->query('CREATE DATABASE IF NOT EXISTS '.$db_name.' 
+                        CHARACTER SET utf8 COLLATE utf8_general_ci');
+    }
+    
+    public function create_table($db_name){
+        $this->db->query('CREATE TABLE IF NOT EXISTS `dbgrid`.`types` (
+                    `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                    `type` VARCHAR( 100 ) NOT NULL )
+                    ENGINE = INNODB CHARACTER SET utf8 COLLATE utf8_general_ci;
+                    ');
+    }
 
 }
 
