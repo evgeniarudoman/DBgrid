@@ -17,7 +17,7 @@
             </td>
         <?php elseif (isset($_GET['database']) && !empty($_GET['database'])): ?>
             <td class='left_menu' bgcolor='#002F32'>   
-                <table>
+                <table id="tables">
                     <tr>
                         <td class='database_title' colspan=2>database "<?php echo $_GET['database'] ?>"</td>
                     </tr>

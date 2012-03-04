@@ -74,9 +74,7 @@
         </tr>
         <tr>
             <td>
-                <a href="<?php echo site_url('tables/add'); ?>">
-                    <div class="icon add"></div>
-                </a>
+                <div class="icon add" id="create-table"></div>
             </td>
         </tr>
         <tr>

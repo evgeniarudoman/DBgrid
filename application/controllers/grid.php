@@ -144,9 +144,18 @@ class Grid extends CI_Controller
             {
                 
             }
+            
+            $databases = $this->database->load_collection("dbgrid", array('user_id' => $user_id));
 
+            foreach ($databases as $database)
+            {
+                $list_database[$database->getId()] = $database->getName();
+            }
+            
             $this->load->view('templates/scripts');
-            $this->load->view('templates/jquery_form');
+            $this->load->view('templates/jquery_form', array(
+                'list_database' => $list_database
+            ));
             $this->load->view('content', array(
                 'result' => $result,
                 'err' => $err,

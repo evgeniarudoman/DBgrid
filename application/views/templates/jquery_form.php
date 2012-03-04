@@ -1,8 +1,10 @@
 <script>
     $(function() {
-        // a workaround for a flaw in the demo system (http://dev.jqueryui.com/ticket/4375), ignore!
         $( "#dialog:ui-dialog" ).dialog( "destroy" );
 		
+        var table = $( "#table" )
+        var count = $( "#count" )
+        var db = $( "#db" )
         var database = $( "#database" ),
         allFields = $( [] ).add( database ),
         tips = $( ".validateTips" );
@@ -37,7 +39,7 @@
             }
         }
 		
-        $( "#dialog-form" ).dialog({
+        $( "#database-form" ).dialog({
             autoOpen: false,
             height: 300,
             width: 350,
@@ -77,9 +79,56 @@
         });
 
         $( "#create-database" )
-                
         .click(function() {
-            $( "#dialog-form" ).dialog( "open" );
+            $( "#database-form" ).dialog( "open" );
+        });
+        
+        
+        $( "#table-form" ).dialog({
+            autoOpen: false,
+            height: 300,
+            width: 350,
+            modal: true,
+            buttons: {
+                "Create": function() {
+                    var bValid = true;
+                    allFields.removeClass( "ui-state-error" );
+
+                    bValid = bValid && checkLength( table, "table", 3, 16 );
+                    bValid = bValid && checkLength( count, "count", 1, 2 );
+
+                    bValid = bValid && checkRegexp( table, /^[a-z]([0-9a-z_])+$/i, "Table name may consist of a-z, 0-9, underscores, begin with a letter." );
+                    bValid = bValid && checkRegexp( count, /^[0-9]+$/i, "Count of fields may consist of a-z, 0-9, underscores, begin with a letter." );
+                    bValid = bValid && checkRegexp( db, /^[a-z]([0-9a-z_])+$/i, "Database may consist of a-z, 0-9, underscores, begin with a letter." );
+
+                    if ( bValid ) {
+                        $( "#tables tbody" ).append( "<tr>" +
+                            "<td>"+"<div class='icon table'></div>"+"</td>"+
+                            "<td>"+"<a href='/grid/index?database="+table.val()+"'>" + table.val() + "</td>" +
+                            "</tr>" ); 
+                                
+                        // add to database by ajax
+                        /*$.ajax({
+                            type: "POST",
+                            url: '<?php echo site_url('db/add'); ?>',
+                            data: "database_name="+database.val()
+                        })*/
+                                
+                        $( this ).dialog( "close" );
+                    }
+                },
+                Cancel: function() {
+                    $( this ).dialog( "close" );
+                }
+            },
+            close: function() {
+                allFields.val( "" ).removeClass( "ui-state-error" );
+            }
+        });
+
+        $( "#create-table" )
+        .click(function() {
+            $( "#table-form" ).dialog( "open" );
         });
     });
 </script>
@@ -106,7 +155,7 @@
     </div>
 
     <!-- create new database form -->    
-    <div id="dialog-form" class="ui-dialog-content ui-widget-content" style="width: auto; min-height: 0px; height: 216px; " scrolltop="0" scrollleft="0">
+    <div id="database-form" class="ui-dialog-content ui-widget-content" style="width: auto; min-height: 0px; height: 216px; " scrolltop="0" scrollleft="0">
         <p class="validateTips">All form fields are required.</p>
         <form>
             <fieldset>
@@ -116,6 +165,28 @@
         </form>
     </div>
     <!-- end database form -->
+    <!-- create new table form -->    
+    <div id="table-form" class="ui-dialog-content ui-widget-content" style="width: auto; min-height: 0px; height: 216px; " scrolltop="0" scrollleft="0">
+        <p class="validateTips">All form fields are required.</p>
+        <form>
+            <fieldset>
+                <label for="table">Table name</label>
+                <input type="text" name="table" id="table" class="text ui-widget-content ui-corner-all">
+                <label for="count">Count of fields</label>
+                <input type="text" name="count" id="count" class="text ui-widget-content ui-corner-all">
+                <label for="db">Database name</label>
+                <select name="db" id="db" class="text ui-widget-content ui-corner-all">
+                    <?php if (isset($list_database) && !empty($list_database)): ?>
+                        <?php foreach ($list_database as $id => $database): ?>
+                            <option value="<?php echo $id ?>"><?php echo $database ?></option>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                    <option value="" selected="selected"> -- choose database -- </option>
+                </select>
+            </fieldset>
+        </form>
+    </div>
+    <!-- end table form -->
 
     <div class="ui-resizable-handle ui-resizable-n"></div>
     <div class="ui-resizable-handle ui-resizable-e"></div>
