@@ -22,13 +22,10 @@ class Grid extends CI_Controller
             'scripts' => array(
                 '1' => "/js/jquery-1.6.2.min.js",
                 '2' => "/js/jquery-ui-1.8.16.custom.min.js",
-                '3' => "/js/validation.js",
-                '4' => "/js/jquery.colorbox-min.js",
-                '5' => "/js/jquery.colorbox.js"),
+                '3' => "/js/validation.js"),
             'styles' => array(
-                '1' => "/css/jquery-ui-1.8.16.custom.css",
-                '2' => "/css/style.css",
-                '3' => "/css/colorbox.css")
+                '1' => "/css/jquery-ui-1.8.18.custom.css",
+                '2' => "/css/style.css")
         );
 
         $this->load->view('templates/head', $this->template);
@@ -149,6 +146,7 @@ class Grid extends CI_Controller
             }
 
             $this->load->view('templates/scripts');
+            $this->load->view('templates/jquery_form');
             $this->load->view('content', array(
                 'result' => $result,
                 'err' => $err,
