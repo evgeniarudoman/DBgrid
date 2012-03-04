@@ -69,7 +69,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <a href="<?php echo site_url('databases/add');?>">
+                            <a class="iframe cboxElement" href="<?php echo site_url('databases/add');?>">
                                 <div>add db</div>
                             </a>
                         </td>
