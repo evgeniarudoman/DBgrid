@@ -98,7 +98,7 @@
                     bValid = bValid && checkLength( count, "count", 1, 2 );
 
                     bValid = bValid && checkRegexp( table, /^[a-z]([0-9a-z_])+$/i, "Table name may consist of a-z, 0-9, underscores, begin with a letter." );
-                    bValid = bValid && checkRegexp( count, /^[0-9]+$/i, "Count of fields may consist of a-z, 0-9, underscores, begin with a letter." );
+                    bValid = bValid && checkRegexp( count, /^[0-9]+$/i, "Count of fields may consist 0-9, underscores, begin with a letter." );
                     bValid = bValid && checkRegexp( db, /^[a-z]([0-9a-z_])+$/i, "Database may consist of a-z, 0-9, underscores, begin with a letter." );
 
                     if ( bValid ) {
