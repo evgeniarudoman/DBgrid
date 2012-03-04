@@ -69,7 +69,7 @@
         </tr>
         <tr>
             <td>
-                <div class="icon add" id="create-user"></div>
+                <div class="icon add" id="create-database"></div>
             </td>
         </tr>
         <tr>

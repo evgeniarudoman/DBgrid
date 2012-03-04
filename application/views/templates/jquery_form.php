@@ -43,7 +43,7 @@
                     width: 350,
                     modal: true,
                     buttons: {
-                        "Create an account": function() {
+                        "Create": function() {
                             var bValid = true;
                             allFields.removeClass( "ui-state-error" );
 
@@ -72,7 +72,7 @@
                     }
                 });
 
-                $( "#create-user" )
+                $( "#create-database" )
                 
                 .click(function() {
                     $( "#dialog-form" ).dialog( "open" );
@@ -91,16 +91,18 @@
             .ui-dialog .ui-state-error { padding: .3em; }
             .validateTips { border: 1px solid transparent; padding: 0.3em; }
 </style>
+
+
 <!-- create new database form -->
-
-
 <div style="outline-width: 0px; outline-style: initial; outline-color: initial; height: auto; width: 350px; position: absolute; top: 186px; left: 462px; z-index: 1002; display: none; " class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-draggable ui-resizable" tabindex="-1" role="dialog" aria-labelledby="ui-dialog-title-dialog-form">
     <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">
-        <span class="ui-dialog-title" id="ui-dialog-title-dialog-form">Create new user</span>
+        <span class="ui-dialog-title" id="ui-dialog-title-dialog-form">Create</span>
         <a href="#" class="ui-dialog-titlebar-close ui-corner-all" role="button">
             <span class="ui-icon ui-icon-closethick">close</span>
         </a>
-    </div><div id="dialog-form" class="ui-dialog-content ui-widget-content" style="width: auto; min-height: 0px; height: 216px; " scrolltop="0" scrollleft="0">
+    </div>
+    
+    <div id="dialog-form" class="ui-dialog-content ui-widget-content" style="width: auto; min-height: 0px; height: 216px; " scrolltop="0" scrollleft="0">
         <p class="validateTips">All form fields are required.</p>
         <form>
             <fieldset>
@@ -109,6 +111,7 @@
             </fieldset>
         </form>
     </div>
+    
     <div class="ui-resizable-handle ui-resizable-n"></div>
     <div class="ui-resizable-handle ui-resizable-e"></div>
     <div class="ui-resizable-handle ui-resizable-s"></div>
@@ -120,7 +123,7 @@
     <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
         <div class="ui-dialog-buttonset">
             <button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false">
-                <span class="ui-button-text">Create an account</span>
+                <span class="ui-button-text">Create</span>
             </button>
             <button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false">
                 <span class="ui-button-text">Cancel</span>

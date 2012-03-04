@@ -10,6 +10,5 @@
         <?php foreach ($styles as $style): ?>
             <link rel="stylesheet" type="text/css" href="<?php echo $style; ?>"/>
         <?php endforeach; ?>
-        
     </head>
             
