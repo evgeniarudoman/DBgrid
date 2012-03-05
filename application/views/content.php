@@ -6,13 +6,15 @@
                     <tr>
                         <td class='database_title' colspan=2>all database</td>
                     </tr>
-                    <?php foreach ($result['databases'] as $database): ?>
-                        <tr>
-                            <td><div class="icon table"></div></td>
-                            <td><a href='/grid/index?database=<?php echo $database; ?>'>
-                                    <?php echo $database; ?></a></div></td>
-                        </tr>
-                    <?php endforeach; ?>
+                    <?php if (isset($result['databases'])): ?>
+                        <?php foreach ($result['databases'] as $database): ?>
+                            <tr>
+                                <td><div class="icon table"></div></td>
+                                <td><a href='/grid/index?database=<?php echo $database; ?>'>
+                                        <?php echo $database; ?></a></div></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </table>
             </td>
         <?php elseif (isset($_GET['database']) && !empty($_GET['database'])): ?>

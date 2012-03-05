@@ -17,6 +17,7 @@ class Db extends CI_Controller
         $this->load->model('field');
     }
 
+
     public function add()
     {
         $this->load->model('query');
@@ -26,14 +27,27 @@ class Db extends CI_Controller
             $this->query->create_database($_POST['database_name']);
 
             $this->database->db_name = "dbgrid";
-            $this->database->setName($_POST['database_name']);
-            $this->database->setUserId($this->session->userdata('user_id'));
-            $this->database->insert();
+            $database = $this->database->select(array('database_name' => $_POST['database_name']));
+            $id = $database->getId();
+            if (!empty($id))
+            {
+                $this->database->setName($_POST['database_name']);
+                $this->database->setUserId($this->session->userdata('user_id'));
+                $this->database->insert();
+                $success = TRUE;
+            }
+            else
+            {
+                $success = FALSE;
+            }
         }
         catch (Exception $e)
         {
-            
+            $success = FALSE;
         }
+
+        echo json_encode($success);
     }
+
 
 }

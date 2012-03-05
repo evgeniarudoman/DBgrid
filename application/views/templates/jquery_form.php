@@ -60,11 +60,14 @@
                             "<td>"+"<a href='/grid/index?database="+database.val()+"'>" + database.val() + "</td>" +
                             "</tr>" ); 
                                 
-                        // add to database by ajax
+                        // add new database by ajax
                         $.ajax({
                             type: "POST",
                             url: '<?php echo site_url('db/add'); ?>',
-                            data: "database_name="+database.val()
+                            data: "database_name="+database.val(),
+                            success: function(response){
+                                alert(response);
+                            }
                         })
                                 
                         $( this ).dialog( "close" );

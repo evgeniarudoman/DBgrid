@@ -151,6 +151,8 @@ class Grid extends CI_Controller
             {
                 $list_database[] = $database->getName();
             }
+            if (!isset($list_database))
+                $list_database = NULL;
             
             $this->load->view('templates/scripts');
             $this->load->view('templates/jquery_form', array(

@@ -42,8 +42,8 @@ if (!function_exists('get_database_tree'))
                 }
             }
         }
-
-        return $result;
+        if (isset($result))
+            return $result;
     }
 
 }
