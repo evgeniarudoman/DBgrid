@@ -45,7 +45,7 @@ body {
     -moz-border-radius:5px 5px 5px 5px;
     -webkit-border-radius: 5px 5px 5px 5px;
     position: fixed;
-    top: 30%;
+    top: 10%;
     left: 30%;
     margin-left: auto;
     margin-right: auto;
@@ -307,7 +307,7 @@ a:link, a:visited {
     background-position: 0px -114px;
 }
 .add {
-    background-position: -16px -127px;
+    background-position: -16px -129px;
 }
 .edit {
     background-position: -64px -112px;

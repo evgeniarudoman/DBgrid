@@ -24,7 +24,7 @@ class Grid extends CI_Controller
                 '2' => "/js/jquery-ui-1.8.16.custom.min.js",
                 '3' => "/js/validation.js"),
             'styles' => array(
-                '1' => "/css/jquery-ui-1.8.16.custom.css",
+                '1' => "/css/jquery-ui-1.8.18.custom.css",
                 '2' => "/css/style.css")
         );
 
@@ -144,8 +144,18 @@ class Grid extends CI_Controller
             {
                 
             }
+            
+            $databases = $this->database->load_collection("dbgrid", array('user_id' => $user_id));
 
+            foreach ($databases as $database)
+            {
+                $list_database[] = $database->getName();
+            }
+            
             $this->load->view('templates/scripts');
+            $this->load->view('templates/jquery_form', array(
+                'list_database' => $list_database
+            ));
             $this->load->view('content', array(
                 'result' => $result,
                 'err' => $err,
