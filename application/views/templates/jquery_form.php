@@ -38,7 +38,8 @@
                 return true;
             }
         }
-		
+	
+        // modal of creating new database
         $( "#database-form" ).dialog({
             autoOpen: false,
             height: 300,
@@ -82,8 +83,9 @@
         .click(function() {
             $( "#database-form" ).dialog( "open" );
         });
-        
-        
+        // end of creating new database
+
+        // modal of creating new table
         $( "#table-form" ).dialog({
             autoOpen: false,
             height: 300,
@@ -95,11 +97,11 @@
                     allFields.removeClass( "ui-state-error" );
 
                     bValid = bValid && checkLength( table, "table", 3, 16 );
-                    bValid = bValid && checkLength( count, "count", 1, 2 );
+                    bValid = bValid && count.val();
+                    bValid = bValid && db.val();
 
                     bValid = bValid && checkRegexp( table, /^[a-z]([0-9a-z_])+$/i, "Table name may consist of a-z, 0-9, underscores, begin with a letter." );
                     bValid = bValid && checkRegexp( count, /^[0-9]+$/i, "Count of fields may consist 0-9, underscores, begin with a letter." );
-                    bValid = bValid && checkRegexp( db, /^[a-z]([0-9a-z_])+$/i, "Database may consist of a-z, 0-9, underscores, begin with a letter." );
 
                     if ( bValid ) {
                         $( "#tables tbody" ).append( "<tr>" +
@@ -107,12 +109,12 @@
                             "<td>"+"<a href='/grid/index?database="+table.val()+"'>" + table.val() + "</td>" +
                             "</tr>" ); 
                                 
-                        // add to database by ajax
-                        /*$.ajax({
+                        // add table by ajax
+                        $.ajax({
                             type: "POST",
-                            url: '<?php echo site_url('db/add'); ?>',
-                            data: "database_name="+database.val()
-                        })*/
+                            url: '<?php echo site_url('table/add'); ?>',
+                            data: "table_name="+table.val()+"&count="+count.val()+"&database="+$('#db option:selected').text()
+                        })
                                 
                         $( this ).dialog( "close" );
                     }
@@ -131,6 +133,7 @@
             $( "#table-form" ).dialog( "open" );
         });
     });
+    // end of creating new table
 </script>
 <style>
     body { font-size: 62.5%; }
@@ -177,8 +180,8 @@
                 <label for="db">Database name</label>
                 <select name="db" id="db" class="text ui-widget-content ui-corner-all">
                     <?php if (isset($list_database) && !empty($list_database)): ?>
-                        <?php foreach ($list_database as $id => $database): ?>
-                            <option value="<?php echo $id ?>"><?php echo $database ?></option>
+                        <?php foreach ($list_database as $key => $database): ?>
+                            <option value="<?php echo $key ?>"><?php echo $database ?></option>
                         <?php endforeach; ?>
                     <?php endif; ?>
                     <option value="" selected="selected"> -- choose database -- </option>

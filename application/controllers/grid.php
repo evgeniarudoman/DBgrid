@@ -149,7 +149,7 @@ class Grid extends CI_Controller
 
             foreach ($databases as $database)
             {
-                $list_database[$database->getId()] = $database->getName();
+                $list_database[] = $database->getName();
             }
             
             $this->load->view('templates/scripts');
