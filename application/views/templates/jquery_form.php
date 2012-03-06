@@ -66,6 +66,7 @@
                             url: '<?php echo site_url('db/add'); ?>',
                             data: "database_name="+database.val(),
                             success: function(response){
+                                //change on something
                                 alert(response);
                             }
                         })
@@ -97,6 +98,7 @@
             buttons: {
                 "Create": function() {
                     var bValid = true;
+                    var fValid = true;
                     allFields.removeClass( "ui-state-error" );
 
                     bValid = bValid && checkLength( table, "table", 3, 16 );
@@ -106,20 +108,58 @@
                     bValid = bValid && checkRegexp( table, /^[a-z]([0-9a-z_])+$/i, "Table name may consist of a-z, 0-9, underscores, begin with a letter." );
                     bValid = bValid && checkRegexp( count, /^[0-9]+$/i, "Count of fields may consist 0-9, underscores, begin with a letter." );
 
-                    if ( bValid ) {
+                    if ( bValid ) {                        
                         $( "#tables tbody" ).append( "<tr>" +
                             "<td>"+"<div class='icon table'></div>"+"</td>"+
                             "<td>"+"<a href='/grid/index?database="+table.val()+"'>" + table.val() + "</td>" +
                             "</tr>" ); 
+                        
+                        if ( $('input[type=hidden].valid').val() == 'true') {
+                            var i;
+                            for (i=1;i<=count.val();i++)
+                            {
+                                $( "div#table-form form.field-form p" ).append(
+                                "<input type='text' name='field"+i+"' id='field"+i+"' class='field ui-widget-content ui-corner-all'>"+
+                                    "<select name='type"+i+"' id='type"+i+"' class='text ui-widget-content ui-corner-all'>"+
+                                    "<option value='' selected='selected'> -- choose type -- </option>"+
+                                    "</select>");
+
+                               
                                 
-                        // add table by ajax
-                        $.ajax({
-                            type: "POST",
-                            url: '<?php echo site_url('table/add'); ?>',
-                            data: "table_name="+table.val()+"&count="+count.val()+"&database="+$('#db option:selected').text()
-                        })
-                                
-                        $( this ).dialog( "close" );
+                                $('input[type=hidden].valid').val('false');
+                            }
+                        
+                            for (i=1;i<=count.val();i++)
+                            {
+                                fValid = fValid && $('input[name=field'+i+']').val();
+                                fValid = fValid && $('select[name=type'+i+']').val();
+                            }
+                            // show fields form
+                            $.ajax({
+                                type: "POST",
+                                dataType: "json",
+                                url: '<?php echo site_url('tables/get_type'); ?>',
+                                success: function(types){
+                                    $.each( types, function(k, val){
+                                        $( "div#table-form form.field-form select" ).append(
+                                        "<option value='"+val.key+"'>"+val.key+"</option>"); 
+                                    });
+                                }
+                            })
+                        
+                            // add table by ajax
+                            $.ajax({
+                                type: "POST",
+                                url: '<?php echo site_url('tables/add'); ?>',
+                                data: "table_name="+table.val()+"&count="+count.val()+"&database="+$('#db option:selected').text()
+                            })
+                        }  
+                        $('div#table-form form.table-form').empty();
+                        $('div#table-form form.field-form').show();
+                        
+                        if (fValid) {
+                            $( this ).dialog( "close" );
+                        }
                     }
                 },
                 Cancel: function() {
@@ -142,6 +182,8 @@
     body { font-size: 62.5%; }
     label, input { display:block; }
     input.text { margin-bottom:12px; width:95%; padding: .4em; }
+    select.text { display: inline; margin-left: 5px;}
+    input.field { margin-bottom:12px; padding: .4em; display:inline;}
     fieldset { padding:0; border:0; margin-top:25px; }
     h1 { font-size: 1.2em; margin: .6em 0; }
     div#databases-contain { width: 350px; margin: 20px 0; }
@@ -171,10 +213,11 @@
         </form>
     </div>
     <!-- end database form -->
+
     <!-- create new table form -->    
     <div id="table-form" class="ui-dialog-content ui-widget-content" style="width: auto; min-height: 0px; height: 216px; " scrolltop="0" scrollleft="0">
         <p class="validateTips">All form fields are required.</p>
-        <form>
+        <form class="table-form">
             <fieldset>
                 <label for="table">Table name</label>
                 <input type="text" name="table" id="table" class="text ui-widget-content ui-corner-all">
@@ -182,14 +225,20 @@
                 <input type="text" name="count" id="count" class="text ui-widget-content ui-corner-all">
                 <label for="db">Database name</label>
                 <select name="db" id="db" class="text ui-widget-content ui-corner-all">
+                    <option value="" selected="selected"> -- choose database -- </option>
                     <?php if (isset($list_database) && !empty($list_database)): ?>
                         <?php foreach ($list_database as $key => $database): ?>
                             <option value="<?php echo $key ?>"><?php echo $database ?></option>
                         <?php endforeach; ?>
                     <?php endif; ?>
-                    <option value="" selected="selected"> -- choose database -- </option>
                 </select>
             </fieldset>
+        </form>
+        <form class="field-form" style="display: none;">
+            <fieldset>
+                <p></p>
+            </fieldset>
+            <input type="hidden" class="valid" value="true"/>
         </form>
     </div>
     <!-- end table form -->
