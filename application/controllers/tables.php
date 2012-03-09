@@ -27,8 +27,17 @@ class Tables extends CI_Controller
 
         try
         {
-            var_dump($_POST);
-            //$this->query->create_table($_POST['table_name']);
+            //var_dump($_POST);
+            $str = '';
+            for ($i = 1; $i <= $_POST['count']; $i++)
+            {
+                $str.='`' . $_POST['field' . $i] . '` ' . $_POST['type' . $i] . '(10),';
+            }
+            unset($i);
+            
+            $query = substr($str, 0, strlen($str) - 1);
+            
+            $this->query->create_table($_POST['database'], $_POST['table_name'], $query);
 
             $this->database->db_name = "dbgrid";
             $this->database->select(array('name' => $_POST['database'], 'user_id' => $user_id));
@@ -57,7 +66,7 @@ class Tables extends CI_Controller
         {
             $list_type[] = array('key' => $type->getType());
         }
-        
+
         echo json_encode($list_type);
     }
 

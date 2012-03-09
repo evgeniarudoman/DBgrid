@@ -21,24 +21,28 @@ class Db extends CI_Controller
     public function add()
     {
         $this->load->model('query');
+        $success = TRUE;
 
         try
         {
             $this->query->create_database($_POST['database_name']);
 
-            $this->database->db_name = "dbgrid";
-            $database = $this->database->select(array('database_name' => $_POST['database_name']));
-            $id = $database->getId();
-            if (!empty($id))
+            $databases = $this->database->load_collection("dbgrid");
+            foreach ($databases as $database)
             {
+                if ($database->getName() == $_POST['database_name'])
+                {
+                    $success = FALSE;
+                    break;
+                }
+            }
+
+            if ($success != FALSE)
+            {
+                $this->database->db_name = "dbgrid";
                 $this->database->setName($_POST['database_name']);
                 $this->database->setUserId($this->session->userdata('user_id'));
                 $this->database->insert();
-                $success = TRUE;
-            }
-            else
-            {
-                $success = FALSE;
             }
         }
         catch (Exception $e)
