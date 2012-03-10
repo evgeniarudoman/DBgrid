@@ -99,11 +99,9 @@ class Query extends CI_Model
     }
 
 
-    public function create_table($db_name)
+    public function create_table($db_name, $table_name, $query)
     {
-        $this->db->query('CREATE TABLE IF NOT EXISTS `dbgrid`.`types` (
-                    `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                    `type` VARCHAR( 100 ) NOT NULL )
+        $this->db->query('CREATE TABLE IF NOT EXISTS `' . $db_name . '`.`' . $table_name . '` (' . $query . ')
                     ENGINE = INNODB CHARACTER SET utf8 COLLATE utf8_general_ci;
                     ');
     }

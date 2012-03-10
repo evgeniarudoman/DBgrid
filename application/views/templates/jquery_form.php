@@ -1,14 +1,27 @@
 <script>
     $(function() {
         $( "#dialog:ui-dialog" ).dialog( "destroy" );
+        
+        $( "#create-database" )
+        .click(function() {
+            $( "#database-form" ).dialog( "open" );
+        });
+        
+        $( "#create-table" )
+        .click(function() {
+            $( "#table-form" ).dialog( "open" );
+        });
 		
+        // announcement variables
         var table = $( "#table" )
         var count = $( "#count" )
         var db = $( "#db" )
         var database = $( "#database" ),
-        allFields = $( [] ).add( database ),
+        allFields = $( [] ).add( db ).add( table ).add( count ),
         tips = $( ".validateTips" );
-
+        
+        // @function Highlight error
+        // param t - field
         function updateTips( t ) {
             tips
             .text( t )
@@ -18,6 +31,11 @@
             }, 500 );
         }
 
+        // @function Check length of field
+        // @param o - field
+        // @param n - name of field
+        // @param min - min length
+        // @param max - max length
         function checkLength( o, n, min, max ) {
             if ( o.val().length > max || o.val().length < min ) {
                 o.addClass( "ui-state-error" );
@@ -29,8 +47,25 @@
             }
         }
 
+        // @function Check regular expressions
+        // @param o - field
+        // @param regexp - regular expression
+        // @param n - name of field
         function checkRegexp( o, regexp, n ) {
             if ( !( regexp.test( o.val() ) ) ) {
+                o.addClass( "ui-state-error" );
+                updateTips( n );
+                return false;
+            } else {
+                return true;
+            }
+        }
+        
+        // @function Check on emptiness
+        // @param o - field
+        // @param n - name of field
+        function checkEmpty( o, n ) {
+            if ( o.val() == "" ) {
                 o.addClass( "ui-state-error" );
                 updateTips( n );
                 return false;
@@ -43,7 +78,7 @@
         $( "#database-form" ).dialog({
             autoOpen: false,
             height: 300,
-            width: 350,
+            width: 400,
             modal: true,
             buttons: {
                 "Create": function() {
@@ -51,7 +86,6 @@
                     allFields.removeClass( "ui-state-error" );
 
                     bValid = bValid && checkLength( database, "database", 3, 16 );
-
                     bValid = bValid && checkRegexp( database, /^[a-z]([0-9a-z_])+$/i, "Database name may consist of a-z, 0-9, underscores, begin with a letter." );
 
                     if ( bValid ) {
@@ -82,18 +116,13 @@
                 allFields.val( "" ).removeClass( "ui-state-error" );
             }
         });
-
-        $( "#create-database" )
-        .click(function() {
-            $( "#database-form" ).dialog( "open" );
-        });
         // end of creating new database
 
         // modal of creating new table
         $( "#table-form" ).dialog({
             autoOpen: false,
             height: 300,
-            width: 350,
+            width: 400,
             modal: true,
             buttons: {
                 "Create": function() {
@@ -102,39 +131,38 @@
                     allFields.removeClass( "ui-state-error" );
 
                     bValid = bValid && checkLength( table, "table", 3, 16 );
-                    bValid = bValid && count.val();
-                    bValid = bValid && db.val();
-
                     bValid = bValid && checkRegexp( table, /^[a-z]([0-9a-z_])+$/i, "Table name may consist of a-z, 0-9, underscores, begin with a letter." );
+                    bValid = bValid && checkEmpty( count, "count");
                     bValid = bValid && checkRegexp( count, /^[0-9]+$/i, "Count of fields may consist 0-9, underscores, begin with a letter." );
+                    bValid = bValid && checkEmpty( db, "database");                    
 
-                    if ( bValid ) {                        
-                        $( "#tables tbody" ).append( "<tr>" +
-                            "<td>"+"<div class='icon table'></div>"+"</td>"+
-                            "<td>"+"<a href='/grid/index?database="+table.val()+"'>" + table.val() + "</td>" +
-                            "</tr>" ); 
+                    if ( bValid ) 
+                    {
+                        allFields.removeClass( "ui-state-error" );
                         
-                        if ( $('input[type=hidden].valid').val() == 'true') {
+                        if ( $('input[type=hidden].valid').val() == 'true') 
+                        {                            
+                            $( "#tables tbody" ).append( "<tr>" +
+                                "<td>"+"<div class='icon table'></div>"+"</td>"+
+                                "<td>"+"<a href='/grid/index?database="+table.val()+"'>" + table.val() + "</td>" +
+                                "</tr>" );
+                        
                             var i;
                             for (i=1;i<=count.val();i++)
                             {
-                                $( "div#table-form form.field-form p" ).append(
-                                "<input type='text' name='field"+i+"' id='field"+i+"' class='field ui-widget-content ui-corner-all'>"+
-                                    "<select name='type"+i+"' id='type"+i+"' class='text ui-widget-content ui-corner-all'>"+
+                                $( "div#table-form form.field-form table" ).append(
+                                "<tr><td><input type='radio' name='check' id='check' class='field ui-widget-content ui-corner-all'></td>"+
+                                    "<td><input type='text' name='field"+i+"' id='field"+i+"' class='field ui-widget-content ui-corner-all'></td>"+
+                                    "<td><select name='type"+i+"' id='type"+i+"' class='text ui-widget-content ui-corner-all'>"+
                                     "<option value='' selected='selected'> -- choose type -- </option>"+
-                                    "</select>");
-
-                               
+                                    "</select></td>"+
+                                    "<td><input type='text' name='size"+i+"' id='size"+i+"' class='field ui-widget-content ui-corner-all'></td></tr>");
                                 
                                 $('input[type=hidden].valid').val('false');
                             }
-                        
-                            for (i=1;i<=count.val();i++)
-                            {
-                                fValid = fValid && $('input[name=field'+i+']').val();
-                                fValid = fValid && $('select[name=type'+i+']').val();
-                            }
-                            // show fields form
+                            
+                            //http://vk.com/id11456991
+                            // get type from db
                             $.ajax({
                                 type: "POST",
                                 dataType: "json",
@@ -146,20 +174,57 @@
                                     });
                                 }
                             })
+                        }
                         
-                            // add table by ajax
-                            $.ajax({
-                                type: "POST",
-                                url: '<?php echo site_url('tables/add'); ?>',
-                                data: "table_name="+table.val()+"&count="+count.val()+"&database="+$('#db option:selected').text()
-                            })
-                        }  
-                        $('div#table-form form.table-form').empty();
-                        $('div#table-form form.field-form').show();
+                        for (i=1;i<=count.val();i++)
+                        {
+                            bValid = bValid && checkLength( table, "table", 3, 16 );
+                            bValid = bValid && checkRegexp( table, /^[a-z]([0-9a-z_])+$/i, "Table name may consist of a-z, 0-9, underscores, begin with a letter." );
+                            bValid = bValid && checkEmpty( count, "count");
+                            bValid = bValid && checkRegexp( count, /^[0-9]+$/i, "Count of fields may consist 0-9, underscores, begin with a letter." );
+                            bValid = bValid && checkEmpty( db, "database");
+                    
+                            fValid = fValid && checkEmpty( $('input[name=field'+i+']'), "field"+i);
+                            fValid = fValid && checkEmpty( $('select[name=type'+i+']'), "type"+i);
+                            fValid = fValid && checkEmpty( $('input[name=check]'), "You need to choose primary key");
+                            fValid = fValid && checkRegexp( $('input[name=size'+i+']'), /^[0-9]+$/i, "Size of fields may consist 0-9, underscores, begin with a letter." );
+                        }
                         
                         if (fValid) {
+                            var fields = '';
+                            var types = '';
+                        
+                            for (i=1;i<=count.val();i++)
+                            {
+                                fields += "&field"+i+"="+$('input#field'+i).val();
+                                types += "&type"+i+"="+$('#type'+i+' option:selected').text();
+                            }
+                        
+                            // add table and fields by ajax
+                            $.ajax({
+                                type: "POST",
+                                dataType: "json",
+                                url: '<?php echo site_url('tables/add'); ?>',
+                                data: "table_name="+table.val()+
+                                    "&count="+count.val()+
+                                    "&database="+db.val()+
+                                    fields+types,
+                                success: function(response){
+                                    //change on something
+                                    alert(response);
+                                }
+                            })
+                        
                             $( this ).dialog( "close" );
                         }
+                        
+                        $('div#table-form form.table-form').empty();
+                        $('div#table-form form.field-form').show();
+                    }
+                    else
+                    {
+                        //count.addClass( "ui-state-error" );;
+                        //return false;
                     }
                 },
                 Cancel: function() {
@@ -170,11 +235,6 @@
                 allFields.val( "" ).removeClass( "ui-state-error" );
             }
         });
-
-        $( "#create-table" )
-        .click(function() {
-            $( "#table-form" ).dialog( "open" );
-        });
     });
     // end of creating new table
 </script>
@@ -183,7 +243,8 @@
     label, input { display:block; }
     input.text { margin-bottom:12px; width:95%; padding: .4em; }
     select.text { display: inline; margin-left: 5px;}
-    input.field { margin-bottom:12px; padding: .4em; display:inline;}
+    input.field { display:inline;}
+    input[id^=size] { display:inline; width: 30px;}
     fieldset { padding:0; border:0; margin-top:25px; }
     h1 { font-size: 1.2em; margin: .6em 0; }
     div#databases-contain { width: 350px; margin: 20px 0; }
@@ -228,7 +289,7 @@
                     <option value="" selected="selected"> -- choose database -- </option>
                     <?php if (isset($list_database) && !empty($list_database)): ?>
                         <?php foreach ($list_database as $key => $database): ?>
-                            <option value="<?php echo $key ?>"><?php echo $database ?></option>
+                            <option value="<?php echo $database ?>"><?php echo $database ?></option>
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </select>
@@ -236,7 +297,7 @@
         </form>
         <form class="field-form" style="display: none;">
             <fieldset>
-                <p></p>
+                <table></table>
             </fieldset>
             <input type="hidden" class="valid" value="true"/>
         </form>
