@@ -43,7 +43,7 @@ class Tables extends CI_Controller
 
             $query = substr($str, 0, strlen($str) - 1);
             unset($str);
-            
+
             $this->query->create_table($_POST['database'], $_POST['table_name'], $query);
 
             $tables = $this->table->load_collection("dbgrid");
@@ -68,7 +68,25 @@ class Tables extends CI_Controller
                 $this->table->setUserId($user_id);
                 $this->table->setDbId($this->database->getId());
                 $this->table->setNumberOfFields($_POST['count']);
-                $this->table->insert();
+                $table_id = $this->table->insert();
+                
+                for ($i = 1; $i <= $_POST['count']; $i++)
+                {
+                    $this->field->db_name = "dbgrid";
+                    $this->field->setName($_POST['field' . $i]);
+                    $this->field->setSize($_POST['size' . $i]);
+                    $this->field->setWidth(20);
+                    if ($_POST['radio'] == $i)
+                    {
+                        $this->field->setPrimaryKey(1);
+                    }
+                    $this->field->setTableId($table_id);
+                    $this->field->setUserId($user_id);
+                    $this->type->db_name = "dbgrid";
+                    $this->type->select(array('type' => $_POST['type' . $i]));
+                    $this->field->setTypeId($this->type->getId());
+                    $this->field->insert();
+                }
             }
         }
         catch (Exception $e)

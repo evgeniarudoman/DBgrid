@@ -47,7 +47,9 @@ class Query extends CI_Model
         $this->db->query('CREATE TABLE IF NOT EXISTS `dbgrid`.`fields` (
                     `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
                     `name` VARCHAR( 100 ) NOT NULL ,
+                    `size` INT( 10 ) NOT NULL ,
                     `width` INT( 10 ) NOT NULL ,
+                    `primary_key` tinyint( 1 ) NOT NULL DEFAULT "0",
                     `table_id` INT( 10 ) NOT NULL ,
                     `user_id` INT( 10 ) NOT NULL ,
                     `type_id` INT( 10 ) NOT NULL)

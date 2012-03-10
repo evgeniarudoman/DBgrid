@@ -20,12 +20,28 @@ class Field extends Data_Row {
         $this->row->name = $value;
     }
     
+    public function getSize() {
+        return $this->row->size;
+    }
+
+    public function setSize($value) {
+        $this->row->size = $value;
+    }
+    
     public function getWidth() {
         return $this->row->width;
     }
 
     public function setWidth($value) {
         $this->row->width = $value;
+    }
+    
+    public function getPrimaryKey() {
+        return $this->row->primary_key;
+    }
+
+    public function setPrimaryKey($value) {
+        $this->row->primary_key = $value;
     }
 
     public function getTableId() {
