@@ -168,13 +168,17 @@ class Grid extends CI_Controller
 
             try
             {
-                if (isset($_GET['database']) && !empty($_GET['database']) || isset($_GET['table']) && !empty($_GET['table']))
+                if (isset($_GET['database']) && !empty($_GET['database']) && isset($_GET['table']) && !empty($_GET['table']))
                 {
                     $err = db_table_exists($user_id, $_GET['database'], $_GET['table']);
 
-                    if (isset($err) && $err != 0)
+                    if (isset($err) && $err == 1)
                     {
                         $result['result'] = mysql_query("SELECT * FROM " . $_GET['database'] . '.' . $_GET['table']);
+                    }
+                    elseif (isset($err) && $err == 2)
+                    {
+                        redirect(site_url('grid/index?database=' . $_GET['database']));
                     }
                     else
                     {
@@ -184,7 +188,7 @@ class Grid extends CI_Controller
             }
             catch (Exception $e)
             {
-                
+                redirect(site_url('grid'));
             }
 
             $databases = $this->database->load_collection("dbgrid", array('user_id' => $user_id));
