@@ -32,56 +32,20 @@
 </td>
 <td class="menu_button second">
     <table>
-        <tr>
+        <tr id="create-database">
             <td>
-                <a href="">
-                    <div class="icon add"></div>
-                </a>
+                <div class="icon save_j"></div>
+            </td>
+            <td>
+                <div class="icon add_j"></div>
             </td>
         </tr>
-        <tr>
+        <tr id="create-table">
             <td>
-                <a href="">
-                    <div class="icon edit"></div>
-                </a>
+                <div class="icon table_j"></div>
             </td>
-        </tr>
-        <tr>
             <td>
-                <a href="" id="remove" onclick="return false;">
-                    <div class="icon delete"></div>
-                </a>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <a href="">
-                    <div class="icon save"></div>
-                </a>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <a href="">
-                    <div class="icon search"></div>
-                </a>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div class="icon add" id="create-database"></div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div class="icon add" id="create-table"></div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <a href="<?php echo site_url('fields/add'); ?>">
-                    <div class="icon add"></div>
-                </a>
+                <div class="icon add_j"></div>
             </td>
         </tr>
     </table>

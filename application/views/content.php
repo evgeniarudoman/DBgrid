@@ -55,6 +55,25 @@
                             <?php $j++; ?>
                         <?php endwhile; ?>
                     </table>
+                    <table>
+                        <tr>
+                            <td>
+                                <a href="">
+                                    <div class="icon add"></div>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="">
+                                    <div class="icon edit"></div>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="" id="remove" onclick="return false;">
+                                    <div class="icon delete"></div>
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
                 </td>
             <?php endif; ?>
         <?php endif; ?>

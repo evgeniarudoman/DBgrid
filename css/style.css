@@ -170,6 +170,9 @@ body {
 #content table tr:first-child{
     background: none;
 }
+#content table tr:last-child{
+    background-color: #C84663;
+}
 #content table td{
     border: 1px solid #002F32;
 }
@@ -309,6 +312,9 @@ a:link, a:visited {
 .add {
     background-position: -16px -129px;
 }
+.add_j {
+    background-position: -19px -129px;
+}
 .edit {
     background-position: -64px -112px;
 }
@@ -318,8 +324,14 @@ a:link, a:visited {
 .save {
     background-position: -97px -112px;
 }
+.save_j {
+    background-position: -94px -112px;
+}
 .table {
     background-position: -113px -112px;
+}
+.table_j {
+    background-position: -110px -112px;
 }
 .checkbox {
     background-position: -113px -144px;
