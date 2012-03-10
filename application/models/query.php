@@ -66,12 +66,11 @@ class Query extends CI_Model
                     ');
 
         $query = $this->db->query('SELECT * FROM `dbgrid`.`types`');
-        if (mysql_num_rows($query->result_id) < 6)
+        if (mysql_num_rows($query->result_id) < 4)
         {
             $this->db->query('INSERT INTO `dbgrid`.`types` (`id` ,`type`)
-                    VALUES (NULL ,  "text"), (NULL ,  "textarea"),
-                    (NULL, "file"), (NULL, "radio"), 
-                    (NULL, "checkbox"), (NULL, "select");
+                    VALUES (NULL ,  "int"), (NULL ,  "varchar"),
+                    (NULL, "text"), (NULL, "date");
                     ');
         }
         unset($query);

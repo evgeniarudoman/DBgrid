@@ -20,8 +20,8 @@ class Db extends CI_Controller
 
     public function add()
     {
-        $this->load->model('query');
         $success = TRUE;
+        $this->load->model('query');
 
         try
         {
