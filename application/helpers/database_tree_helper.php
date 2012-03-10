@@ -46,13 +46,14 @@ if (!function_exists('get_database_tree'))
             return $result;
     }
 
+
 }
 
 
 if (!function_exists('db_table_exists'))
 {
 
-    function db_table_exists($user_id, $db_name, $table_name)
+    function db_table_exists($user_id, $db_name, $table_name = NULL)
     {
         $grid = &get_instance();
 
@@ -61,13 +62,11 @@ if (!function_exists('db_table_exists'))
 
         $databases = $grid->database->load_collection("dbgrid", array('user_id' => $user_id, 'name' => $db_name));
         $tables = $grid->table->load_collection("dbgrid", array('user_id' => $user_id, 'name' => $table_name));
-        
-        if (isset($databases) && empty($databases) || isset($tables) && empty($tables))
-            $err = 1;
-        else 
-            $err = 0;
-        
-        return $err;
+
+        (isset($databases) && empty($databases) && isset($tables) && empty($tables)) ? $bool = 1 : $bool = 0;
+
+        return $bool;
     }
+
 
 }

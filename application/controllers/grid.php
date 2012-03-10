@@ -171,11 +171,15 @@ class Grid extends CI_Controller
                 if (isset($_GET['database']) && !empty($_GET['database']) && isset($_GET['table']) && !empty($_GET['table']))
                 {
                     $err = db_table_exists($user_id, $_GET['database'], $_GET['table']);
-                    $result['result'] = mysql_query("SELECT * FROM " . $_GET['database'] . '.' . $_GET['table']);
-                }
-                else
-                {
-                    $err = 0;
+
+                    if (isset($err) && $err != 1)
+                    {
+                        $result['result'] = mysql_query("SELECT * FROM " . $_GET['database'] . '.' . $_GET['table']);
+                    }
+                    else
+                    {
+                        redirect(site_url('grid'));
+                    }
                 }
             }
             catch (Exception $e)
@@ -198,7 +202,6 @@ class Grid extends CI_Controller
             ));
             $this->load->view('content', array(
                 'result' => $result,
-                'err' => $err,
             ));
             $this->load->view('templates/menu_button');
         }
