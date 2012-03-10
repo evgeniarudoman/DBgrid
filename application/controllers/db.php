@@ -26,44 +26,23 @@ class Db extends CI_Controller
 
         try
         {
-            $this->query->create_database($_POST['database_name']);
-
             $bool = db_table_exists($user_id, $_POST['database_name']);
 
-            if (isset($bool) && $bool == 1)
+            if (isset($bool) && $bool == 0)
             {
+                $this->query->create_database($_POST['database_name']);
+
                 $this->database->db_name = "dbgrid";
                 $this->database->setName($_POST['database_name']);
                 $this->database->setUserId($user_id);
                 $this->database->insert();
+
                 $success = TRUE;
             }
             else
             {
                 $success = FALSE;
             }
-
-            
-            
-            
-            /*
-            $databases = $this->database->load_collection("dbgrid");
-            foreach ($databases as $database)
-            {
-                if ($database->getName() == $_POST['database_name'])
-                {
-                    $success = FALSE;
-                    break;
-                }
-            }
-
-            if ($success != FALSE)
-            {
-                $this->database->db_name = "dbgrid";
-                $this->database->setName($_POST['database_name']);
-                $this->database->setUserId($this->session->userdata('user_id'));
-                $this->database->insert();
-            }*/
         }
         catch (Exception $e)
         {

@@ -9,7 +9,7 @@ class Tables extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->helper(array('form', 'url', 'html'));
+        $this->load->helper(array('form', 'url', 'html', 'database_tree'));
         $this->load->library('session');
 
         $this->load->model('database');
@@ -44,20 +44,12 @@ class Tables extends CI_Controller
             $query = substr($str, 0, strlen($str) - 1);
             unset($str);
 
-            $this->query->create_table($_POST['database'], $_POST['table_name'], $query);
+            $bool = db_table_exists($user_id, $_POST['database'], $_POST['table_name']);
 
-            $tables = $this->table->load_collection("dbgrid");
-            foreach ($tables as $table)
+            if (isset($bool) && $bool == 2)
             {
-                if ($table->getName() == $_POST['table_name'])
-                {
-                    $success = FALSE;
-                    break;
-                }
-            }
+                $this->query->create_table($_POST['database'], $_POST['table_name'], $query);
 
-            if ($success != FALSE)
-            {
                 $this->database->db_name = "dbgrid";
                 $this->database->select(array('name' => $_POST['database'], 'user_id' => $user_id));
                 $this->database->setNumberOfTables($this->database->getNumberOfTables() + 1);
@@ -69,7 +61,7 @@ class Tables extends CI_Controller
                 $this->table->setDbId($this->database->getId());
                 $this->table->setNumberOfFields($_POST['count']);
                 $table_id = $this->table->insert();
-                
+
                 for ($i = 1; $i <= $_POST['count']; $i++)
                 {
                     $this->field->db_name = "dbgrid";
@@ -87,7 +79,60 @@ class Tables extends CI_Controller
                     $this->field->setTypeId($this->type->getId());
                     $this->field->insert();
                 }
+
+                $success = TRUE;
             }
+            else
+            {
+                $success = FALSE;
+            }
+
+
+            /*
+              $this->query->create_table($_POST['database'], $_POST['table_name'], $query);
+
+              $tables = $this->table->load_collection("dbgrid");
+              foreach ($tables as $table)
+              {
+              if ($table->getName() == $_POST['table_name'])
+              {
+              $success = FALSE;
+              break;
+              }
+              }
+
+              if ($success != FALSE)
+              {
+              $this->database->db_name = "dbgrid";
+              $this->database->select(array('name' => $_POST['database'], 'user_id' => $user_id));
+              $this->database->setNumberOfTables($this->database->getNumberOfTables() + 1);
+              $this->database->update();
+
+              $this->table->db_name = "dbgrid";
+              $this->table->setName($_POST['table_name']);
+              $this->table->setUserId($user_id);
+              $this->table->setDbId($this->database->getId());
+              $this->table->setNumberOfFields($_POST['count']);
+              $table_id = $this->table->insert();
+
+              for ($i = 1; $i <= $_POST['count']; $i++)
+              {
+              $this->field->db_name = "dbgrid";
+              $this->field->setName($_POST['field' . $i]);
+              $this->field->setSize($_POST['size' . $i]);
+              $this->field->setWidth(20);
+              if ($_POST['radio'] == $i)
+              {
+              $this->field->setPrimaryKey(1);
+              }
+              $this->field->setTableId($table_id);
+              $this->field->setUserId($user_id);
+              $this->type->db_name = "dbgrid";
+              $this->type->select(array('type' => $_POST['type' . $i]));
+              $this->field->setTypeId($this->type->getId());
+              $this->field->insert();
+              }
+              } */
         }
         catch (Exception $e)
         {

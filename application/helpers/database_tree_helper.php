@@ -61,9 +61,29 @@ if (!function_exists('db_table_exists'))
         $grid->load->model('table');
 
         $databases = $grid->database->load_collection("dbgrid", array('user_id' => $user_id, 'name' => $db_name));
-        $tables = $grid->table->load_collection("dbgrid", array('user_id' => $user_id, 'name' => $table_name));
 
-        (isset($databases) && empty($databases) && isset($tables) && empty($tables)) ? $bool = 1 : $bool = 0;
+        if (isset($databases) && !empty($databases))
+        {
+            foreach ($databases as $database)
+            {
+                $tables = $grid->table->load_collection("dbgrid", array('user_id' => $user_id, 'name' => $table_name, 'db_id' => $database->getId()));
+                $bool = 1; // database exist
+
+                if (isset($tables) && !empty($tables))
+                {
+                    $bool = 1; // database and table exist
+                    break;
+                }
+                else
+                {
+                    $bool = 2; // database exist, but table doesn't exist
+                }
+            }
+        }
+        else
+        {
+            $bool = 0; // database doesn't exist
+        }
 
         return $bool;
     }
