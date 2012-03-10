@@ -16,6 +16,7 @@ class Grid extends CI_Controller
         $this->query->create_default_db();
     }
 
+
     public function header($title)
     {
         $this->template = array('title' => $title,
@@ -30,6 +31,7 @@ class Grid extends CI_Controller
 
         $this->load->view('templates/head', $this->template);
     }
+
 
     public function register()
     {
@@ -72,6 +74,7 @@ class Grid extends CI_Controller
         }
     }
 
+
     public function login()
     {
         $session_hash = $this->session->userdata('session_hash');
@@ -112,6 +115,41 @@ class Grid extends CI_Controller
         }
     }
 
+
+    public function logout()
+    {
+        $session_hash = $this->session->userdata('session_hash');
+        $user_id = $this->session->userdata('user_id');
+
+        if (isset($session_hash) && $session_hash == TRUE)
+        {
+            $this->load->model('user');
+            $this->user->db_name = "dbgrid";
+
+            try
+            {
+                $this->user->select(array('session_hash' => $session_hash, 'id' => $user_id));
+                $this->user->setSessionHash('');
+                $this->user->update();
+
+                $this->session->set_userdata('user_id', '');
+                $this->session->set_userdata('username', '');
+                $this->session->set_userdata('session_hash', '');
+
+                redirect(site_url('grid/index'));
+            }
+            catch (Exception $e)
+            {
+                
+            }
+        }
+        else
+        {
+            redirect(site_url('grid/index'));
+        }
+    }
+
+
     public function index()
     {
         $session_hash = $this->session->userdata('session_hash');
@@ -144,7 +182,7 @@ class Grid extends CI_Controller
             {
                 
             }
-            
+
             $databases = $this->database->load_collection("dbgrid", array('user_id' => $user_id));
 
             foreach ($databases as $database)
@@ -153,7 +191,7 @@ class Grid extends CI_Controller
             }
             if (!isset($list_database))
                 $list_database = NULL;
-            
+
             $this->load->view('templates/scripts');
             $this->load->view('templates/jquery_form', array(
                 'list_database' => $list_database
@@ -165,5 +203,6 @@ class Grid extends CI_Controller
             $this->load->view('templates/menu_button');
         }
     }
+
 
 }

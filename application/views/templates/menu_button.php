@@ -2,7 +2,7 @@
     <table>
         <tr>
             <td>
-                <a href="">
+                <a href="<?php echo site_url('grid');?>">
                     <div class="icon home"></div>
                 </a>
             </td>
@@ -16,14 +16,14 @@
         </tr>
         <tr>
             <td>
-                <a href="">
+                <a href="<?php echo site_url('help');?>">
                     <div class="icon help"></div>
                 </a>
             </td>
         </tr>
         <tr>
             <td>
-                <a href="">
+                <a href="<?php echo site_url('grid/logout');?>">
                     <div class="icon exit"></div>
                 </a>
             </td>
