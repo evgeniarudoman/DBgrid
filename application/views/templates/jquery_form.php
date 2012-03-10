@@ -15,7 +15,8 @@
         // announcement variables
         var table = $( "#table" )
         var count = $( "#count" )
-        var db = $( "#db" ),
+        var db = $( "#db" )
+        var database= $( "#database" ),
         allFields = $( [] ).add( db ).add( table ).add( count ),
         tips = $( ".validateTips" );
         
