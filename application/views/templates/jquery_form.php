@@ -16,7 +16,7 @@
         var table = $( "#table" )
         var count = $( "#count" )
         var db = $( "#db" )
-        var database = $( "#database" ),
+        var database= $( "#database" ),
         allFields = $( [] ).add( db ).add( table ).add( count ),
         tips = $( ".validateTips" );
         
@@ -130,11 +130,12 @@
                     var fValid = true;
                     allFields.removeClass( "ui-state-error" );
 
+                    bValid = bValid && checkEmpty( table, "Table name must be not empty");
                     bValid = bValid && checkLength( table, "table", 3, 16 );
                     bValid = bValid && checkRegexp( table, /^[a-z]([0-9a-z_])+$/i, "Table name may consist of a-z, 0-9, underscores, begin with a letter." );
-                    bValid = bValid && checkEmpty( count, "count");
-                    bValid = bValid && checkRegexp( count, /^[0-9]+$/i, "Count of fields may consist 0-9, underscores, begin with a letter." );
-                    bValid = bValid && checkEmpty( db, "database");                    
+                    bValid = bValid && checkEmpty( count, "Count of fields must be not empty");
+                    bValid = bValid && checkRegexp( count, /^[0-9]+$/i, "Count of fields may consist only numbers." );
+                    bValid = bValid && checkEmpty( db, "Choose the database name");                    
 
                     if ( bValid ) 
                     {
@@ -146,12 +147,14 @@
                                 "<td>"+"<div class='icon table'></div>"+"</td>"+
                                 "<td>"+"<a href='/grid/index?database="+table.val()+"'>" + table.val() + "</td>" +
                                 "</tr>" );
-                        
+                            $( "div#table-form form.field-form table" ).append( 
+                                "<tr><td><p>key</p></td><td><p>field name</p></td><td><p>type</p></td><td><p>size of field</p></td></tr>");
+                            
                             var i;
                             for (i=1;i<=count.val();i++)
                             {
                                 $( "div#table-form form.field-form table" ).append(
-                                "<tr><td><input type='radio' name='check' id='check' class='field ui-widget-content ui-corner-all'></td>"+
+                                "<tr><td><input type='radio' name='check' id='check' value='"+i+"' class='field ui-widget-content ui-corner-all'></td>"+
                                     "<td><input type='text' name='field"+i+"' id='field"+i+"' class='field ui-widget-content ui-corner-all'></td>"+
                                     "<td><select name='type"+i+"' id='type"+i+"' class='text ui-widget-content ui-corner-all'>"+
                                     "<option value='' selected='selected'> -- choose type -- </option>"+
@@ -177,27 +180,24 @@
                         }
                         
                         for (i=1;i<=count.val();i++)
-                        {
-                            bValid = bValid && checkLength( table, "table", 3, 16 );
-                            bValid = bValid && checkRegexp( table, /^[a-z]([0-9a-z_])+$/i, "Table name may consist of a-z, 0-9, underscores, begin with a letter." );
-                            bValid = bValid && checkEmpty( count, "count");
-                            bValid = bValid && checkRegexp( count, /^[0-9]+$/i, "Count of fields may consist 0-9, underscores, begin with a letter." );
-                            bValid = bValid && checkEmpty( db, "database");
-                    
-                            fValid = fValid && checkEmpty( $('input[name=field'+i+']'), "field"+i);
-                            fValid = fValid && checkEmpty( $('select[name=type'+i+']'), "type"+i);
-                            fValid = fValid && checkEmpty( $('input[name=check]'), "You need to choose primary key");
-                            fValid = fValid && checkRegexp( $('input[name=size'+i+']'), /^[0-9]+$/i, "Size of fields may consist 0-9, underscores, begin with a letter." );
+                        {                    
+                            fValid = fValid && checkEmpty( $('input[name=field'+i+']'), "Field name #"+i+" must be not empty");
+                            fValid = fValid && checkEmpty( $('select[name=type'+i+']'), "Choose the type #"+i);
+                            fValid = fValid && checkEmpty( $('input[name=check]'), "You need to choose primary key by click radio button");
+                            fValid = fValid && checkRegexp( $('input[name=size'+i+']'), /^[0-9]+$/i, "Size of fields may consist only numbers." );
                         }
                         
-                        if (fValid) {
+                        if (fValid) 
+                        {
                             var fields = '';
                             var types = '';
+                            var sizes = '';
                         
                             for (i=1;i<=count.val();i++)
                             {
                                 fields += "&field"+i+"="+$('input#field'+i).val();
                                 types += "&type"+i+"="+$('#type'+i+' option:selected').text();
+                                sizes += "&size"+i+"="+$('input#size'+i).val();
                             }
                         
                             // add table and fields by ajax
@@ -208,7 +208,8 @@
                                 data: "table_name="+table.val()+
                                     "&count="+count.val()+
                                     "&database="+db.val()+
-                                    fields+types,
+                                    "&radio="+$('input#check:checked').val()+
+                                    fields+types+sizes,
                                 success: function(response){
                                     //change on something
                                     alert(response);
@@ -220,11 +221,6 @@
                         
                         $('div#table-form form.table-form').empty();
                         $('div#table-form form.field-form').show();
-                    }
-                    else
-                    {
-                        //count.addClass( "ui-state-error" );;
-                        //return false;
                     }
                 },
                 Cancel: function() {
@@ -250,7 +246,7 @@
     div#databases-contain { width: 350px; margin: 20px 0; }
     div#databases-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
     div#databases-contain table td, div#databases-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
-    .ui-dialog .ui-state-error { padding: .3em; }
+    .ui-dialog .ui-state-error { background: none; color: #363636; border: 1px solid #FF3853; }
     .validateTips { border: 1px solid transparent; padding: 0.3em; }
 </style>
 

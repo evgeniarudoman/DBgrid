@@ -47,7 +47,9 @@ class Query extends CI_Model
         $this->db->query('CREATE TABLE IF NOT EXISTS `dbgrid`.`fields` (
                     `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
                     `name` VARCHAR( 100 ) NOT NULL ,
+                    `size` INT( 10 ) NOT NULL ,
                     `width` INT( 10 ) NOT NULL ,
+                    `primary_key` tinyint( 1 ) NOT NULL DEFAULT "0",
                     `table_id` INT( 10 ) NOT NULL ,
                     `user_id` INT( 10 ) NOT NULL ,
                     `type_id` INT( 10 ) NOT NULL)
@@ -66,12 +68,11 @@ class Query extends CI_Model
                     ');
 
         $query = $this->db->query('SELECT * FROM `dbgrid`.`types`');
-        if (mysql_num_rows($query->result_id) < 6)
+        if (mysql_num_rows($query->result_id) < 4)
         {
             $this->db->query('INSERT INTO `dbgrid`.`types` (`id` ,`type`)
-                    VALUES (NULL ,  "text"), (NULL ,  "textarea"),
-                    (NULL, "file"), (NULL, "radio"), 
-                    (NULL, "checkbox"), (NULL, "select");
+                    VALUES (NULL ,  "int"), (NULL ,  "varchar"),
+                    (NULL, "text"), (NULL, "date");
                     ');
         }
         unset($query);

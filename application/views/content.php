@@ -39,25 +39,40 @@
                     <table>
                         <tr>
                             <td bgcolor='#002F32'><div class="icon checkbox_all"><input type='checkbox'></div></td><td bgcolor='#002F32'>#</td>
-                            <?php if (isset($err) && $err != 1): ?>
-                                <?php foreach ($result[$_GET['database'] . '_field'] as $key => $field): ?>
-                                    <td bgcolor='#002F32' name='<?php echo $key; ?>'><div class='resize'><?php echo $field['name']; ?></div></td>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
+                            <?php foreach ($result[$_GET['database'] . '_field'] as $key => $field): ?>
+                                <td bgcolor='#002F32' name='<?php echo $key; ?>'><div class='resize'><?php echo $field['name']; ?></div></td>
+                            <?php endforeach; ?>
                         </tr>
-                        <?php if (isset($err) && $err != 1): ?>
-                            <?php $j = 1; ?>
-                            <?php while ($row = mysql_fetch_array($result['result'])): ?>
-                                <tr>
-                                    <td><div class="icon checkbox"><input type='checkbox' value=""></div></td>
-                                    <td class='id'><?php echo $j ?></td>
-                                    <?php for ($i = 0; $i < mysql_num_fields($result['result']); $i++): ?>
-                                        <td><?php echo $row[mysql_field_name($result['result'], $i)] ?></td>
-                                    <?php endfor; ?>
-                                </tr>
-                                <?php $j++; ?>
-                            <?php endwhile; ?>
-                        <?php endif; ?>
+                        <?php $j = 1; ?>
+                        <?php while ($row = mysql_fetch_array($result['result'])): ?>
+                            <tr>
+                                <td><div class="icon checkbox"><input type='checkbox' value=""></div></td>
+                                <td class='id'><?php echo $j ?></td>
+                                <?php for ($i = 0; $i < mysql_num_fields($result['result']); $i++): ?>
+                                    <td><?php echo $row[mysql_field_name($result['result'], $i)] ?></td>
+                                <?php endfor; ?>
+                            </tr>
+                            <?php $j++; ?>
+                        <?php endwhile; ?>
+                    </table>
+                    <table>
+                        <tr>
+                            <td>
+                                <a href="">
+                                    <div class="icon add"></div>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="">
+                                    <div class="icon edit"></div>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="" id="remove" onclick="return false;">
+                                    <div class="icon delete"></div>
+                                </a>
+                            </td>
+                        </tr>
                     </table>
                 </td>
             <?php endif; ?>
