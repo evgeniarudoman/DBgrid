@@ -4,7 +4,7 @@
             <td class='left_menu' bgcolor='#002F32'>   
                 <table id="databases">
                     <tr>
-                        <td class='database_title' colspan=2>all database</td>
+                        <td class='database_title ui-state-error' colspan=2>all database</td>
                     </tr>
                     <?php if (isset($result['databases'])): ?>
                         <?php foreach ($result['databases'] as $database): ?>
@@ -21,7 +21,7 @@
             <td class='left_menu' bgcolor='#002F32'>   
                 <table id="tables">
                     <tr>
-                        <td class='database_title' colspan=2>database "<?php echo $_GET['database'] ?>"</td>
+                        <td class='database_title ui-state-error' colspan=2>database "<?php echo $_GET['database'] ?>"</td>
                     </tr>
                     <?php if (isset($result[$_GET['database'] . '_table'])): ?>
                         <?php foreach ($result[$_GET['database'] . '_table'] as $table): ?>
@@ -38,9 +38,9 @@
                 <td id='content'>
                     <table>
                         <tr>
-                            <td bgcolor='#002F32'><div class="icon checkbox_all"><input type='checkbox'></div></td><td bgcolor='#002F32'>#</td>
+                            <td bgcolor='#002F32' class="ui-widget-header"><div class="icon checkbox_all"><input type='checkbox'></div></td><td bgcolor='#002F32' class="ui-widget-header">#</td>
                             <?php foreach ($result[$_GET['database'] . '_field'] as $key => $field): ?>
-                                <td bgcolor='#002F32' name='<?php echo $key; ?>'><div class='resize'><?php echo $field['name']; ?></div></td>
+                                <td bgcolor='#002F32'  class="ui-widget-header" name='<?php echo $key; ?>'><div class='resize'><?php echo $field['name']; ?></div></td>
                             <?php endforeach; ?>
                         </tr>
                         <?php $j = 1; ?>
@@ -57,17 +57,17 @@
                     </table>
                     <table>
                         <tr>
-                            <td>
+                            <td  class="ui-state-error">
                                 <a href="">
                                     <div class="icon add"></div>
                                 </a>
                             </td>
-                            <td>
+                            <td  class="ui-state-error">
                                 <a href="">
                                     <div class="icon edit"></div>
                                 </a>
                             </td>
-                            <td>
+                            <td  class="ui-state-error">
                                 <a href="" id="remove" onclick="return false;">
                                     <div class="icon delete"></div>
                                 </a>

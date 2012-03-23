@@ -1,4 +1,4 @@
-<td class="menu_button first">
+<td class="menu_button first ui-widget-header">
     <table>
         <tr>
             <td>
@@ -30,7 +30,7 @@
         </tr>
     </table>
 </td>
-<td class="menu_button second">
+<td class="menu_button second ui-widget-header">
     <table>
         <tr id="create-database">
             <td>

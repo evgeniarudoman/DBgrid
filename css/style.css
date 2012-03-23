@@ -225,7 +225,7 @@ body {
 
 /*--------use for database name on the left menu--------*/
 .database_title {
-    background: none repeat scroll 0 0 #C84663;
+    /*background: none repeat scroll 0 0 #C84663;*/
     text-align: center;
     -moz-border-radius:5px 5px 5px 5px;
     -webkit-border-radius: 5px 5px 5px 5px;
