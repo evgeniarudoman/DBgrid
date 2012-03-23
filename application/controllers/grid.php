@@ -44,8 +44,12 @@ class Grid extends CI_Controller
         }
         else
         {
+           // if (!mysql_select_db($db, $this->conn_id))
+           // throw new SQLException("Could not select the database.", 2); 
+            var_dump($_POST);
             if (isset($_POST) && !empty($_POST))
             {
+                
                 $this->load->model('user');
                 $this->user->db_name = "dbgrid";
 
@@ -80,6 +84,7 @@ class Grid extends CI_Controller
         $session_hash = $this->session->userdata('session_hash');
         $this->session->set_userdata('error', '');
 
+var_dump($_REQUEST);
         if (isset($session_hash) && $session_hash == TRUE)
         {
             redirect(site_url('grid/index'));
