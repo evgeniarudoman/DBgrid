@@ -13,15 +13,21 @@
                                     <a href="#">
                                         <i class="icon-list-alt icon-white"></i>
                                         <?php echo $database; ?>
+                                        <i style="float:right;" class="icon-trash icon-white"></i>
+                                        <i style="float:right;" class="icon-pencil icon-white"></i>
                                     </a>
                                 </li>
-                                <table id="tables">
-                                    <?php if (isset($result[$_GET['database'] . '_table'])): ?>
-                                        <?php foreach ($result[$_GET['database'] . '_table'] as $table): ?>
+                                <table id="tables" style="margin-left: 15px;height: 30px;">
+                                    <?php if (isset($result[$database . '_table'])): ?>
+                                        <?php foreach ($result[$database . '_table'] as $table): ?>
                                             <tr>
-                                                <td><div class="icon table"></div></td>
-                                                <td><a href='/grid/index?database=<?php echo $_GET['database'] ?>&table=<?php echo $table; ?>'>
-                                                        <?php echo $table . ' (<i>' . count($result[$_GET['database'] . '_field']) . '</i>)'; ?></a></div></td>
+                                                <td style="width: 20px;"><i class="icon-list-alt"></i></td>
+                                                <td>
+                                                    <a href='/grid/index?database=<?php echo $database ?>&table=<?php echo $table; ?>'>
+                                                        <?php echo $table . ' (<i>' . count($result[$database . '_field']) . '</i>)'; ?></a>
+                                                </td>
+                                                <td> <i class="icon-pencil"></i></td>
+                                                <td><i class="icon-trash"></i></td>
                                             <?php endforeach; ?>
                                         <?php endif; ?>
                                     </tr>
@@ -36,11 +42,11 @@
         <div class="span8">
             <div class="well" style="padding: 8px 0;height: 353px;">
                 <?php if (isset($_GET['table']) && !empty($_GET['table'])): ?>
-                    <table>
+                    <table class="table-striped table-bordered table-condensed">
                         <tr>
-                            <td bgcolor='#002F32' class="ui-widget-header"><div class="icon checkbox_all"><input type='checkbox'></div></td><td bgcolor='#002F32' class="ui-widget-header">#</td>
+                            <td ><div class="icon checkbox_all"><input type='checkbox'></div></td><td >#</td>
                             <?php foreach ($result[$_GET['database'] . '_field'] as $key => $field): ?>
-                                <td bgcolor='#002F32'  class="ui-widget-header" name='<?php echo $key; ?>'><div class='resize'><?php echo $field['name']; ?></div></td>
+                                <td  name='<?php echo $key; ?>'><div class='resize'><?php echo $field['name']; ?></div></td>
                             <?php endforeach; ?>
                         </tr>
                         <?php $j = 1; ?>
@@ -55,7 +61,7 @@
                             <?php $j++; ?>
                         <?php endwhile; ?>
                     </table>
-                    <table>
+                  <!--  <table>
                         <tr>
                             <td  class="ui-state-error">
                                 <a href="">
@@ -73,5 +79,5 @@
                                 </a>
                             </td>
                         </tr>
-                    </table>
+                    </table>-->
                 <?php endif; ?>
