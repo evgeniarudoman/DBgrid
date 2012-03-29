@@ -274,7 +274,7 @@
     // end of creating new table
 </script>
 <script>
-$(function(){
+    $(function(){
         $('.ui-dialog-buttonset > button:first-child').attr('class', 'btn btn-primary');
         $('.ui-dialog-buttonset > button:last-child').attr('class', 'btn');
         $('.ui-dialog-buttonpane.ui-widget-content.ui-helper-clearfix').appendTo('#dialog form fieldset');
@@ -291,6 +291,14 @@ $(function(){
     }
     .ui-widget-overlay{
         background: #333;
+    }
+    .btn-group .btn-mini.dropdown-toggle {
+        padding-left: 5px;
+        padding-right: 5px;
+        padding-top: 3px;
+    }
+    .btn-toolbar {
+        margin-top: -15px;
     }
     label, input { display:block; }
     input.text { margin-bottom:12px; width:95%; padding: .4em; }

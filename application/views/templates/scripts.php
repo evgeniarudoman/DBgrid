@@ -147,55 +147,62 @@
             }).next().hide();
         });
     </script>
+    <script>
+        function open_dropdown(class_name){
+            $('.btn-group').removeClass('open');
+            $('.btn-group .'+class_name).parent('a').parent('div').addClass('open');
+            return false;
+        }
+    </script>
     <div id="dialog-remove" style="display: none">
         Are you sure want delete rows?
     </div>
     <div class="navbar navbar-fixed-top">
         <div class="navbar-inner">
             <div class="container">
-                
-                <a class="brand" href="<?php echo site_url('grid')?>">
-                     <i class="icon-leaf icon-white"></i>
-                     <!--<img src="/image/heart.png"/>
-                     &nbsp;-->
-                     DBGrid
+
+                <a class="brand" href="<?php echo site_url('grid') ?>">
+                    <i class="icon-leaf icon-white"></i>
+                    <!--<img src="/image/heart.png"/>
+                    &nbsp;-->
+                    DBGrid
                 </a>
-                
+
                 <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </a>
-                
+
                 <div class="nav-collapse">
                     <ul class="nav">
                         <li class="">
-                            <a href="<?php echo site_url('grid')?>">
+                            <a href="<?php echo site_url('grid') ?>">
                                 <i class="icon-home icon-white"></i>
                                 &nbsp;Home
                             </a>
                         </li>
                         <li class="">
-                            <a href="<?php echo site_url('grid')?>">
+                            <a href="<?php echo site_url('grid') ?>">
                                 <i class="icon-repeat icon-white"></i>
                                 &nbsp;Reload
                             </a>
                         </li>
                         <li class="">
-                            <a href="<?php echo site_url('help')?>">
+                            <a href="<?php echo site_url('help') ?>">
                                 <i class="icon-flag icon-white"></i>
                                 &nbsp;Help
                             </a>
                         </li>
                         <li class="">
-                            <a href="<?php echo site_url('grid/logout')?>">
+                            <a href="<?php echo site_url('grid/logout') ?>">
                                 <i class="icon-off icon-white"></i>
                                 &nbsp;LogOut
                             </a>
                         </li>
                     </ul>
                 </div>
-                
+
             </div>
         </div>
     </div>

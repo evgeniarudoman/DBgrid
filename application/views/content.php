@@ -36,25 +36,67 @@
                             <?php endforeach; ?>
                         <?php endif; ?>
                     </ul>
-                    
+                </div>
+                <div class="btn-toolbar" style="margin-bottom: 9px">
                     <div class="btn-group">
-                        <a class="btn btn-primary btn-small" href="#"><i class="icon-user icon-white"></i></a>
-                        <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+                        <a class="btn btn-primary btn-mini" href="#"><i class="icon-list-alt icon-white"></i></a>
+                        <a onclick="open_dropdown('icon-list-alt');" class="btn btn-primary dropdown-toggle btn-mini" data-toggle="dropdown" href="#"><span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#"><i class="icon-pencil"></i> Edit</a></li>
-                            <li><a href="#"><i class="icon-trash"></i> Delete</a></li>
-                            <li><a href="#"><i class="icon-ban-circle"></i> Ban</a></li>
+                            <li><a href="#"><i class="icon-list-alt"></i> Databases</a></li>
                             <li class="divider"></li>
-                            <li><a href="#"><i class="i"></i> Make admin</a></li>
+                            <li id="create-database"><a href="#"><i class="icon-plus"></i> Create</a></li>
+                            <li><a href="#"><i class="icon-pencil"></i> Rename</a></li>
+                            <li><a href="#"><i class="icon-trash"></i> Remove</a></li>
                         </ul>
                     </div>
-                    
+                    <div class="btn-group">
+                        <a class="btn btn-primary btn-mini" href="#"><i class="icon-th icon-white"></i></a>
+                        <a onclick="open_dropdown('icon-th');" class="btn btn-primary dropdown-toggle btn-mini" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#"><i class="icon-th"></i> Tables</a></li>
+                            <li class="divider"></li>
+                            <li id="create-table"><a href="#"><i class="icon-plus"></i> Create</a></li>
+                            <li><a href="#"><i class="icon-pencil"></i> Rename</a></li>
+                            <li><a href="#"><i class="icon-trash"></i> Remove</a></li>
+                        </ul>
+                    </div>
+                    <div class="btn-group">
+                        <a class="btn btn-primary btn-mini" href="#"><i class="icon-random icon-white"></i></a>
+                        <a onclick="open_dropdown('icon-random');" class="btn btn-primary dropdown-toggle btn-mini" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#"><i class="icon-random"></i> Relations</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#"><i class="icon-plus"></i> Create</a></li>
+                            <li><a href="#"><i class="icon-trash"></i> Remove</a></li>
+                        </ul>
+                    </div>
+                    <div class="btn-group">
+                        <a class="btn btn-primary btn-mini" href="#"><i class="icon-th-list icon-white"></i></a>
+                        <a onclick="open_dropdown('icon-th-list');" class="btn btn-primary dropdown-toggle btn-mini" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#"><i class="icon-th-list"></i> Fields</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#"><i class="icon-plus"></i> Add</a></li>
+                            <li><a href="#"><i class="icon-pencil"></i> Edit</a></li>
+                            <li><a href="#"><i class="icon-trash"></i> Remove</a></li>
+                        </ul>
+                    </div>
+                    <div class="btn-group" style="float:right;">
+                        <a class="btn btn-primary btn-mini" href="#"><i class="icon-th-large icon-white"></i></a>
+                        <a onclick="open_dropdown('icon-th-large');" class="btn btn-primary dropdown-toggle btn-mini" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#"><i class="icon-th-large"></i> Choose theme</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#"><i class="icon-tint"></i> Blue</a></li>
+                            <li><a href="#"><i class="icon-tint"></i> Gray</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="span8">
-            <div class="well" style="padding: 8px 0;height: 353px;">
+            <div class="well" style="padding: 8px 0;height: 379px;">
                 <?php if (isset($_GET['table']) && !empty($_GET['table'])): ?>
                     <table class="table-striped table-bordered table-condensed" style="margin-left: 20px;">
                         <tr>

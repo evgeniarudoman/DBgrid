@@ -1,3 +1,4 @@
+<!--
 <table>
     <tr>
         <td>
@@ -29,7 +30,7 @@
     </tr>
 </table>
 <table>
-    <tr id="create-database">
+    <tr>
         <td>
             <div class="icon save_j"></div>
         </td>
@@ -37,7 +38,7 @@
             <div class="icon add_j"></div>
         </td>
     </tr>
-    <tr id="create-table">
+    <tr>
         <td>
             <div class="icon table_j"></div>
         </td>
@@ -46,6 +47,7 @@
         </td>
     </tr>
 </table>
+-->
 </div>
 </div>
 </div>
