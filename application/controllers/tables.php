@@ -24,31 +24,25 @@ class Tables extends CI_Controller
         $user_id = $this->session->userdata('user_id');
         $success = TRUE;
         $this->load->model('query');
+        $this->load->model('basic/db_tables', 'tables');
 
         try
         {
-            //var_dump($_POST);
-            $str = '';
-            for ($i = 1; $i <= $_POST['count']; $i++)
-            {
-                $key = '';
-                if ($_POST['radio'] == $i)
-                {
-                    $key = 'PRIMARY KEY';
-                }
-
-                $str.='`' . $_POST['field' . $i] . '` ' . $_POST['type' . $i] . '(' . $_POST['size' . $i] . ') ' . $key . ',';
-            }
-            unset($i);
-
-            $query = substr($str, 0, strlen($str) - 1);
-            unset($str);
-
             $bool = db_table_exists($user_id, $_POST['database'], $_POST['table_name']);
 
             if (isset($bool) && $bool == 2)
             {
-                $this->query->create_table($_POST['database'], $_POST['table_name'], $query);
+                for ($i = 1; $i <= $_POST['count']; $i++)
+                {
+                    $fields[$i] = array(
+                        'field' => $_POST['field' . $i],
+                        'type' => $_POST['type' . $i],
+                        'size' => $_POST['size' . $i]
+                    );
+                }
+                unset($i);
+
+                $this->tables->create($_POST['database'], $_POST['table_name'], $_POST['count'], $fields, $_POST['radio']);
 
                 $this->database->db_name = "dbgrid";
                 $this->database->select(array('name' => $_POST['database'], 'user_id' => $user_id));
@@ -86,6 +80,64 @@ class Tables extends CI_Controller
             {
                 $success = FALSE;
             }
+        }
+        catch (Exception $e)
+        {
+            $success = FALSE;
+        }
+
+        echo json_encode($success);
+    }
+
+
+    public function delete()
+    {
+        $user_id = $this->session->userdata('user_id');
+        $success = TRUE;
+        $this->load->model('query');
+        $this->load->model('basic/db_tables', 'tables');
+
+        try
+        {
+            $this->database->db_name = "dbgrid";
+            $this->database->select(array('name' => $_POST['database_name'], 'user_id' => $user_id));
+
+            $this->table->db_name = "dbgrid";
+            $this->table->delete(array('db_id' => $this->database->getId(), 'name' => $_POST['table_name'], 'user_id' => $user_id));
+
+            $this->tables->remove($_POST['database_name'], $_POST['table_name']);
+
+            $success = TRUE;
+        }
+        catch (Exception $e)
+        {
+            $success = FALSE;
+        }
+
+        echo json_encode($success);
+    }
+
+
+    public function rename()
+    {
+        $success = TRUE;
+        $user_id = $this->session->userdata('user_id');
+        $this->load->model('query');
+        $this->load->model('basic/db_tables', 'tables');
+
+        try
+        {
+            $this->tables->rename($_POST['database_name'], $_POST['table_name'], $_POST['new_name']);
+
+            $this->database->db_name = "dbgrid";
+            $this->database->select(array('name' => $_POST['database_name'], 'user_id' => $user_id));
+
+            $this->table->db_name = "dbgrid";
+            $this->table->select(array('db_id' => $this->database->getId(), 'name' => $_POST['table_name'], 'user_id' => $user_id));
+            $this->table->setName($_POST['new_name']);
+            $this->table->update();
+
+            $success = TRUE;
         }
         catch (Exception $e)
         {

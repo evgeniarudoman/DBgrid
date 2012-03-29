@@ -81,11 +81,11 @@ _EXC_MESSAGE;
         $class_name = get_called_class();
         if (is_array($where))
         {
-            $this->db->delete($class_name::table_name(), (array) $where);
+            $this->db->delete($this->db_name . '.' . $class_name::table_name(), (array) $where);
         }
         else
         {
-            $this->db->delete($class_name::table_name(), array('entity_id' => $where));
+            $this->db->delete($this->db_name . '.' . $class_name::table_name(), array('entity_id' => $where));
         }
     }
 
@@ -129,54 +129,6 @@ _EXC_MESSAGE;
             $this->update();
         else
             $this->insert();
-    }
-
-
-    public function alter_table($alter_type, $table_name, $column_name, $column_definition = '', $after_field = '')
-    {
-        $sql = 'ALTER TABLE ' . $this->db->_protect_identifiers($table) . " $alter_type " . $this->db->_protect_identifiers($column_name);
-
-        // DROP has everything it needs now.
-        if ($alter_type == 'DROP')
-        {
-            return $sql;
-        }
-
-        $sql .= " $column_definition";
-
-        if ($default_value != '')
-        {
-            $sql .= " DEFAULT \"$default_value\"";
-        }
-
-        if ($null === NULL)
-        {
-            $sql .= ' NULL';
-        }
-        else
-        {
-            $sql .= ' NOT NULL';
-        }
-
-        if ($after_field != '')
-        {
-            $sql .= ' AFTER ' . $this->db->_protect_identifiers($after_field);
-        }
-
-        return $sql;
-
-
-
-        if ($alter_type = 'ADD')
-        {
-            //ALTER TABLE  `databases` ADD  `ollolo` INT NOT NULL AFTER  `number_of_tables`
-            //ALTER TABLE table_name ADD preferences TEXT
-            
-            $fields = array(
-                $column_name => array('type' => $column_definition)
-            );
-            $this->dbforge->add_column($table_name, $fields);
-        }
     }
 
 

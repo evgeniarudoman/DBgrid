@@ -88,6 +88,100 @@
             }
         }
     </script>
+    <script>        
+        function delete_db(db_name){
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: '<?php echo site_url('db/delete') ?>',
+                data: "database_name="+db_name,
+                success: function(response){
+                    //change on something
+                    alert(response);
+                    $('.db_'+db_name).empty();
+                }
+            });
+        }
+    </script>
+    <script>        
+        function delete_table(db_name, table_name){
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: '<?php echo site_url('tables/delete') ?>',
+                data: "database_name="+db_name+
+                    "&table_name="+table_name,
+                success: function(response){
+                    //change on something
+                    alert(response);
+                    $('.db_'+table_name).empty();
+                }
+            });
+        }
+    </script>
+    <script>    
+        //I need to do THAT !!!
+        function edit_db(db_name){
+            //$('#database-form').attr("title","Edit Database");
+            $('input[type=hidden].db').val(db_name);
+            $( "#database-form" ).dialog( "open" );
+        }
+    </script>
+    <script>    
+        //I need to do THAT !!!
+        function edit_table(db_name, table_name){
+            $('input[type=hidden].db').val(db_name);
+            $('input[type=hidden].tables').val(table_name);
+            $('#db').hide();
+            $('label[for=db]').hide();
+            $('#count').hide();
+            $('label[for=count]').hide();
+            $( "#table-form" ).dialog( "open" );
+        }
+    </script>
+    <script>
+        jQuery(document).ready(function(){
+            $('#accordion .head').click(function() {
+                $(this).next().toggle();
+                return false;
+            }).next().hide();
+        });
+    </script>
     <div id="dialog-remove" style="display: none">
         Are you sure want delete rows?
     </div>
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                
+                <a class="brand" href="<?php echo site_url('grid')?>">
+                    <img src="/image/heart.png"/>&nbsp;DBGrid
+                </a>
+                
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+                
+                <div class="nav-collapse">
+                    <ul class="nav">
+                        <li class="">
+                            <a href="<?php echo site_url('grid')?>">Home</a>
+                        </li>
+                        <li class="">
+                            <a href="<?php echo site_url('grid')?>">Reload</a>
+                        </li>
+                        <li class="">
+                            <a href="<?php echo site_url('help')?>">Help</a>
+                        </li>
+                        <li class="">
+                            <a href="<?php echo site_url('grid/logout')?>">Log Out</a>
+                        </li>
+                    </ul>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="container">

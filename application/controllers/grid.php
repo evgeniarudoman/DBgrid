@@ -14,6 +14,9 @@ class Grid extends CI_Controller
 
         $this->load->model('query');
         $this->query->create_default_db();
+        
+        //delete this later !!!
+        //$this->session->set_userdata('session_hash', 'djkfkdsjflk5673rgyh');
     }
 
 
@@ -21,12 +24,19 @@ class Grid extends CI_Controller
     {
         $this->template = array('title' => $title,
             'scripts' => array(
-                '1' => "/js/jquery-1.6.2.min.js",
-                '2' => "/js/jquery-ui-1.8.16.custom.min.js",
-                '3' => "/js/validation.js"),
+                '1' => "/bootstrap/js/bootstrap.js",
+                '2' => "/bootstrap/js/bootstrap.min.js",
+                '3' => "/js/jquery-1.6.2.min.js",
+                '4' => "/js/jquery-ui-1.8.16.custom.min.js",
+                '5' => "/js/validation.js"),
             'styles' => array(
                 '1' => "/css/jquery-ui-1.8.18.custom.css",
-                '2' => "/css/style.css")
+                '2' => "/css/style.css",
+                '3' => "/bootstrap/css/bootstrap.css",
+                '4' => "/bootstrap/css/bootstrap.min.css",
+                '5' => "/bootstrap/css/bootstrap-responsive.css",
+                '6' => "/bootstrap/css/bootstrap-responsive.min.css",
+                '7' => "/bootstrap/css/docs.css"),
         );
 
         $this->load->view('templates/head', $this->template);
@@ -46,7 +56,6 @@ class Grid extends CI_Controller
         {
            // if (!mysql_select_db($db, $this->conn_id))
            // throw new SQLException("Could not select the database.", 2); 
-            var_dump($_POST);
             if (isset($_POST) && !empty($_POST))
             {
                 
@@ -84,7 +93,6 @@ class Grid extends CI_Controller
         $session_hash = $this->session->userdata('session_hash');
         $this->session->set_userdata('error', '');
 
-var_dump($_REQUEST);
         if (isset($session_hash) && $session_hash == TRUE)
         {
             redirect(site_url('grid/index'));
