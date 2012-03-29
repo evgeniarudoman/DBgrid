@@ -2,7 +2,7 @@
 body {
     /*background: url("/image/stripe_b.png") repeat scroll 0 0 transparent;*/
     font-family: "Trebuchet MS",sans-serif;
-    font-size: 72.5%;
+    font-size: 30px;
 }
 
 /*--------right side of registration and authorisation--------*/
@@ -186,8 +186,8 @@ body {
     border: 1px solid #FFFFFF;
 }
 #content table tr:first-child td:first-child{
-   padding: 0;
- }
+    padding: 0;
+}
 #content table input {
     background: none repeat scroll 0 0 transparent;
     border: medium none;
@@ -198,6 +198,10 @@ body {
 #content table tr:hover td{
     background:#C84663; 
 
+}
+table tr:hover td{
+    background: #D9EDF7;
+    color: #3A87AD;
 }
 #content table tr:first-child:hover	{
     background:none; 
@@ -234,7 +238,7 @@ body {
 /*--------use for all links--------*/
 a:link, a:visited {
     text-decoration: none;
-    
+
 }
 
 /*--------use for checked by checkbox td--------*/

@@ -142,7 +142,7 @@
         // modal of creating new table
         $( "#table-form" ).dialog({
             autoOpen: false,
-            height: 300,
+            height: 390,
             width: 400,
             modal: true,
             buttons: {
@@ -273,8 +273,25 @@
     });
     // end of creating new table
 </script>
+<script>
+$(function(){
+        $('.ui-dialog-buttonset > button:first-child').attr('class', 'btn btn-primary');
+        $('.ui-dialog-buttonset > button:last-child').attr('class', 'btn');
+        $('.ui-dialog-buttonpane.ui-widget-content.ui-helper-clearfix').appendTo('#dialog form fieldset');
+    });
+</script>
 <style>
-    body { font-size: 62.5%; }
+    .ui-widget-header{
+        background: #D9EDF7;
+        border-color: #BCE8F1;
+        color: #3A87AD;
+        font-size: 14px;
+        font-weight: normal;
+        text-align: center;
+    }
+    .ui-widget-overlay{
+        background: #333;
+    }
     label, input { display:block; }
     input.text { margin-bottom:12px; width:95%; padding: .4em; }
     select.text { display: inline; margin-left: 5px;}
@@ -305,7 +322,7 @@
 <div id="table-form" title="Add Table" class="ui-dialog-content ui-widget-content" style="width: auto; min-height: 0px; height: 216px; " scrolltop="0" scrollleft="0">
     <p class="validateTips">All form fields are required.</p>
     <form class="table-form">
-        <fieldset>
+        <fieldset class="control-group">
             <label for="table">Table name</label>
             <input type="text" name="table" id="table" class="text ui-widget-content ui-corner-all">
             <label for="count">Count of fields</label>
@@ -323,7 +340,7 @@
     </form>
     <form class="field-form" style="display: none;">
         <fieldset>
-            <table></table>
+            <table class="table-striped table-condensed"></table>
         </fieldset>
         <input type="hidden" class="valid" value="true"/>
         <input type="hidden" class="db" value="0"/>

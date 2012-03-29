@@ -26,9 +26,11 @@ class Grid extends CI_Controller
             'scripts' => array(
                 '1' => "/bootstrap/js/bootstrap.js",
                 '2' => "/bootstrap/js/bootstrap.min.js",
-                '3' => "/js/jquery-1.6.2.min.js",
-                '4' => "/js/jquery-ui-1.8.16.custom.min.js",
-                '5' => "/js/validation.js"),
+                '3' => "/bootstrap/js/bootstrap.modal.js",
+                '4' => "/js/jquery-1.6.2.min.js",
+                '5' => "/js/jquery-ui-1.8.16.custom.min.js",
+                '6' => "/js/validation.js",
+                ),
             'styles' => array(
                 '1' => "/css/jquery-ui-1.8.18.custom.css",
                 '2' => "/css/style.css",
@@ -36,7 +38,9 @@ class Grid extends CI_Controller
                 '4' => "/bootstrap/css/bootstrap.min.css",
                 '5' => "/bootstrap/css/bootstrap-responsive.css",
                 '6' => "/bootstrap/css/bootstrap-responsive.min.css",
-                '7' => "/bootstrap/css/docs.css"),
+                '7' => "/bootstrap/css/docs.css",
+                '8' => "/css/dialog.css"
+                ),
         );
 
         $this->load->view('templates/head', $this->template);

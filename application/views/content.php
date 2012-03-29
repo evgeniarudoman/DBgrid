@@ -1,8 +1,8 @@
 <div class="container-fluid">
     <div class="row-fluid">
-        <div class="span4">
+        <div class="span4"> 
             <div class="alert alert-info" style="text-align: center;">
-                all databases
+                DBGrid
             </div>
             <div id="accordion">
                 <div class="well" style="padding: 8px 0;height: 300px;">
@@ -14,6 +14,7 @@
                                         <i class="icon-list-alt icon-white"></i>
                                         <?php echo $database; ?>
                                         <i style="float:right;" class="icon-trash icon-white"></i>
+                                        &nbsp;
                                         <i style="float:right;" class="icon-pencil icon-white"></i>
                                     </a>
                                 </li>
@@ -35,6 +36,19 @@
                             <?php endforeach; ?>
                         <?php endif; ?>
                     </ul>
+                    
+                    <div class="btn-group">
+                        <a class="btn btn-primary btn-small" href="#"><i class="icon-user icon-white"></i></a>
+                        <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#"><i class="icon-pencil"></i> Edit</a></li>
+                            <li><a href="#"><i class="icon-trash"></i> Delete</a></li>
+                            <li><a href="#"><i class="icon-ban-circle"></i> Ban</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#"><i class="i"></i> Make admin</a></li>
+                        </ul>
+                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -42,18 +56,23 @@
         <div class="span8">
             <div class="well" style="padding: 8px 0;height: 353px;">
                 <?php if (isset($_GET['table']) && !empty($_GET['table'])): ?>
-                    <table class="table-striped table-bordered table-condensed">
+                    <table class="table-striped table-bordered table-condensed" style="margin-left: 20px;">
                         <tr>
-                            <td ><div class="icon checkbox_all"><input type='checkbox'></div></td><td >#</td>
+                            <td class="check_all">
+                               <!-- <i class="icon-check"></i>-->
+                                <input type="checkbox" />
+                            </td>
                             <?php foreach ($result[$_GET['database'] . '_field'] as $key => $field): ?>
-                                <td  name='<?php echo $key; ?>'><div class='resize'><?php echo $field['name']; ?></div></td>
-                            <?php endforeach; ?>
+                                <th  name='<?php echo $key; ?>'><div class='resize'><?php echo $field['name']; ?></div></th>
+                        <?php endforeach; ?>
                         </tr>
                         <?php $j = 1; ?>
                         <?php while ($row = mysql_fetch_array($result['result'])): ?>
                             <tr>
-                                <td><div class="icon checkbox"><input type='checkbox' value=""></div></td>
-                                <td class='id'><?php echo $j ?></td>
+                                <td class="check_one" >
+                                  <!--  <i class="icon-check"></i>-->
+                                    <input type="checkbox" />
+                                </td>
                                 <?php for ($i = 0; $i < mysql_num_fields($result['result']); $i++): ?>
                                     <td><?php echo $row[mysql_field_name($result['result'], $i)] ?></td>
                                 <?php endfor; ?>
@@ -81,3 +100,5 @@
                         </tr>
                     </table>-->
                 <?php endif; ?>
+
+

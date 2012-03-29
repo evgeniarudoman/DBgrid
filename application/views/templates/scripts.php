@@ -5,22 +5,22 @@
                 handles: 'e'
             });
             //--------------------------------------
-            $("#content div.checkbox input[type='checkbox']").change(function(){
+            $("td.checkbox_one input[type='checkbox']").change(function(){
                 $("#content div.checkbox input[type='checkbox']:checked").parent('div').addClass('checked').parent('td').parent('tr').addClass('check');
                 $("#content div.checkbox input[type='checkbox']:not(:checked)").parent('div').removeClass('checked').parent('td').parent('tr').removeClass('check');
             }) 
             //--------------------------------------
-            $("#content div.checkbox_all input[type='checkbox']").change(function(){
+            $("td.checkbox_all input[type='checkbox']").change(function(){
                 $("#content div.checkbox_all input[type='checkbox']:checked").val(1);
                 $("#content div.checkbox_all input[type='checkbox']:not(:checked)").val(0);
                 
-                if ($("#content div.checkbox_all input[type='checkbox']").val()==1)
+                if ($("td.checkbox_all input[type='checkbox']").val()==1)
                 {
                     $("#content tr").addClass('check');
                     $("#content tr:first-child").removeClass('check');
                     $("#content tr td div").addClass('checked');
                 }
-                if($("#content div.checkbox_all input[type='checkbox']").val()==0)
+                if($("td.checkbox_all input[type='checkbox']").val()==0)
                 {
                     $("#content tr").removeClass('check');
                     $("#content tr td div").removeClass('checked');
@@ -155,7 +155,10 @@
             <div class="container">
                 
                 <a class="brand" href="<?php echo site_url('grid')?>">
-                    <img src="/image/heart.png"/>&nbsp;DBGrid
+                     <i class="icon-leaf icon-white"></i>
+                     <!--<img src="/image/heart.png"/>
+                     &nbsp;-->
+                     DBGrid
                 </a>
                 
                 <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -167,16 +170,28 @@
                 <div class="nav-collapse">
                     <ul class="nav">
                         <li class="">
-                            <a href="<?php echo site_url('grid')?>">Home</a>
+                            <a href="<?php echo site_url('grid')?>">
+                                <i class="icon-home icon-white"></i>
+                                &nbsp;Home
+                            </a>
                         </li>
                         <li class="">
-                            <a href="<?php echo site_url('grid')?>">Reload</a>
+                            <a href="<?php echo site_url('grid')?>">
+                                <i class="icon-repeat icon-white"></i>
+                                &nbsp;Reload
+                            </a>
                         </li>
                         <li class="">
-                            <a href="<?php echo site_url('help')?>">Help</a>
+                            <a href="<?php echo site_url('help')?>">
+                                <i class="icon-flag icon-white"></i>
+                                &nbsp;Help
+                            </a>
                         </li>
                         <li class="">
-                            <a href="<?php echo site_url('grid/logout')?>">Log Out</a>
+                            <a href="<?php echo site_url('grid/logout')?>">
+                                <i class="icon-off icon-white"></i>
+                                &nbsp;LogOut
+                            </a>
                         </li>
                     </ul>
                 </div>
