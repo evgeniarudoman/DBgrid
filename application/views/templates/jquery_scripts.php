@@ -6,9 +6,17 @@
             $( "#database-form" ).dialog( "open" );
         });
         
+        $( "#remove" ).click(function() {
+            $( "#dialog-remove" ).dialog( "open" );
+        });
+        
         $( "#create-table" ).click(function() {
             $( "#table-form" ).dialog( "open" );
         });
+        
+       /* $( "#add-row" ).click(function() {
+            $( "#row-form" ).dialog( "open" );
+        });*/
 		
         // announcement variables
         var table = $( "#table" )
@@ -138,7 +146,74 @@
             }
         });
         // end of creating new database
+          /*  
+        // modal of creating new field
+    $( "#row-form" ).dialog({
+            autoOpen: false,
+            height: 360,
+            width: 400,
+            modal: true,
+            buttons: {
+                "Add": function() {
+                    var bValid = true;
+                    allFields.removeClass( "ui-state-error" );
 
+                    bValid = bValid && checkLength( database, "database", 3, 16 );
+                    bValid = bValid && checkRegexp( database, /^[a-z]([0-9a-z_])+$/i, "Database name may consist of a-z, 0-9, underscores, begin with a letter." );
+                   
+                    if ( bValid ) {
+                        
+                        if ( $('input[type=hidden].db').val() == 0) 
+                        {
+                            $( "#databases tbody" ).append( "<tr>" +
+                                "<td>"+"<div class='icon table'></div>"+"</td>"+
+                                "<td>"+"<a href='/grid/index?database="+database.val()+"'>" + database.val() + "</td>" +
+                                "</tr>" ); 
+                                
+                            // add new database by ajax
+                            $.ajax({
+                                type: "POST",
+                                url: '<?php //echo site_url('db/add'); ?>',
+                                data: "database_name="+database.val(),
+                                success: function(response){
+                                    //change on something
+                                    alert(response);
+                                }
+                            })
+                        }
+                        else
+                        {
+                            $( "#databases tbody" ).append( "<tr>" +
+                                "<td>"+"<div class='icon table'></div>"+"</td>"+
+                                "<td>"+"<a href='/grid/index?database="+database.val()+"'>" + database.val() + "</td>" +
+                                "</tr>" ); 
+                                
+                            // add new database by ajax
+                            $.ajax({
+                                type: "POST",
+                                url: '<?php //echo site_url('db/rename'); ?>',
+                                data: "new_name="+database.val()+
+                                    "&database_name="+$('input[type=hidden].db').val(),
+                                success: function(response){
+                                    //change on something
+                                    alert(response);
+                                }
+                            })
+                        }
+                        
+                        $( this ).dialog( "close" );
+                    }
+                },
+                Cancel: function() {
+                    $( this ).dialog( "close" );
+                }
+            },
+            close: function() {
+                allFields.val( "" ).removeClass( "ui-state-error" );
+            }
+        });
+        // end of creating new field
+*/
         // modal of creating new table
         $( "#table-form" ).dialog({
             autoOpen: false,
@@ -272,6 +347,26 @@
         });
     });
     // end of creating new table
+    
+    
+    $(function() {
+        $( "#dialog-remove" ).dialog({
+            autoOpen: false,
+            height: 300,
+            width: 400,
+            modal: true,
+            buttons: {
+                "YES": function(){
+                    $("#content .check").slideUp('fast');
+                    $( this ).dialog( "close" );
+                },
+                "NO": function(){
+                    $( this ).dialog( "close" );
+                }                  
+            }
+        });
+    });
+    
 </script>
 <script>
     $(function(){
@@ -295,7 +390,7 @@
     .btn-group .btn-mini.dropdown-toggle {
         padding-left: 5px;
         padding-right: 5px;
-        padding-top: 3px;
+        padding-top: 2px;
     }
     .btn-toolbar {
         margin-top: -15px;
@@ -313,46 +408,3 @@
     .ui-dialog .ui-state-error { background: none; color: #363636; border: 1px solid #FF3853; }
     .validateTips { border: 1px solid transparent; padding: 0.3em; }
 </style>
-
-<!-- create new database form -->    
-<div id="database-form" title="Add Database" class="ui-dialog-content ui-widget-content" style="width: auto; min-height: 0px; height: 216px; " scrolltop="0" scrollleft="0">
-    <p class="validateTips">All form fields are required.</p>
-    <form>
-        <fieldset>
-            <label for="database">Database name</label>
-            <input type="text" name="database" id="database" class="text ui-widget-content ui-corner-all">
-        </fieldset>
-    </form>
-</div>
-<!-- end database form -->
-
-<!-- create new table form -->    
-<div id="table-form" title="Add Table" class="ui-dialog-content ui-widget-content" style="width: auto; min-height: 0px; height: 216px; " scrolltop="0" scrollleft="0">
-    <p class="validateTips">All form fields are required.</p>
-    <form class="table-form">
-        <fieldset class="control-group">
-            <label for="table">Table name</label>
-            <input type="text" name="table" id="table" class="text ui-widget-content ui-corner-all">
-            <label for="count">Count of fields</label>
-            <input type="text" name="count" id="count" class="text ui-widget-content ui-corner-all">
-            <label for="db">Database name</label>
-            <select name="db" id="db" class="text ui-widget-content ui-corner-all">
-                <option value="" selected="selected"> -- choose database -- </option>
-                <?php if (isset($list_database) && !empty($list_database)): ?>
-                    <?php foreach ($list_database as $key => $database): ?>
-                        <option value="<?php echo $database ?>"><?php echo $database ?></option>
-                    <?php endforeach; ?>
-                <?php endif; ?>
-            </select>
-        </fieldset>
-    </form>
-    <form class="field-form" style="display: none;">
-        <fieldset>
-            <table class="table-striped table-condensed"></table>
-        </fieldset>
-        <input type="hidden" class="valid" value="true"/>
-        <input type="hidden" class="db" value="0"/>
-        <input type="hidden" class="tables" value="0"/>
-    </form>
-</div>
-<!-- end table form -->

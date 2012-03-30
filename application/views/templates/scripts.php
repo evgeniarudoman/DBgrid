@@ -4,33 +4,26 @@
             $(".resize").resizable({ 
                 handles: 'e'
             });
-            //--------------------------------------
-            $("td.checkbox_one input[type='checkbox']").change(function(){
-                $("#content div.checkbox input[type='checkbox']:checked").parent('div').addClass('checked').parent('td').parent('tr').addClass('check');
-                $("#content div.checkbox input[type='checkbox']:not(:checked)").parent('div').removeClass('checked').parent('td').parent('tr').removeClass('check');
-            }) 
-            //--------------------------------------
-            $("td.checkbox_all input[type='checkbox']").change(function(){
-                $("#content div.checkbox_all input[type='checkbox']:checked").val(1);
-                $("#content div.checkbox_all input[type='checkbox']:not(:checked)").val(0);
-                
-                if ($("td.checkbox_all input[type='checkbox']").val()==1)
-                {
-                    $("#content tr").addClass('check');
-                    $("#content tr:first-child").removeClass('check');
-                    $("#content tr td div").addClass('checked');
-                }
-                if($("td.checkbox_all input[type='checkbox']").val()==0)
-                {
-                    $("#content tr").removeClass('check');
-                    $("#content tr td div").removeClass('checked');
-                }
-                   
-            }) 
         });
+    </script>
+    <script>
+      
+        function add_row(db_name, table_name){
         
-        /*  
-        function add_field(){
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: '<?php echo site_url('rows/add') ?>',
+                data: "database_name="+db_name+
+                    "&table_name="+table_name,
+                success: function(response){
+                    //change on something
+                    alert(response);
+                    $('.db_'+db_name).empty();
+                }
+            });
+        
+        
             var inp;
             var id;
             var num;
@@ -49,25 +42,9 @@
         ) 
         );
         }
-         */   
-        $(function() {
-            $( "#remove" ).click(function() {
-                $( "#dialog-remove" ).dialog({
-                    modal: true,
-                    height: 200,
-                    buttons: {
-                        "YES": function(){
-                            $("#content .check").slideUp('fast');
-                            $( this ).dialog( "close" );
-                        },
-                        "NO": function(){
-                            $( this ).dialog( "close" );
-                        }                  
-                    }
-                });	
-            });
-        });
-            
+           
+    </script>
+    <script>
         function display_menu() 
         {
             if ($('#hidden input[name=hide]').val()==1)
@@ -154,17 +131,12 @@
             return false;
         }
     </script>
-    <div id="dialog-remove" style="display: none">
-        Are you sure want delete rows?
-    </div>
     <div class="navbar navbar-fixed-top">
         <div class="navbar-inner">
             <div class="container">
 
                 <a class="brand" href="<?php echo site_url('grid') ?>">
                     <i class="icon-leaf icon-white"></i>
-                    <!--<img src="/image/heart.png"/>
-                    &nbsp;-->
                     DBGrid
                 </a>
 

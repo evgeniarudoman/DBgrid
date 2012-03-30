@@ -13,79 +13,61 @@
                                     <a href="#">
                                         <i class="icon-list-alt icon-white"></i>
                                         <?php echo $database; ?>
-                                        <i style="float:right;" class="icon-trash icon-white"></i>
+                                        <i style="float:right;" class="icon-trash icon-white" onclick="delete_db('<?php echo $database; ?>');"></i>
                                         &nbsp;
-                                        <i style="float:right;" class="icon-pencil icon-white"></i>
+                                        <i style="float:right;" class="icon-pencil icon-white" onclick="edit_db('<?php echo $database; ?>');"></i>
                                     </a>
                                 </li>
                                 <table id="tables" style="margin-left: 15px;height: 30px;">
                                     <?php if (isset($result[$database . '_table'])): ?>
                                         <?php foreach ($result[$database . '_table'] as $table): ?>
                                             <tr>
-                                                <td style="width: 20px;"><i class="icon-list-alt"></i></td>
+                                                <td style="width: 20px;"><i class="icon-th"></i></td>
                                                 <td>
                                                     <a href='/grid/index?database=<?php echo $database ?>&table=<?php echo $table; ?>'>
                                                         <?php echo $table . ' (<i>' . count($result[$database . '_field']) . '</i>)'; ?></a>
                                                 </td>
-                                                <td> <i class="icon-pencil"></i></td>
-                                                <td><i class="icon-trash"></i></td>
+                                                <td><i class="icon-pencil" style="cursor: pointer;" onclick="edit_table('<?php echo $database; ?>', '<?php echo $table; ?>');"></i></td>
+                                                <td><i class="icon-trash" style="cursor: pointer;" onclick="delete_table('<?php echo $database; ?>', '<?php echo $table; ?>');"></i></td>
                                             <?php endforeach; ?>
+                                        <?php else: ?>
+                                            <td style="width: 20px;"><i class="icon-th"></i></td>
+                                            <td><i>No tables.</i></td>
                                         <?php endif; ?>
                                     </tr>
                                 </table>
                             <?php endforeach; ?>
+                        <?php else: ?>
+                            <i>No databases.</i>
                         <?php endif; ?>
                     </ul>
                 </div>
                 <div class="btn-toolbar" style="margin-bottom: 9px">
                     <div class="btn-group">
-                        <a class="btn btn-primary btn-mini" href="#"><i class="icon-list-alt icon-white"></i></a>
-                        <a onclick="open_dropdown('icon-list-alt');" class="btn btn-primary dropdown-toggle btn-mini" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+                        <a class="btn btn-primary btn-mini" href="#"><i class="icon-plus icon-white"></i> Create</a>
+                        <a onclick="open_dropdown('icon-plus');" class="btn btn-primary dropdown-toggle btn-mini" data-toggle="dropdown" href="#"><span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#"><i class="icon-list-alt"></i> Databases</a></li>
+                            <li style="background-color: #08C;"><a href="#" style="color:#fff;"><i class="icon-plus"></i> Create</a></li>
                             <li class="divider"></li>
-                            <li id="create-database"><a href="#"><i class="icon-plus"></i> Create</a></li>
-                            <li><a href="#"><i class="icon-pencil"></i> Rename</a></li>
-                            <li><a href="#"><i class="icon-trash"></i> Remove</a></li>
-                        </ul>
-                    </div>
-                    <div class="btn-group">
-                        <a class="btn btn-primary btn-mini" href="#"><i class="icon-th icon-white"></i></a>
-                        <a onclick="open_dropdown('icon-th');" class="btn btn-primary dropdown-toggle btn-mini" data-toggle="dropdown" href="#"><span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#"><i class="icon-th"></i> Tables</a></li>
-                            <li class="divider"></li>
-                            <li id="create-table"><a href="#"><i class="icon-plus"></i> Create</a></li>
-                            <li><a href="#"><i class="icon-pencil"></i> Rename</a></li>
-                            <li><a href="#"><i class="icon-trash"></i> Remove</a></li>
+                            <li><a href="#" id="create-database"><i class="icon-list-alt"></i> Database</a></li>
+                            <li><a href="#" id="create-table"><i class="icon-th"></i> Table</a></li>
                         </ul>
                     </div>
                     <div class="btn-group">
                         <a class="btn btn-primary btn-mini" href="#"><i class="icon-random icon-white"></i></a>
                         <a onclick="open_dropdown('icon-random');" class="btn btn-primary dropdown-toggle btn-mini" data-toggle="dropdown" href="#"><span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#"><i class="icon-random"></i> Relations</a></li>
+                            <li style="background-color: #08C;"><a href="#" style="color:#fff;"><i class="icon-random"></i> Relations</a></li>
                             <li class="divider"></li>
                             <li><a href="#"><i class="icon-plus"></i> Create</a></li>
                             <li><a href="#"><i class="icon-trash"></i> Remove</a></li>
                         </ul>
                     </div>
-                    <div class="btn-group">
-                        <a class="btn btn-primary btn-mini" href="#"><i class="icon-th-list icon-white"></i></a>
-                        <a onclick="open_dropdown('icon-th-list');" class="btn btn-primary dropdown-toggle btn-mini" data-toggle="dropdown" href="#"><span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#"><i class="icon-th-list"></i> Fields</a></li>
-                            <li class="divider"></li>
-                            <li><a href="#"><i class="icon-plus"></i> Add</a></li>
-                            <li><a href="#"><i class="icon-pencil"></i> Edit</a></li>
-                            <li><a href="#"><i class="icon-trash"></i> Remove</a></li>
-                        </ul>
-                    </div>
-                    <div class="btn-group" style="float:right;">
+                    <div class="btn-group dropup" style="float:right;">
                         <a class="btn btn-primary btn-mini" href="#"><i class="icon-th-large icon-white"></i></a>
                         <a onclick="open_dropdown('icon-th-large');" class="btn btn-primary dropdown-toggle btn-mini" data-toggle="dropdown" href="#"><span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#"><i class="icon-th-large"></i> Choose theme</a></li>
+                            <li style="background-color: #08C;"><a href="#" style="color:#fff;"><i class="icon-th-large"></i> Choose theme</a></li>
                             <li class="divider"></li>
                             <li><a href="#"><i class="icon-tint"></i> Blue</a></li>
                             <li><a href="#"><i class="icon-tint"></i> Gray</a></li>
@@ -105,7 +87,11 @@
                                 <input type="checkbox" />
                             </td>
                             <?php foreach ($result[$_GET['database'] . '_field'] as $key => $field): ?>
-                                <th  name='<?php echo $key; ?>'><div class='resize'><?php echo $field['name']; ?></div></th>
+                                <th name='<?php echo $key; ?>' style="width:<?php echo 10 * $field['size'] . 'px'; ?>">
+                            <div class='resize'>
+                                <?php echo $field['name']; ?>
+                            </div>
+                            </th>
                         <?php endforeach; ?>
                         </tr>
                         <?php $j = 1; ?>
@@ -122,25 +108,7 @@
                             <?php $j++; ?>
                         <?php endwhile; ?>
                     </table>
-                  <!--  <table>
-                        <tr>
-                            <td  class="ui-state-error">
-                                <a href="">
-                                    <div class="icon add"></div>
-                                </a>
-                            </td>
-                            <td  class="ui-state-error">
-                                <a href="">
-                                    <div class="icon edit"></div>
-                                </a>
-                            </td>
-                            <td  class="ui-state-error">
-                                <a href="" id="remove" onclick="return false;">
-                                    <div class="icon delete"></div>
-                                </a>
-                            </td>
-                        </tr>
-                    </table>-->
                 <?php endif; ?>
-
-
+                <i class="icon-plus" style="cursor: pointer;margin-top: 286px;" onclick="add_row('<?php echo $_GET['database']; ?>', '<?php echo $_GET['table']; ?>');"></i>
+                <i class="icon-pencil" style="cursor: pointer;margin-top: 286px;" onclick="edit_field('<?php echo $database; ?>', '<?php echo $table; ?>');"></i>
+                <i class="icon-trash" style="cursor: pointer;margin-top: 286px;" id="remove" onclick="delete_field('<?php echo $database; ?>', '<?php echo $table; ?>');"></i>

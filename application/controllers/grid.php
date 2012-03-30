@@ -14,7 +14,7 @@ class Grid extends CI_Controller
 
         $this->load->model('query');
         $this->query->create_default_db();
-        
+
         //delete this later !!!
         //$this->session->set_userdata('session_hash', 'djkfkdsjflk5673rgyh');
     }
@@ -30,7 +30,7 @@ class Grid extends CI_Controller
                 '4' => "/js/jquery-1.6.2.min.js",
                 '5' => "/js/jquery-ui-1.8.16.custom.min.js",
                 '6' => "/js/validation.js",
-                ),
+            ),
             'styles' => array(
                 '1' => "/css/jquery-ui-1.8.18.custom.css",
                 '2' => "/css/style.css",
@@ -40,7 +40,7 @@ class Grid extends CI_Controller
                 '6' => "/bootstrap/css/bootstrap-responsive.min.css",
                 '7' => "/bootstrap/css/docs.css",
                 '8' => "/css/dialog.css"
-                ),
+            ),
         );
 
         $this->load->view('templates/head', $this->template);
@@ -58,11 +58,11 @@ class Grid extends CI_Controller
         }
         else
         {
-           // if (!mysql_select_db($db, $this->conn_id))
-           // throw new SQLException("Could not select the database.", 2); 
+            // if (!mysql_select_db($db, $this->conn_id))
+            // throw new SQLException("Could not select the database.", 2); 
             if (isset($_POST) && !empty($_POST))
             {
-                
+
                 $this->load->model('user');
                 $this->user->db_name = "dbgrid";
 
@@ -218,8 +218,10 @@ class Grid extends CI_Controller
                 $list_database = NULL;
 
             $this->load->view('templates/scripts');
-            $this->load->view('templates/jquery_form', array(
-                'list_database' => $list_database
+            $this->load->view('templates/jquery_scripts');
+            $this->load->view('jquery_form', array(
+                'list_database' => $list_database,
+                'result' => $result
             ));
             $this->load->view('content', array(
                 'result' => $result,
