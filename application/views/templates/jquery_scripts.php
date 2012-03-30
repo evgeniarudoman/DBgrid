@@ -14,7 +14,7 @@
             $( "#table-form" ).dialog( "open" );
         });
         
-       /* $( "#add-row" ).click(function() {
+        /* $( "#add-row" ).click(function() {
             $( "#row-form" ).dialog( "open" );
         });*/
 		
@@ -146,7 +146,7 @@
             }
         });
         // end of creating new database
-          /*  
+        /*  
         // modal of creating new field
     $( "#row-form" ).dialog({
             autoOpen: false,
@@ -173,7 +173,7 @@
                             // add new database by ajax
                             $.ajax({
                                 type: "POST",
-                                url: '<?php //echo site_url('db/add'); ?>',
+                                url: '<?php //echo site_url('db/add');  ?>',
                                 data: "database_name="+database.val(),
                                 success: function(response){
                                     //change on something
@@ -191,7 +191,7 @@
                             // add new database by ajax
                             $.ajax({
                                 type: "POST",
-                                url: '<?php //echo site_url('db/rename'); ?>',
+                                url: '<?php //echo site_url('db/rename');  ?>',
                                 data: "new_name="+database.val()+
                                     "&database_name="+$('input[type=hidden].db').val(),
                                 success: function(response){
@@ -213,7 +213,7 @@
             }
         });
         // end of creating new field
-*/
+         */
         // modal of creating new table
         $( "#table-form" ).dialog({
             autoOpen: false,
@@ -376,6 +376,14 @@
     });
 </script>
 <style>
+    .well input[type=text]{
+        background: transparent;
+border: none;
+        height: 10px;
+    }
+    .well input[type=checkbox]{
+        margin-top: -5px;
+    }
     .ui-widget-header{
         background: #D9EDF7;
         border-color: #BCE8F1;

@@ -102,13 +102,15 @@
                                     <input type="checkbox" />
                                 </td>
                                 <?php for ($i = 0; $i < mysql_num_fields($result['result']); $i++): ?>
-                                    <td><?php echo $row[mysql_field_name($result['result'], $i)] ?></td>
+                                    <td style="width:<?php echo 10 * $field['size'] . 'px'; ?>" onclick="/*$(this).append('<input type=\'text\'/>');*/">
+                                        <input type="text" class="input-small" value="<?php echo $row[mysql_field_name($result['result'], $i)] ?>"/>                                        
+                                    </td>
                                 <?php endfor; ?>
                             </tr>
                             <?php $j++; ?>
                         <?php endwhile; ?>
                     </table>
                 <?php endif; ?>
-                <i class="icon-plus" style="cursor: pointer;margin-top: 286px;" onclick="add_row('<?php echo $_GET['database']; ?>', '<?php echo $_GET['table']; ?>');"></i>
+                <i class="icon-plus" style="cursor: pointer;margin-top: 286px;" onclick="add_row('<?php echo $_GET['database']; ?>', '<?php echo $_GET['table']; ?>', '<?php echo mysql_num_fields($result['result']); ?>');"></i>
                 <i class="icon-pencil" style="cursor: pointer;margin-top: 286px;" onclick="edit_field('<?php echo $database; ?>', '<?php echo $table; ?>');"></i>
                 <i class="icon-trash" style="cursor: pointer;margin-top: 286px;" id="remove" onclick="delete_field('<?php echo $database; ?>', '<?php echo $table; ?>');"></i>

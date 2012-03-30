@@ -4,44 +4,37 @@
             $(".resize").resizable({ 
                 handles: 'e'
             });
+            //-----------------------------
         });
     </script>
     <script>
       
-        function add_row(db_name, table_name){
+        function add_row(db_name, table_name, count){
         
+            var td;
+            for (i=1;i<=count;i++)
+            {
+                td += "<td></td>";
+            }
+            $('table.table-striped').append(
+            '<tr><td class="check_one"><input type="checkbox"></td>'+td+'</tr>'
+        );
+                            
             $.ajax({
                 type: "POST",
                 dataType: "json",
                 url: '<?php echo site_url('rows/add') ?>',
                 data: "database_name="+db_name+
-                    "&table_name="+table_name,
+                    "&table_name="+table_name+
+                    // "&count="+count+
+                fields,
                 success: function(response){
                     //change on something
                     alert(response);
                     $('.db_'+db_name).empty();
                 }
             });
-        
-        
-            var inp;
-            var id;
-            var num;
-            var a;
-            num=$('.tables tr:last .id').text();
-            a=Number(num);
-            id = Number(a+1);
-            inp+='<td ><input type="checkbox"></td><td class="id">'+id+'</td>';
-            for (i=0;i<=$('.tables tr:first td').length-3;i++)
-            {
-                inp+= '<td><div class="href inp in"><input type="text" align="center" style="border: 1px solid yellow;" class="input" name="'+id+'['+i+']" ></div></td>';
-            }
-            $(".tables").find('tbody')
-            .append($('<tr>')
-            .append($(inp)  
-        ) 
-        );
-        }
+        };
            
     </script>
     <script>

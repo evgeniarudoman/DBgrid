@@ -24,33 +24,19 @@ class Fields extends CI_Controller
         $user_id = $this->session->userdata('user_id');
         $success = TRUE;
         $this->load->model('query');
+        $this->load->model('basic/db_rows', 'rows');
 
         try
         {
-            //var_dump($_POST);
-            $str = '';
-            for ($i = 1; $i <= $_POST['count']; $i++)
-            {
-                $key = '';
-                if ($_POST['radio'] == $i)
-                {
-                    $key = 'PRIMARY KEY';
-                }
-
-                $str.='`' . $_POST['field' . $i] . '` ' . $_POST['type' . $i] . '(' . $_POST['size' . $i] . ') ' . $key . ',';
-            }
-            unset($i);
-
-            $query = substr($str, 0, strlen($str) - 1);
-            unset($str);
-
-            $bool = db_table_exists($user_id, $_POST['database'], $_POST['table_name']);
+            $bool = db_table_exists($user_id, $_POST['database_name'], $_POST['table_name']);
 
             if (isset($bool) && $bool == 2)
             {
-                //$this->query->create_table($_POST['database'], $_POST['table_name'], $query);
-
-                $this->database->db_name = "dbgrid";
+                $this->rows->insert($_POST['database_name'], $_POST['table_name']);
+                
+                
+                
+                
                 $this->database->select(array('name' => $_POST['database'], 'user_id' => $user_id));
                 $this->database->setNumberOfTables($this->database->getNumberOfTables() + 1);
                 $this->database->update();
@@ -93,19 +79,6 @@ class Fields extends CI_Controller
         }
 
         echo json_encode($success);
-    }
-
-
-    public function get_type()
-    {
-        $types = $this->type->load_collection("dbgrid");
-
-        foreach ($types as $type)
-        {
-            $list_type[] = array('key' => $type->getType());
-        }
-
-        echo json_encode($list_type);
     }
 
 

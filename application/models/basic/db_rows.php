@@ -14,10 +14,25 @@ class Db_rows extends CI_Model
     }
 
 
-    public function create($db_name)
+    public function insert($db_name, $table_name, $fields, $values)
     {
-        $this->db->query('CREATE DATABASE IF NOT EXISTS ' . $db_name . ' 
-                        CHARACTER SET utf8 COLLATE utf8_general_ci');
+        $str = '';
+        foreach ($fields as $field)
+        {
+            $str.='`' . $field . '` ,';
+        }
+        $query = substr($str, 0, strlen($str) - 1);
+        unset($str);
+
+        $str = '';
+        foreach ($values as $value)
+        {
+            $str.="'" . $value . "' ,";
+        }
+        $val = substr($str, 0, strlen($str) - 1);
+
+        $this->db->query("INSERT INTO  `" . $db_name . "`.`" . $table_name . "` (" . $query . ")
+                            VALUES (" . $val . ")");
     }
 
 
