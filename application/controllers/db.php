@@ -23,6 +23,7 @@ class Db extends CI_Controller
         $success = TRUE;
         $user_id = $this->session->userdata('user_id');
         $this->load->model('query');
+        $this->load->model('basic/db_databases', 'databases');
 
         try
         {
@@ -30,7 +31,7 @@ class Db extends CI_Controller
 
             if (isset($bool) && $bool == 0)
             {
-                $this->query->create_database($_POST['database_name']);
+                $this->databases->create($_POST['database_name']);
 
                 $this->database->db_name = "dbgrid";
                 $this->database->setName($_POST['database_name']);
@@ -43,6 +44,58 @@ class Db extends CI_Controller
             {
                 $success = FALSE;
             }
+        }
+        catch (Exception $e)
+        {
+            $success = FALSE;
+        }
+
+        echo json_encode($success);
+    }
+
+
+    public function delete()
+    {
+        $success = TRUE;
+        $user_id = $this->session->userdata('user_id');
+        $this->load->model('query');
+        $this->load->model('basic/db_databases', 'databases');
+
+        try
+        {
+            $this->databases->remove($_POST['database_name']);
+
+            $this->database->db_name = "dbgrid";
+            $this->database->delete(array('name' => $_POST['database_name'], 'user_id' => $user_id));
+
+            $success = TRUE;
+        }
+        catch (Exception $e)
+        {
+            $success = FALSE;
+        }
+
+        echo json_encode($success);
+    }
+
+
+    public function rename()
+    {
+        $success = TRUE;
+        $user_id = $this->session->userdata('user_id');
+        $this->load->model('query');
+        $this->load->model('basic/db_databases', 'databases');
+
+        try
+        {
+            $this->databases->rename($_POST['database_name'], $_POST['new_name']);
+
+            $this->database->db_name = "dbgrid";
+            $this->database->select(array('name' => $_POST['database_name'], 'user_id' => $user_id));
+            $this->database->setName($_POST['new_name']);
+            $this->database->update();
+
+            $success = TRUE;
         }
         catch (Exception $e)
         {

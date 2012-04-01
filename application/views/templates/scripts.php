@@ -4,70 +4,40 @@
             $(".resize").resizable({ 
                 handles: 'e'
             });
-            //--------------------------------------
-            $("#content div.checkbox input[type='checkbox']").change(function(){
-                $("#content div.checkbox input[type='checkbox']:checked").parent('div').addClass('checked').parent('td').parent('tr').addClass('check');
-                $("#content div.checkbox input[type='checkbox']:not(:checked)").parent('div').removeClass('checked').parent('td').parent('tr').removeClass('check');
-            }) 
-            //--------------------------------------
-            $("#content div.checkbox_all input[type='checkbox']").change(function(){
-                $("#content div.checkbox_all input[type='checkbox']:checked").val(1);
-                $("#content div.checkbox_all input[type='checkbox']:not(:checked)").val(0);
-                
-                if ($("#content div.checkbox_all input[type='checkbox']").val()==1)
-                {
-                    $("#content tr").addClass('check');
-                    $("#content tr:first-child").removeClass('check');
-                    $("#content tr td div").addClass('checked');
-                }
-                if($("#content div.checkbox_all input[type='checkbox']").val()==0)
-                {
-                    $("#content tr").removeClass('check');
-                    $("#content tr td div").removeClass('checked');
-                }
-                   
-            }) 
+            //-----------------------------
         });
+    </script>
+    <script>
+      
+        function add_row(db_name, table_name, count){
         
-        /*  
-        function add_field(){
-            var inp;
-            var id;
-            var num;
-            var a;
-            num=$('.tables tr:last .id').text();
-            a=Number(num);
-            id = Number(a+1);
-            inp+='<td ><input type="checkbox"></td><td class="id">'+id+'</td>';
-            for (i=0;i<=$('.tables tr:first td').length-3;i++)
+            var td;
+            for (i=1;i<=count;i++)
             {
-                inp+= '<td><div class="href inp in"><input type="text" align="center" style="border: 1px solid yellow;" class="input" name="'+id+'['+i+']" ></div></td>';
+                td += "<td></td>";
             }
-            $(".tables").find('tbody')
-            .append($('<tr>')
-            .append($(inp)  
-        ) 
+            $('table.table-striped').append(
+            '<tr><td class="check_one"><input type="checkbox"></td>'+td+'</tr>'
         );
-        }
-         */   
-        $(function() {
-            $( "#remove" ).click(function() {
-                $( "#dialog-remove" ).dialog({
-                    modal: true,
-                    height: 200,
-                    buttons: {
-                        "YES": function(){
-                            $("#content .check").slideUp('fast');
-                            $( this ).dialog( "close" );
-                        },
-                        "NO": function(){
-                            $( this ).dialog( "close" );
-                        }                  
-                    }
-                });	
+                            
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: '<?php echo site_url('rows/add') ?>',
+                data: "database_name="+db_name+
+                    "&table_name="+table_name+
+                    // "&count="+count+
+                fields,
+                success: function(response){
+                    //change on something
+                    alert(response);
+                    $('.db_'+db_name).empty();
+                }
             });
-        });
-            
+        };
+           
+    </script>
+    <script>
         function display_menu() 
         {
             if ($('#hidden input[name=hide]').val()==1)
@@ -88,6 +58,117 @@
             }
         }
     </script>
-    <div id="dialog-remove" style="display: none">
-        Are you sure want delete rows?
+    <script>        
+        function delete_db(db_name){
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: '<?php echo site_url('db/delete') ?>',
+                data: "database_name="+db_name,
+                success: function(response){
+                    //change on something
+                    alert(response);
+                    $('.db_'+db_name).empty();
+                }
+            });
+        }
+    </script>
+    <script>        
+        function delete_table(db_name, table_name){
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: '<?php echo site_url('tables/delete') ?>',
+                data: "database_name="+db_name+
+                    "&table_name="+table_name,
+                success: function(response){
+                    //change on something
+                    alert(response);
+                    $('.db_'+table_name).empty();
+                }
+            });
+        }
+    </script>
+    <script>    
+        //I need to do THAT !!!
+        function edit_db(db_name){
+            //$('#database-form').attr("title","Edit Database");
+            $('input[type=hidden].db').val(db_name);
+            $( "#database-form" ).dialog( "open" );
+        }
+    </script>
+    <script>    
+        //I need to do THAT !!!
+        function edit_table(db_name, table_name){
+            $('input[type=hidden].db').val(db_name);
+            $('input[type=hidden].tables').val(table_name);
+            $('#db').hide();
+            $('label[for=db]').hide();
+            $('#count').hide();
+            $('label[for=count]').hide();
+            $( "#table-form" ).dialog( "open" );
+        }
+    </script>
+    <script>
+        jQuery(document).ready(function(){
+            $('#accordion .head').click(function() {
+                $(this).next().toggle();
+                return false;
+            }).next().hide();
+        });
+    </script>
+    <script>
+        function open_dropdown(class_name){
+            $('.btn-group').removeClass('open');
+            $('.btn-group .'+class_name).parent('a').parent('div').addClass('open');
+            return false;
+        }
+    </script>
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+
+                <a class="brand" href="<?php echo site_url('grid') ?>">
+                    <i class="icon-leaf icon-white"></i>
+                    DBGrid
+                </a>
+
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+
+                <div class="nav-collapse">
+                    <ul class="nav">
+                        <li class="">
+                            <a href="<?php echo site_url('grid') ?>">
+                                <i class="icon-home icon-white"></i>
+                                &nbsp;Home
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="<?php echo site_url('grid') ?>">
+                                <i class="icon-repeat icon-white"></i>
+                                &nbsp;Reload
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="<?php echo site_url('help') ?>">
+                                <i class="icon-flag icon-white"></i>
+                                &nbsp;Help
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="<?php echo site_url('grid/logout') ?>">
+                                <i class="icon-off icon-white"></i>
+                                &nbsp;LogOut
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
     </div>
+    <div class="container">

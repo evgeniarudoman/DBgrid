@@ -36,6 +36,7 @@ if (!function_exists('get_database_tree'))
                     $grid->type->db_name = "dbgrid";
 
                     $result[$database->getName() . '_field'][$field->getId()]['name'] = $field->getName();
+                    $result[$database->getName() . '_field'][$field->getId()]['size'] = $field->getSize();
 
                     $grid->type->select(array('id' => $type_id));
                     $result[$database->getName() . '_field'][$field->getId()]['type'] = $grid->type->getType();

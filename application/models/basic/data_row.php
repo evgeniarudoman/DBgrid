@@ -16,15 +16,18 @@ abstract class Data_Row extends CI_Model implements I_Data_Row
         return $this->row->id;
     }
 
+
     public function getSessionHash()
     {
         return $this->row->session_hash;
     }
 
+
     public function setRow($row)
     {
         $this->row = $row;
     }
+
 
     public function select($where)
     {
@@ -51,6 +54,7 @@ _EXC_MESSAGE;
         }
     }
 
+
     public function get_unique($where, $or_where)
     {
         $class_name = get_called_class();
@@ -71,18 +75,20 @@ _EXC_MESSAGE;
         }
     }
 
+
     public function delete($where)
     {
         $class_name = get_called_class();
         if (is_array($where))
         {
-            $this->db->delete($class_name::table_name(), (array) $where);
+            $this->db->delete($this->db_name . '.' . $class_name::table_name(), (array) $where);
         }
         else
         {
-            $this->db->delete($class_name::table_name(), array('entity_id' => $where));
+            $this->db->delete($this->db_name . '.' . $class_name::table_name(), array('entity_id' => $where));
         }
     }
+
 
     public function insert()
     {
@@ -91,6 +97,7 @@ _EXC_MESSAGE;
         $id = $this->db->insert_id();
         return $id;
     }
+
 
     public function update()
     {
@@ -104,6 +111,7 @@ _EXC_MESSAGE;
         return $data['entity_id'];
     }
 
+
     public function update_id($id)
     {
         $class_name = get_called_class();
@@ -114,6 +122,7 @@ _EXC_MESSAGE;
         $this->db->update($class_name::table_name(), $data);
     }
 
+
     public function save()
     {
         if (property_exists($this->row, "entity_id"))
@@ -122,11 +131,13 @@ _EXC_MESSAGE;
             $this->insert();
     }
 
+
     protected function _init_database()
     {
         if (!property_exists($this, "db"))
             $this->load->database();
     }
+
 
     public static function load_collection($db_name, $where = NULL, $order_by = NULL)
     {
@@ -137,8 +148,8 @@ _EXC_MESSAGE;
             $db->where($where);
         if ($order_by != NULL)
             $db->order_by($order_by);
-        
-        $query = $db->get($db_name.'.'.$class_name::table_name());
+
+        $query = $db->get($db_name . '.' . $class_name::table_name());
 
         $i = 0;
         foreach ($query->result() as $row)
@@ -147,8 +158,9 @@ _EXC_MESSAGE;
             $result[$i]->setRow($row);
             $i++;
         }
-        
+
         return $result;
     }
+
 
 }

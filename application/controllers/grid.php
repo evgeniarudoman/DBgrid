@@ -14,9 +14,9 @@ class Grid extends CI_Controller
 
         $this->load->model('query');
         $this->query->create_default_db();
-        
+
         //delete this later !!!
-        //$this->session->set_userdata('session_hash', '');
+        //$this->session->set_userdata('session_hash', 'djkfkdsjflk5673rgyh');
     }
 
 
@@ -24,12 +24,23 @@ class Grid extends CI_Controller
     {
         $this->template = array('title' => $title,
             'scripts' => array(
-                '1' => "/js/jquery-1.6.2.min.js",
-                '2' => "/js/jquery-ui-1.8.16.custom.min.js",
-                '3' => "/js/validation.js"),
+                '1' => "/bootstrap/js/bootstrap.js",
+                '2' => "/bootstrap/js/bootstrap.min.js",
+                '3' => "/bootstrap/js/bootstrap.modal.js",
+                '4' => "/js/jquery-1.6.2.min.js",
+                '5' => "/js/jquery-ui-1.8.16.custom.min.js",
+                '6' => "/js/validation.js",
+            ),
             'styles' => array(
                 '1' => "/css/jquery-ui-1.8.18.custom.css",
-                '2' => "/css/style.css")
+                '2' => "/css/style.css",
+                '3' => "/bootstrap/css/bootstrap.css",
+                '4' => "/bootstrap/css/bootstrap.min.css",
+                '5' => "/bootstrap/css/bootstrap-responsive.css",
+                '6' => "/bootstrap/css/bootstrap-responsive.min.css",
+                '7' => "/bootstrap/css/docs.css",
+                '8' => "/css/dialog.css"
+            ),
         );
 
         $this->load->view('templates/head', $this->template);
@@ -47,11 +58,11 @@ class Grid extends CI_Controller
         }
         else
         {
-           // if (!mysql_select_db($db, $this->conn_id))
-           // throw new SQLException("Could not select the database.", 2); 
+            // if (!mysql_select_db($db, $this->conn_id))
+            // throw new SQLException("Could not select the database.", 2); 
             if (isset($_POST) && !empty($_POST))
             {
-                
+
                 $this->load->model('user');
                 $this->user->db_name = "dbgrid";
 
@@ -207,8 +218,10 @@ class Grid extends CI_Controller
                 $list_database = NULL;
 
             $this->load->view('templates/scripts');
-            $this->load->view('templates/jquery_form', array(
-                'list_database' => $list_database
+            $this->load->view('templates/jquery_scripts');
+            $this->load->view('jquery_form', array(
+                'list_database' => $list_database,
+                'result' => $result
             ));
             $this->load->view('content', array(
                 'result' => $result,
