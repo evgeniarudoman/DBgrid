@@ -95,8 +95,8 @@
                         <ul class="dropdown-menu">
                             <li style="background-color: #08C;"><a href="#" style="color:#fff;"><i class="icon-th-large"></i> Choose theme</a></li>
                             <li class="divider"></li>
-                            <li><a href="#"><i class="icon-tint"></i> Blue</a></li>
-                            <li><a href="#"><i class="icon-tint"></i> Gray</a></li>
+                            <li><a href="" onclick="get_theme('blue');return false;"><i class="icon-tint"></i> Blue</a></li>
+                            <li><a href="" onclick="get_theme('gray');return false;"><i class="icon-tint"></i> Gray</a></li>
                         </ul>
                     </div>
                 </div>

@@ -8,6 +8,21 @@
         });
     </script>
     <script>
+    function get_theme(theme){
+        $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: '<?php echo site_url('grid/save_theme') ?>',
+                data: "theme="+theme,
+                success: function(response){
+                    //change on something
+                    alert(response);
+                    location.reload();
+                }
+            });
+    }
+    </script>
+    <script>
       
         function add_row(db_name, table_name, count){
         
