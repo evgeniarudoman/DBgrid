@@ -29,10 +29,7 @@ class Grid extends CI_Controller
             case 'gray':
                 $theme_css = "/bootstrap/css/bootstrap.gray.css";
                 break;
-            case 'blue':
-                $theme_css = "/bootstrap/css/bootstrap.css";
-                break;
-            case NULL:
+            case 'blue' || NULL:
                 $theme_css = "/bootstrap/css/bootstrap.css";
                 break;
         }
