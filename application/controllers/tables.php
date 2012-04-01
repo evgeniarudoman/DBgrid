@@ -3,11 +3,9 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Tables extends CI_Controller
-{
+class Tables extends CI_Controller {
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
         $this->load->helper(array('form', 'url', 'html', 'database_tree'));
         $this->load->library('session');
@@ -18,22 +16,17 @@ class Tables extends CI_Controller
         $this->load->model('type');
     }
 
-
-    public function add()
-    {
+    public function add() {
         $user_id = $this->session->userdata('user_id');
         $success = TRUE;
         $this->load->model('query');
         $this->load->model('basic/db_tables', 'tables');
 
-        try
-        {
+        try {
             $bool = db_table_exists($user_id, $_POST['database'], $_POST['table_name']);
 
-            if (isset($bool) && $bool == 2)
-            {
-                for ($i = 1; $i <= $_POST['count']; $i++)
-                {
+            if (isset($bool) && $bool == 2) {
+                for ($i = 1; $i <= $_POST['count']; $i++) {
                     $fields[$i] = array(
                         'field' => $_POST['field' . $i],
                         'type' => $_POST['type' . $i],
@@ -56,14 +49,12 @@ class Tables extends CI_Controller
                 $this->table->setNumberOfFields($_POST['count']);
                 $table_id = $this->table->insert();
 
-                for ($i = 1; $i <= $_POST['count']; $i++)
-                {
+                for ($i = 1; $i <= $_POST['count']; $i++) {
                     $this->field->db_name = "dbgrid";
                     $this->field->setName($_POST['field' . $i]);
                     $this->field->setSize($_POST['size' . $i]);
                     $this->field->setWidth(20);
-                    if ($_POST['radio'] == $i)
-                    {
+                    if ($_POST['radio'] == $i) {
                         $this->field->setPrimaryKey(1);
                     }
                     $this->field->setTableId($table_id);
@@ -75,30 +66,23 @@ class Tables extends CI_Controller
                 }
 
                 $success = TRUE;
-            }
-            else
-            {
+            } else {
                 $success = FALSE;
             }
-        }
-        catch (Exception $e)
-        {
+        } catch (Exception $e) {
             $success = FALSE;
         }
 
         echo json_encode($success);
     }
 
-
-    public function delete()
-    {
+    public function delete() {
         $user_id = $this->session->userdata('user_id');
         $success = TRUE;
         $this->load->model('query');
         $this->load->model('basic/db_tables', 'tables');
 
-        try
-        {
+        try {
             $this->database->db_name = "dbgrid";
             $this->database->select(array('name' => $_POST['database_name'], 'user_id' => $user_id));
 
@@ -108,25 +92,20 @@ class Tables extends CI_Controller
             $this->tables->remove($_POST['database_name'], $_POST['table_name']);
 
             $success = TRUE;
-        }
-        catch (Exception $e)
-        {
+        } catch (Exception $e) {
             $success = FALSE;
         }
 
         echo json_encode($success);
     }
 
-
-    public function rename()
-    {
+    public function rename() {
         $success = TRUE;
         $user_id = $this->session->userdata('user_id');
         $this->load->model('query');
         $this->load->model('basic/db_tables', 'tables');
 
-        try
-        {
+        try {
             $this->tables->rename($_POST['database_name'], $_POST['table_name'], $_POST['new_name']);
 
             $this->database->db_name = "dbgrid";
@@ -138,27 +117,21 @@ class Tables extends CI_Controller
             $this->table->update();
 
             $success = TRUE;
-        }
-        catch (Exception $e)
-        {
+        } catch (Exception $e) {
             $success = FALSE;
         }
 
         echo json_encode($success);
     }
 
-
-    public function get_type()
-    {
+    public function get_type() {
         $types = $this->type->load_collection("dbgrid");
 
-        foreach ($types as $type)
-        {
+        foreach ($types as $type) {
             $list_type[] = array('key' => $type->getType());
         }
 
         echo json_encode($list_type);
     }
-
 
 }

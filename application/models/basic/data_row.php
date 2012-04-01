@@ -108,7 +108,6 @@ _EXC_MESSAGE;
         //unset($data['entity_id']);
         $this->db->update($this->db_name . '.' . $class_name::table_name(), $data);
         //$id = $this->db->insert_id();
-        return $data['entity_id'];
     }
 
 

@@ -98,10 +98,13 @@
                         
                         if ( $('input[type=hidden].db').val() == 0) 
                         {
-                            $( "#databases tbody" ).append( "<tr>" +
-                                "<td>"+"<div class='icon table'></div>"+"</td>"+
-                                "<td>"+"<a href='/grid/index?database="+database.val()+"'>" + database.val() + "</td>" +
-                                "</tr>" ); 
+                            $( "ul.nav.nav-list" ).append( "<li class='active head'>" +
+                                "<a href='#'>"+"<i class='icon-list-alt icon-white'></i>"+
+                                database.val()+
+                                "<i onclick='delete_db(\""+database.val()+"\");' class='icon-trash icon-white' style='float:right;'></i>"+
+                                "<i onclick='edit_db(\""+database.val()+"\");' class='icon-pencil icon-white' style='float:right;'></i>"+
+                                "</a>"
+                        ); 
                                 
                             // add new database by ajax
                             $.ajax({
@@ -116,10 +119,12 @@
                         }
                         else
                         {
-                            $( "#databases tbody" ).append( "<tr>" +
-                                "<td>"+"<div class='icon table'></div>"+"</td>"+
-                                "<td>"+"<a href='/grid/index?database="+database.val()+"'>" + database.val() + "</td>" +
-                                "</tr>" ); 
+                            $( "ul.nav.nav-list" ).append( "<li class='active head'>" +
+                                "<a href='#'>"+"<i class='icon-list-alt icon-white'></i>"+
+                                database.val()+
+                                "<i onclick='delete_db('data');' class='icon-trash icon-white' style='float:right;'></i>"+
+                                "<i onclick='edit_db('data');' class='icon-pencil icon-white' style='float:right;'></i>"+
+                                "</a>");
                                 
                             // add new database by ajax
                             $.ajax({
@@ -173,7 +178,7 @@
                             // add new database by ajax
                             $.ajax({
                                 type: "POST",
-                                url: '<?php //echo site_url('db/add');  ?>',
+                                url: '<?php //echo site_url('db/add');     ?>',
                                 data: "database_name="+database.val(),
                                 success: function(response){
                                     //change on something
@@ -191,7 +196,7 @@
                             // add new database by ajax
                             $.ajax({
                                 type: "POST",
-                                url: '<?php //echo site_url('db/rename');  ?>',
+                                url: '<?php //echo site_url('db/rename');     ?>',
                                 data: "new_name="+database.val()+
                                     "&database_name="+$('input[type=hidden].db').val(),
                                 success: function(response){
@@ -378,8 +383,8 @@
 <style>
     .well input[type=text]{
         background: transparent;
-border: none;
-        height: 10px;
+        border: none;
+        box-shadow: none;
     }
     .well input[type=checkbox]{
         margin-top: -5px;
@@ -398,7 +403,7 @@ border: none;
     .btn-group .btn-mini.dropdown-toggle {
         padding-left: 5px;
         padding-right: 5px;
-        padding-top: 2px;
+        padding-top: 3px;
     }
     .btn-toolbar {
         margin-top: -15px;

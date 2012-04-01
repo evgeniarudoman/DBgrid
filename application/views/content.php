@@ -1,8 +1,34 @@
 <div class="container-fluid">
     <div class="row-fluid">
         <div class="span4"> 
-            <div class="alert alert-info" style="text-align: center;">
-                DBGrid
+            <div class="alert alert-info" style="">
+                <ul class="breadcrumb" style="background:none; border:none;box-shadow: none;color:#333;padding: 0;margin: 0;">
+                    <?php if (isset($_GET['database'])): ?>
+                        <li>
+                            <a href="<?php echo site_url('grid') ?>">Home</a>
+                            <span class="divider">/</span>
+                        </li>
+                        <?php if (isset($_GET['table'])): ?>
+                            <li>
+                                <a href="<?php echo site_url('grid/index?database=' . $_GET['database']) ?>">
+                                    <?php echo $_GET['database']; ?>
+                                </a> 
+                                <span class="divider">/</span>
+                            </li>
+                            <li class="active">
+                                <?php echo $_GET['table']; ?>
+                            </li>
+                        <?php else: ?>
+                            <li class="active">
+                                <?php echo $_GET['database']; ?>
+                            </li>
+                        <?php endif; ?>
+                    <?php else: ?>
+                        <div style="text-align:center;color:#3A87AD;">
+                            Home
+                        </div>
+                    <?php endif; ?>
+                </ul>
             </div>
             <div id="accordion">
                 <div class="well" style="padding: 8px 0;height: 300px;">
@@ -25,7 +51,7 @@
                                                 <td style="width: 20px;"><i class="icon-th"></i></td>
                                                 <td>
                                                     <a href='/grid/index?database=<?php echo $database ?>&table=<?php echo $table; ?>'>
-                                                        <?php echo $table . ' (<i>' . count($result[$database . '_field']) . '</i>)'; ?></a>
+                                                        <?php echo $table . ' (<i>' . count($result[$database . '_' . $table . '_field']) . '</i>)'; ?></a>
                                                 </td>
                                                 <td><i class="icon-pencil" style="cursor: pointer;" onclick="edit_table('<?php echo $database; ?>', '<?php echo $table; ?>');"></i></td>
                                                 <td><i class="icon-trash" style="cursor: pointer;" onclick="delete_table('<?php echo $database; ?>', '<?php echo $table; ?>');"></i></td>
@@ -86,7 +112,7 @@
                                <!-- <i class="icon-check"></i>-->
                                 <input type="checkbox" />
                             </td>
-                            <?php foreach ($result[$_GET['database'] . '_field'] as $key => $field): ?>
+                            <?php foreach ($result[$_GET['database'] . '_' . $_GET['table'] . '_field'] as $key => $field): ?>
                                 <th name='<?php echo $key; ?>' style="width:<?php echo 10 * $field['size'] . 'px'; ?>">
                             <div class='resize'>
                                 <?php echo $field['name']; ?>
@@ -110,7 +136,7 @@
                             <?php $j++; ?>
                         <?php endwhile; ?>
                     </table>
+                    <i class="icon-plus" style="cursor: pointer;margin-top: 286px;" onclick="add_row('<?php echo $_GET['database']; ?>', '<?php echo $_GET['table']; ?>', '<?php echo mysql_num_fields($result['result']); ?>');"></i>
+                    <i class="icon-pencil" style="cursor: pointer;margin-top: 286px;" onclick="edit_field('<?php echo $database; ?>', '<?php echo $table; ?>');"></i>
+                    <i class="icon-trash" style="cursor: pointer;margin-top: 286px;" id="remove" onclick="delete_field('<?php echo $database; ?>', '<?php echo $table; ?>');"></i>
                 <?php endif; ?>
-                <i class="icon-plus" style="cursor: pointer;margin-top: 286px;" onclick="add_row('<?php echo $_GET['database']; ?>', '<?php echo $_GET['table']; ?>', '<?php echo mysql_num_fields($result['result']); ?>');"></i>
-                <i class="icon-pencil" style="cursor: pointer;margin-top: 286px;" onclick="edit_field('<?php echo $database; ?>', '<?php echo $table; ?>');"></i>
-                <i class="icon-trash" style="cursor: pointer;margin-top: 286px;" id="remove" onclick="delete_field('<?php echo $database; ?>', '<?php echo $table; ?>');"></i>

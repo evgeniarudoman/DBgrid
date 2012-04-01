@@ -171,7 +171,7 @@ class Grid extends CI_Controller
     {
         $session_hash = $this->session->userdata('session_hash');
         $user_id = $this->session->userdata('user_id');
-
+        
         if (isset($session_hash) && $session_hash != TRUE)
         {
             redirect(site_url('grid/login'));
@@ -182,13 +182,13 @@ class Grid extends CI_Controller
             $this->header($username);
 
             $result = get_database_tree($user_id);
-
+            
             try
             {
                 if (isset($_GET['database']) && !empty($_GET['database']) && isset($_GET['table']) && !empty($_GET['table']))
                 {
                     $err = db_table_exists($user_id, $_GET['database'], $_GET['table']);
-
+                    
                     if (isset($err) && $err == 1)
                     {
                         $result['result'] = mysql_query("SELECT * FROM " . $_GET['database'] . '.' . $_GET['table']);
