@@ -14,6 +14,9 @@ class Grid extends CI_Controller
 
         $this->load->model('query');
         $this->query->create_default_db();
+        
+        //delete this later !!!
+        //$this->session->set_userdata('session_hash', '');
     }
 
 
@@ -46,7 +49,6 @@ class Grid extends CI_Controller
         {
            // if (!mysql_select_db($db, $this->conn_id))
            // throw new SQLException("Could not select the database.", 2); 
-            var_dump($_POST);
             if (isset($_POST) && !empty($_POST))
             {
                 
@@ -84,7 +86,6 @@ class Grid extends CI_Controller
         $session_hash = $this->session->userdata('session_hash');
         $this->session->set_userdata('error', '');
 
-var_dump($_REQUEST);
         if (isset($session_hash) && $session_hash == TRUE)
         {
             redirect(site_url('grid/index'));
