@@ -125,7 +125,7 @@
                             <tr>
                                 <td class="check_one" >
                                   <!--  <i class="icon-check"></i>-->
-                                    <input type="checkbox" />
+                                    <input type="checkbox" name="<?php echo $j;?>" onclick="$(this).parent('td').parent('tr').children('td').attr('style','background-color:#EFF1F1;text-shadow: 0 1px 0 #FFFFFF;  color: #005580;')"/>
                                 </td>
 
                                 <?php $i = 0; ?>

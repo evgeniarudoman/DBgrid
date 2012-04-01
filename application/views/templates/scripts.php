@@ -184,7 +184,7 @@
                             </a>
                         </li>
                         <li class="">
-                            <a href="<?php echo site_url ('grid') ?>">
+                            <a href="">
                                 <i class="icon-repeat icon-white"></i>
                                 &nbsp;Reload
                             </a>

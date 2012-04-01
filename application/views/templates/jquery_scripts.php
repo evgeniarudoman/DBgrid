@@ -1,6 +1,5 @@
 <script>
-    $(function() {
-        
+    $(function() {  
         $( "#dialog:ui-dialog" ).dialog( "destroy" );
         
         $( "#create-database" ).click(function() {
@@ -302,7 +301,7 @@
                                     //change on something
                                     alert(response);
                                 }
-                            })
+                            });
                             
                             $( this ).dialog( "close" );
                         }
