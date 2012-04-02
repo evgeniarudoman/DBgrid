@@ -167,10 +167,12 @@
 
                     var fields = '';
                     var values = '';
+                    var td;
                     
                     $inputs.each(function(i) {
                         fields += '&field'+i+'='+this.name;
                         values += '&value'+i+'='+$(this).val();
+                        td += '<td>'+$(this).val()+'</td>';
                     });
                     
                     // add new database by ajax
@@ -185,6 +187,10 @@
                         success: function(response){
                             //change on something
                             alert(response);
+                            
+                            $('table.table-striped').append(
+                            '<tr><td class="check_one"><input type="checkbox"></td>'+td+'</tr>'
+                        );
                         }
                     })
                         
