@@ -1,8 +1,24 @@
 <body>
     <script language="javascript">
         $(document).ready(function() {
-            $(".resize").resizable({ 
-                handles: 'e'
+            //-----------------------------
+            $("div.resize").resizable({ 
+                handles: 'e',
+                stop: function() {
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: '<?php echo site_url ('fields/save_width') ?>',
+                        data: "database_name="+'<?php echo $_GET['database'] ?>'+
+                            "&table_name="+'<?php echo $_GET['table'] ?>'+
+                            "&field_name="+$(this).children('input[type=hidden]').val()+
+                            "&field_size="+$(this).width(),
+                        success: function(response){
+                            //change on something
+                            alert(response);
+                        }
+                    });
+                }
             });
             //-----------------------------
         });
@@ -158,6 +174,21 @@
                 });
             
             });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('i.icon-pencil').click(function(){
+                if ($("td.check_one input:checked").val() == 'on')
+                {
+                    var $inputs = $("td.check_one input:checked").parent('td').siblings();
+                    var row = '';
+                    
+                    $inputs.each(function(i) {
+                        row += '&row'+i+'='+this.text();
+                    });
+                }
+            })
         });
     </script>
     <div class="navbar navbar-fixed-top">

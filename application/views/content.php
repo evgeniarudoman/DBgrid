@@ -113,9 +113,10 @@
                                 <input type="checkbox" />
                             </td>
                             <?php foreach ($result[$_GET['database'] . '_' . $_GET['table'] . '_field'] as $key => $field): ?>
-                                <th name='<?php echo $key; ?>' style="width:<?php echo 10 * $field['size'] . 'px'; ?>">
-                            <div class='resize'>
+                                <th style="width:<?php echo $field['width'] . 'px'; ?>">
+                            <div class='resize' name="<?php echo $field['name']; ?>">
                                 <?php echo $field['name']; ?>
+                                <input type="hidden" value="<?php echo $field['name']; ?>"/>
                             </div>
                             </th>
                         <?php endforeach; ?>
@@ -130,9 +131,8 @@
 
                                 <?php $i = 0; ?>
                                 <?php foreach ($result[$_GET['database'] . '_' . $_GET['table'] . '_field'] as $key => $field): ?>
-                                    <td>
-                                        <input type="text" name="<?php echo $field['name'].'_'.$j; ?>" style="width:<?php echo 10 * $field['size'] . 'px'; ?>" class="input-small" value="<?php echo $row[mysql_field_name ($result['result'], $i)] ?>"/>                                        
-                                    </td> 
+                                    <td><?php echo $row[mysql_field_name ($result['result'], $i)] ?></td>
+                                       <!-- <input type="text" name="<?php //echo $field['name'].'_'.$j; ?>" style="width:<?php //echo 10 * $field['size'] . 'px'; ?>" class="input-small" value="<?php //echo $row[mysql_field_name ($result['result'], $i)] ?>"/>--> 
                                     <?php $i++; ?>
                                 <?php endforeach; ?>
 
