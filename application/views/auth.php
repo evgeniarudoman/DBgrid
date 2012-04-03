@@ -97,7 +97,7 @@
                         </tr>
 
                         <tr>
-                            <td><input type="submit" name="regist" value="REGISTER" class="button"/></td>
+                            <td><input type="submit" name="regist" value="REGISTER" class="btn btn-primary"/></td>
                         </tr>
                     </table>
                 </form>

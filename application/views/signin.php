@@ -31,7 +31,7 @@
                 });
             });
         </script>
-        <table id="login" >
+        <table id="login">
             <tr>
                 <td>
                     <form id="form" action="" method="post">
@@ -67,7 +67,7 @@
                                 <td class="little">Forgot your password? <a href="/grid/forgot.php">CLICK HERE</a></td>
                             </tr>
                             <tr>
-                                <td><input type="submit" name="signin" value="SIGN IN" class="button"/></td>
+                                <td><input type="submit" name="signin" value="SIGN IN" class="btn btn-primary"/></td>
                             </tr>
                         </table>
                     </form>
