@@ -34,9 +34,35 @@ class Db_rows extends CI_Model
         $this->db->query("INSERT INTO  `" . $db_name . "`.`" . $table_name . "` (" . $query . ")
                             VALUES (" . $val . ")");
     }
+    
+    public function update($db_name, $table_name, $fields, $values)
+    {
+        $str = '';
+        foreach ($fields as $field)
+        {
+            $str.='`' . $field . '` ,';
+        }
+        $query = substr($str, 0, strlen($str) - 1);
+        unset($str);
+
+        $str = '';
+        foreach ($values as $value)
+        {
+            $str.="'" . $value . "' ,";
+        }
+        $val = substr($str, 0, strlen($str) - 1);
+
+        
+        //UPDATE `datas`.`asas` SET `id` = '2dfd',
+//`names` = 'wdewsdasddsfsd',
+//`nnnnn` = 'sedferwdscdsx' WHERE `asas`.`id` =2 AND `asas`.`names` = 'sdasddsfsd' AND `asas`.`nnnnn` = 'wdscdsx' LIMIT 1 ;
+        
+        $this->db->query("UPDATE`" . $db_name . "`.`" . $table_name . "` (" . $query . ")
+                            VALUES (" . $val . ")");
+    }
 
 
-    public function rename($db_name, $new_name)
+    public function renuame($db_name, $new_name)
     {
         $this->db->query('RENAME DATABASE ' . $db_name . ' TO ' . $new_name);
     }

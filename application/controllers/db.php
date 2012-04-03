@@ -47,7 +47,7 @@ class Db extends CI_Controller
         }
         catch (Exception $e)
         {
-            $success = FALSE;
+            $success = '* Message - ' . $e->getMessage () . "\r\n" . "* Line # - " . $e->getLine () . "\r\n" . "* File - " . $e->getFile ();
         }
 
         echo json_encode($success);
@@ -72,7 +72,7 @@ class Db extends CI_Controller
         }
         catch (Exception $e)
         {
-            $success = FALSE;
+            $success = '* Message - ' . $e->getMessage () . "\r\n" . "* Line # - " . $e->getLine () . "\r\n" . "* File - " . $e->getFile ();
         }
 
         echo json_encode($success);
@@ -99,7 +99,7 @@ class Db extends CI_Controller
         }
         catch (Exception $e)
         {
-            $success = FALSE;
+           $success = '* Message - ' . $e->getMessage () . "\r\n" . "* Line # - " . $e->getLine () . "\r\n" . "* File - " . $e->getFile ();
         }
 
         echo json_encode($success);

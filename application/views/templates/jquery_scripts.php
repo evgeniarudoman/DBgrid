@@ -1,5 +1,5 @@
 <script>
-    $(function() {
+    $(function() {  
         $( "#dialog:ui-dialog" ).dialog( "destroy" );
         
         $( "#create-database" ).click(function() {
@@ -14,9 +14,9 @@
             $( "#table-form" ).dialog( "open" );
         });
         
-        /* $( "#add-row" ).click(function() {
+        $( "#add-row" ).click(function() {
             $( "#row-form" ).dialog( "open" );
-        });*/
+        });
 		
         // announcement variables
         var table = $( "#table" )
@@ -98,15 +98,18 @@
                         
                         if ( $('input[type=hidden].db').val() == 0) 
                         {
-                            $( "#databases tbody" ).append( "<tr>" +
-                                "<td>"+"<div class='icon table'></div>"+"</td>"+
-                                "<td>"+"<a href='/grid/index?database="+database.val()+"'>" + database.val() + "</td>" +
-                                "</tr>" ); 
+                            $( "ul.nav.nav-list" ).append( "<li class='active head'>" +
+                                "<a href='#'>"+"<i class='icon-list-alt icon-white'></i>"+
+                                database.val()+
+                                "<i onclick='delete_db(\""+database.val()+"\");' class='icon-trash icon-white' style='float:right;'></i>"+
+                                "<i onclick='edit_db(\""+database.val()+"\");' class='icon-pencil icon-white' style='float:right;'></i>"+
+                                "</a>"
+                        ); 
                                 
                             // add new database by ajax
                             $.ajax({
                                 type: "POST",
-                                url: '<?php echo site_url('db/add'); ?>',
+                                url: '<?php echo site_url ('db/add'); ?>',
                                 data: "database_name="+database.val(),
                                 success: function(response){
                                     //change on something
@@ -116,15 +119,17 @@
                         }
                         else
                         {
-                            $( "#databases tbody" ).append( "<tr>" +
-                                "<td>"+"<div class='icon table'></div>"+"</td>"+
-                                "<td>"+"<a href='/grid/index?database="+database.val()+"'>" + database.val() + "</td>" +
-                                "</tr>" ); 
+                            $( "ul.nav.nav-list" ).append( "<li class='active head'>" +
+                                "<a href='#'>"+"<i class='icon-list-alt icon-white'></i>"+
+                                database.val()+
+                                "<i onclick='delete_db('data');' class='icon-trash icon-white' style='float:right;'></i>"+
+                                "<i onclick='edit_db('data');' class='icon-pencil icon-white' style='float:right;'></i>"+
+                                "</a>");
                                 
                             // add new database by ajax
                             $.ajax({
                                 type: "POST",
-                                url: '<?php echo site_url('db/rename'); ?>',
+                                url: '<?php echo site_url ('db/rename'); ?>',
                                 data: "new_name="+database.val()+
                                     "&database_name="+$('input[type=hidden].db').val(),
                                 success: function(response){
@@ -146,11 +151,11 @@
             }
         });
         // end of creating new database
-        /*  
+          
         // modal of creating new field
-    $( "#row-form" ).dialog({
+        $( "#row-form" ).dialog({
             autoOpen: false,
-            height: 360,
+            height: 380,
             width: 400,
             modal: true,
             buttons: {
@@ -158,51 +163,39 @@
                     var bValid = true;
                     allFields.removeClass( "ui-state-error" );
 
-                    bValid = bValid && checkLength( database, "database", 3, 16 );
-                    bValid = bValid && checkRegexp( database, /^[a-z]([0-9a-z_])+$/i, "Database name may consist of a-z, 0-9, underscores, begin with a letter." );
-                   
-                    if ( bValid ) {
-                        
-                        if ( $('input[type=hidden].db').val() == 0) 
-                        {
-                            $( "#databases tbody" ).append( "<tr>" +
-                                "<td>"+"<div class='icon table'></div>"+"</td>"+
-                                "<td>"+"<a href='/grid/index?database="+database.val()+"'>" + database.val() + "</td>" +
-                                "</tr>" ); 
-                                
-                            // add new database by ajax
-                            $.ajax({
-                                type: "POST",
-                                url: '<?php //echo site_url('db/add');  ?>',
-                                data: "database_name="+database.val(),
-                                success: function(response){
-                                    //change on something
-                                    alert(response);
-                                }
-                            })
+                    var $inputs = $('#row-form input');
+
+                    var fields = '';
+                    var values = '';
+                    var td;
+                    
+                    $inputs.each(function(i) {
+                        fields += '&field'+i+'='+this.name;
+                        values += '&value'+i+'='+$(this).val();
+                        td += '<td>'+$(this).val()+'</td>';
+                    });
+                    
+                    // add new database by ajax
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: '<?php echo site_url ('rows/add'); ?>',
+                        data: "database_name="+"<?php echo $_GET['database'] ?>"+
+                            "&table_name="+"<?php echo $_GET['table'] ?>"+
+                            values+fields+
+                            "&count="+$inputs.length,
+                        success: function(response){
+                            //change on something
+                            alert(response);
+                            
+                            $('table.table-striped').append(
+                            '<tr><td class="check_one"><input type="checkbox"></td>'+td+'</tr>'
+                        );
                         }
-                        else
-                        {
-                            $( "#databases tbody" ).append( "<tr>" +
-                                "<td>"+"<div class='icon table'></div>"+"</td>"+
-                                "<td>"+"<a href='/grid/index?database="+database.val()+"'>" + database.val() + "</td>" +
-                                "</tr>" ); 
-                                
-                            // add new database by ajax
-                            $.ajax({
-                                type: "POST",
-                                url: '<?php //echo site_url('db/rename');  ?>',
-                                data: "new_name="+database.val()+
-                                    "&database_name="+$('input[type=hidden].db').val(),
-                                success: function(response){
-                                    //change on something
-                                    alert(response);
-                                }
-                            })
-                        }
+                    })
                         
-                        $( this ).dialog( "close" );
-                    }
+                    $( this ).dialog( "close" );
+                    
                 },
                 Cancel: function() {
                     $( this ).dialog( "close" );
@@ -213,7 +206,7 @@
             }
         });
         // end of creating new field
-         */
+         
         // modal of creating new table
         $( "#table-form" ).dialog({
             autoOpen: false,
@@ -269,7 +262,7 @@
                                 $.ajax({
                                     type: "POST",
                                     dataType: "json",
-                                    url: '<?php echo site_url('tables/get_type'); ?>',
+                                    url: '<?php echo site_url ('tables/get_type'); ?>',
                                     success: function(types){
                                         $.each( types, function(k, val){
                                             $( "div#table-form form.field-form select" ).append(
@@ -304,7 +297,7 @@
                             $.ajax({
                                 type: "POST",
                                 dataType: "json",
-                                url: '<?php echo site_url('tables/add'); ?>',
+                                url: '<?php echo site_url ('tables/add'); ?>',
                                 data: "table_name="+table.val()+
                                     "&count="+count.val()+
                                     "&database="+db.val()+
@@ -314,7 +307,7 @@
                                     //change on something
                                     alert(response);
                                 }
-                            })
+                            });
                             
                             $( this ).dialog( "close" );
                         }
@@ -326,7 +319,7 @@
                     {
                         $.ajax({
                             type: "POST",
-                            url: '<?php echo site_url('tables/rename'); ?>',
+                            url: '<?php echo site_url ('tables/rename'); ?>',
                             data: "new_name="+table.val()+
                                 "&database_name="+$('input[type=hidden].db').val()+
                                 "&table_name="+$('input[type=hidden].tables').val(),
@@ -378,8 +371,10 @@
 <style>
     .well input[type=text]{
         background: transparent;
-border: none;
-        height: 10px;
+        /*border: none;
+        box-shadow: none;*/
+        margin:0;
+        padding: 0;
     }
     .well input[type=checkbox]{
         margin-top: -5px;
@@ -398,7 +393,7 @@ border: none;
     .btn-group .btn-mini.dropdown-toggle {
         padding-left: 5px;
         padding-right: 5px;
-        padding-top: 2px;
+        padding-top: 3px;
     }
     .btn-toolbar {
         margin-top: -15px;
