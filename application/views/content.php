@@ -51,10 +51,15 @@
                                                 <td style="width: 20px;"><i class="icon-th"></i></td>
                                                 <td>
                                                     <a href='/grid/index?database=<?php echo $database ?>&table=<?php echo $table; ?>'>
-                                                        <?php echo $table . ' (<i>' . count($result[$database . '_' . $table . '_field']) . '</i>)'; ?></a>
+                                                        <?php echo $table . ' (<i>' . count($result[$database . '_' . $table . '_field']) . '</i>)'; ?>
+                                                    </a>
                                                 </td>
-                                                <td><i class="icon-pencil" style="cursor: pointer;" onclick="edit_table('<?php echo $database; ?>', '<?php echo $table; ?>');"></i></td>
-                                                <td><i class="icon-trash" style="cursor: pointer;" onclick="delete_table('<?php echo $database; ?>', '<?php echo $table; ?>');"></i></td>
+                                                <td>
+                                                    <i class="icon-pencil" style="cursor: pointer;" onclick="edit_table('<?php echo $database; ?>', '<?php echo $table; ?>');"></i>
+                                                </td>
+                                                <td>
+                                                    <i class="icon-trash" style="cursor: pointer;" onclick="delete_table('<?php echo $database; ?>', '<?php echo $table; ?>');"></i>
+                                                </td>
                                             <?php endforeach; ?>
                                         <?php else: ?>
                                             <td style="width: 20px;"><i class="icon-th"></i></td>

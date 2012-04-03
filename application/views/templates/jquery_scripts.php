@@ -360,6 +360,7 @@
                         });
                         
                         $('input[type=hidden].db').val(0);
+                        $( this ).dialog( "close" );
                     }
                 },
                 Cancel: function() {
