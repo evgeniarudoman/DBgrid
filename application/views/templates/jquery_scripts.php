@@ -383,9 +383,38 @@
             buttons: {
                 "YES": function(){
                     var checked = $("td.check_one input:checked");
+
                     if (checked.val() == 'on')
                     {
-                        checked.parent('td').parent('tr').slideUp();
+                        var $inputs = checked.parent('td');
+                        var $name = $("th div.resize");
+                        var row = '';
+                        var hidden = '';
+                    
+                        $inputs.each(function() {
+                            var $rows = $(this).siblings();
+                            $rows.each(function(j) {
+                                row = $(this).text();
+                                $name.each(function(z) {
+                                    if (z == j)
+                                    {
+                                        hidden += "&"+$(this).attr("name")+'='+row;
+                                    }   
+                                });
+                            });
+                        });
+                        
+                        $.ajax({
+                            type: "POST",
+                            url: '<?php echo site_url('rows/remove'); ?>',
+                            data: "database_name="+'<?php echo $_GET['database'] ?>'+
+                                "&table_name="+'<?php echo $_GET['table'] ?>'+hidden+"&count="+$inputs.length,
+                            success: function(response){
+                                //change on something
+                                checked.parent('td').parent('tr').slideUp();
+                                alert(response);
+                            }
+                        });
                     }
                     
                     $( this ).dialog( "close" );

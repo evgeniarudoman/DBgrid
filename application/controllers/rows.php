@@ -129,16 +129,15 @@ class Rows extends CI_Controller
                 {
                     foreach ($result[$_POST['database_name'] . '_' . $_POST['table_name'] . '_field'] as $field)
                     {
-                        if ($field['name'] == $_POST['field' . $i])
+                        if (isset($_POST[$field['name']]))
                         {
-                            $values[] = $_POST['value' . $i];
-                            $fields[] = $_POST['field' . $i];
-                            $old_values[] = $_POST['old_' . $_POST['field' . $i]];
+                            $values[] = $_POST[$field['name']];
+                            $fields[] = $field['name'];
                         }
                     }
                 }
 
-                $this->rows->update($_POST['database_name'], $_POST['table_name'], $fields, $values, $old_values);
+                $this->rows->remove($_POST['database_name'], $_POST['table_name'], $fields, $values);
 
                 $success = TRUE;
             }

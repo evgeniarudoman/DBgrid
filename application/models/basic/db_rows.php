@@ -76,12 +76,27 @@ class Db_rows extends CI_Model
 
     public function remove($db_name, $table_name, $fields, $values)
     {
+        $str = '';
+        $i = 0;
+        foreach ($fields as $field)
+        {
+            $j = 0;
+            foreach ($values as $value)
+            {
+                if ($j == $i)
+                    $str.="`" . $table_name . "`.`" . $field . "` = '" . $value . "' AND ";
+                $j++;
+            }
 
-
-//DELETE FROM `Data`.`ghgfh` WHERE `ghgfh`.`id` = 8 AND `ghgfh`.`name` = \'8\' AND `ghgfh`.`field` = \'8\' LIMIT 1
+            $i++;
+        }
+        $query = substr($str, 0, strlen($str) - 5);
+        unset($str);
 
         $this->db->query('DELETE FROM `' . $db_name . '`.`' . $table_name . '` 
-                            WHERE `' . $table_name . '`.`' . $field_name . '` = ' . $data);
+                            WHERE ' . $query . '
+                            LIMIT 1'
+        );
     }
 
 

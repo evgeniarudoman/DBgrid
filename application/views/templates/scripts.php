@@ -214,7 +214,7 @@
         $(document).ready(function() {
             $('i.icon-trash').click(function(){
                 if ($("td.check_one input:checked").val() == 'on')
-                {
+                { 
                     $( "#dialog-remove" ).dialog( "open" );
                 }
             });
