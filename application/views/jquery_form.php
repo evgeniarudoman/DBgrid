@@ -65,6 +65,7 @@
         <input type="hidden" class="valid" value="true"/>
         <input type="hidden" class="db" value="0"/>
         <input type="hidden" class="tables" value="0"/>
+        <input type="hidden" class="rows" value="0"/>
     </form>
 </div>
 <!-- end table form -->

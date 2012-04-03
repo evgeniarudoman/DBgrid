@@ -109,7 +109,7 @@
                             // add new database by ajax
                             $.ajax({
                                 type: "POST",
-                                url: '<?php echo site_url ('db/add'); ?>',
+                                url: '<?php echo site_url('db/add'); ?>',
                                 data: "database_name="+database.val(),
                                 success: function(response){
                                     //change on something
@@ -129,14 +129,16 @@
                             // add new database by ajax
                             $.ajax({
                                 type: "POST",
-                                url: '<?php echo site_url ('db/rename'); ?>',
+                                url: '<?php echo site_url('db/rename'); ?>',
                                 data: "new_name="+database.val()+
                                     "&database_name="+$('input[type=hidden].db').val(),
                                 success: function(response){
                                     //change on something
                                     alert(response);
                                 }
-                            })
+                            });
+                            
+                            $('input[type=hidden].db').val(0);
                         }
                         
                         $( this ).dialog( "close" );
@@ -175,25 +177,53 @@
                         td += '<td>'+$(this).val()+'</td>';
                     });
                     
-                    // add new database by ajax
-                    $.ajax({
-                        type: "POST",
-                        dataType: "json",
-                        url: '<?php echo site_url ('rows/add'); ?>',
-                        data: "database_name="+"<?php echo $_GET['database'] ?>"+
-                            "&table_name="+"<?php echo $_GET['table'] ?>"+
-                            fields+values+
-                            "&count="+$inputs.length,
-                        success: function(response){
-                            //change on something
-                            alert(response);
+                    if ( $('input[type=hidden].db').val() == 0) 
+                    {
+                        // add new database by ajax
+                        $.ajax({
+                            type: "POST",
+                            dataType: "json",
+                            url: '<?php echo site_url('rows/add'); ?>',
+                            data: "database_name="+"<?php echo $_GET['database'] ?>"+
+                                "&table_name="+"<?php echo $_GET['table'] ?>"+
+                                fields+values+
+                                "&count="+$inputs.length,
+                            success: function(response){
+                                //change on something
+                                alert(response);
                             
-                            $('table.table-striped').append(
-                            '<tr><td class="check_one"><input type="checkbox"></td>'+td+'</tr>'
-                        );
-                        }
-                    })
+                                $('table.table-striped').append(
+                                '<tr><td class="check_one"><input type="checkbox"></td>'+td+'</tr>'
+                            );
+                            }
+                        });
+                    }
+                    else
+                    {
+                        $.ajax({
+                            type: "POST",
+                            dataType: "json",
+                            url: '<?php echo site_url('rows/edit'); ?>',
+                            data: "database_name="+"<?php echo $_GET['database'] ?>"+
+                                "&table_name="+"<?php echo $_GET['table'] ?>"+
+                                fields+values+
+                                "&count="+$inputs.length+
+                                $('input[type=hidden].rows').val(),
+                            success: function(response){
+                                //change on something
+                                alert(response);
+                                
+                                if ($("td.check_one input:checked").val() == 'on')
+                                {
+                                    $inputs.each(function() {
+                                        $("td.check_one input:checked").parent('td').siblings().text($(this).val());
+                                    });
+                                }
+                            }
+                        });
                         
+                        $('input[type=hidden].db').val(0)
+                    }
                     $( this ).dialog( "close" );
                     
                 },
@@ -262,7 +292,7 @@
                                 $.ajax({
                                     type: "POST",
                                     dataType: "json",
-                                    url: '<?php echo site_url ('tables/get_type'); ?>',
+                                    url: '<?php echo site_url('tables/get_type'); ?>',
                                     success: function(types){
                                         $.each( types, function(k, val){
                                             $( "div#table-form form.field-form select" ).append(
@@ -297,7 +327,7 @@
                             $.ajax({
                                 type: "POST",
                                 dataType: "json",
-                                url: '<?php echo site_url ('tables/add'); ?>',
+                                url: '<?php echo site_url('tables/add'); ?>',
                                 data: "table_name="+table.val()+
                                     "&count="+count.val()+
                                     "&database="+db.val()+
@@ -319,7 +349,7 @@
                     {
                         $.ajax({
                             type: "POST",
-                            url: '<?php echo site_url ('tables/rename'); ?>',
+                            url: '<?php echo site_url('tables/rename'); ?>',
                             data: "new_name="+table.val()+
                                 "&database_name="+$('input[type=hidden].db').val()+
                                 "&table_name="+$('input[type=hidden].tables').val(),
@@ -327,7 +357,9 @@
                                 //change on something
                                 alert(response);
                             }
-                        })
+                        });
+                        
+                        $('input[type=hidden].db').val(0);
                     }
                 },
                 Cancel: function() {
