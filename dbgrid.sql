@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 3.4.5deb1
+-- version 3.3.7deb5build0.10.10.1
 -- http://www.phpmyadmin.net
 --
--- Хост: localhost
--- Время создания: Мар 10 2012 г., 17:42
--- Версия сервера: 5.1.58
--- Версия PHP: 5.3.6-13ubuntu3.6
+-- Host: localhost
+-- Generation Time: Apr 03, 2012 at 08:34 PM
+-- Server version: 5.1.61
+-- PHP Version: 5.3.3-1ubuntu9.10
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -17,13 +16,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- База данных: `dbgrid`
+-- Database: `dbgrid`
 --
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `databases`
+-- Table structure for table `databases`
 --
 
 CREATE TABLE IF NOT EXISTS `databases` (
@@ -31,13 +30,15 @@ CREATE TABLE IF NOT EXISTS `databases` (
   `name` varchar(100) NOT NULL,
   `user_id` int(10) NOT NULL,
   `number_of_tables` int(10) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `databases_1` (`user_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `fields`
+-- Table structure for table `fields`
 --
 
 CREATE TABLE IF NOT EXISTS `fields` (
@@ -49,13 +50,18 @@ CREATE TABLE IF NOT EXISTS `fields` (
   `table_id` int(10) NOT NULL,
   `user_id` int(10) NOT NULL,
   `type_id` int(10) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `fields_1` (`table_id`),
+  KEY `fields_2` (`user_id`),
+  KEY `fields_3` (`type_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `tables`
+-- Table structure for table `tables`
 --
 
 CREATE TABLE IF NOT EXISTS `tables` (
@@ -64,13 +70,18 @@ CREATE TABLE IF NOT EXISTS `tables` (
   `db_id` int(10) NOT NULL,
   `user_id` int(10) NOT NULL,
   `number_of_fields` int(10) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `tables_1` (`db_id`),
+  KEY `tables_2` (`user_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `themes`
+-- Table structure for table `themes`
 --
 
 CREATE TABLE IF NOT EXISTS `themes` (
@@ -78,74 +89,69 @@ CREATE TABLE IF NOT EXISTS `themes` (
   `style` varchar(100) NOT NULL,
   `color` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
--- Дамп данных таблицы `themes`
+-- Dumping data for table `themes`
 --
 
 INSERT INTO `themes` (`id`, `style`, `color`) VALUES
-(1, 'dark', '#002F32');
+(1, 'blue', ''),
+(2, 'gray', '');
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `types`
+-- Table structure for table `types`
 --
 
 CREATE TABLE IF NOT EXISTS `types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `type` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
--- Дамп данных таблицы `types`
+-- Dumping data for table `types`
 --
 
 INSERT INTO `types` (`id`, `type`) VALUES
-(15, 'int'),
-(16, 'varchar'),
-(17, 'text'),
-(18, 'date');
+(1, 'int'),
+(2, 'text');
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `users`
+-- Table structure for table `users`
 --
 
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(100) NOT NULL,
-  `email` varchar(100) NOT NULL,
   `password` varchar(50) NOT NULL,
   `session_hash` varchar(100) NOT NULL,
+  `mysql_username` varchar(100) NOT NULL,
+  `mysql_password` varchar(50) NOT NULL,
   `theme_id` int(10) NOT NULL,
   `number_of_db` int(10) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `username` (`username`,`email`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+  UNIQUE KEY `username` (`username`,`email`),
+  KEY `users_1` (`theme_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
 
 --
--- Дамп данных таблицы `users`
---
-
-INSERT INTO `users` (`id`, `username`, `email`, `password`, `session_hash`, `theme_id`, `number_of_db`) VALUES
-(1, 'Evgenia', 'evgenia.rudoman@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', '1119782ce71fd3eefabbfa48522e3b21', 1, 0);
-
---
--- Ограничения внешнего ключа сохраненных таблиц
+-- Constraints for dumped tables
 --
 
 --
--- Ограничения внешнего ключа таблицы `databases`
+-- Constraints for table `databases`
 --
 ALTER TABLE `databases`
   ADD CONSTRAINT `databases_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Ограничения внешнего ключа таблицы `fields`
+-- Constraints for table `fields`
 --
 ALTER TABLE `fields`
   ADD CONSTRAINT `fields_1` FOREIGN KEY (`table_id`) REFERENCES `tables` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -153,18 +159,14 @@ ALTER TABLE `fields`
   ADD CONSTRAINT `fields_3` FOREIGN KEY (`type_id`) REFERENCES `types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Ограничения внешнего ключа таблицы `tables`
+-- Constraints for table `tables`
 --
 ALTER TABLE `tables`
   ADD CONSTRAINT `tables_1` FOREIGN KEY (`db_id`) REFERENCES `databases` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `tables_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Ограничения внешнего ключа таблицы `users`
+-- Constraints for table `users`
 --
 ALTER TABLE `users`
   ADD CONSTRAINT `users_1` FOREIGN KEY (`theme_id`) REFERENCES `themes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
