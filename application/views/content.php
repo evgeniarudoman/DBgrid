@@ -3,14 +3,14 @@
         <div class="span4"> 
             <div class="alert alert-info" style="">
                 <ul class="breadcrumb" style="background:none; border:none;box-shadow: none;color:#333;padding: 0;margin: 0;">
-                    <?php if (isset ($_GET['database'])): ?>
+                    <?php if (isset($_GET['database'])): ?>
                         <li>
-                            <a href="<?php echo site_url ('grid') ?>">Home</a>
+                            <a href="<?php echo site_url('grid') ?>">Home</a>
                             <span class="divider">/</span>
                         </li>
-                        <?php if (isset ($_GET['table'])): ?>
+                        <?php if (isset($_GET['table'])): ?>
                             <li>
-                                <a href="<?php echo site_url ('grid/index?database=' . $_GET['database']) ?>">
+                                <a href="<?php echo site_url('grid/index?database=' . $_GET['database']) ?>">
                                     <?php echo $_GET['database']; ?>
                                 </a> 
                                 <span class="divider">/</span>
@@ -33,7 +33,7 @@
             <div id="accordion">
                 <div class="well" style="padding: 8px 0;height: 320px;">
                     <ul class="nav nav-list">
-                        <?php if (isset ($result['databases'])): ?>
+                        <?php if (isset($result['databases'])): ?>
                             <?php foreach ($result['databases'] as $database): ?>
                                 <li class="active head">
                                     <a href="#">
@@ -45,13 +45,13 @@
                                     </a>
                                 </li>
                                 <table id="tables" style="margin-left: 15px;height: 30px;">
-                                    <?php if (isset ($result[$database . '_table'])): ?>
+                                    <?php if (isset($result[$database . '_table'])): ?>
                                         <?php foreach ($result[$database . '_table'] as $table): ?>
                                             <tr>
                                                 <td style="width: 20px;"><i class="icon-th"></i></td>
                                                 <td>
                                                     <a href='/grid/index?database=<?php echo $database ?>&table=<?php echo $table; ?>'>
-                                                        <?php echo $table . ' (<i>' . count ($result[$database . '_' . $table . '_field']) . '</i>)'; ?></a>
+                                                        <?php echo $table . ' (<i>' . count($result[$database . '_' . $table . '_field']) . '</i>)'; ?></a>
                                                 </td>
                                                 <td><i class="icon-pencil" style="cursor: pointer;" onclick="edit_table('<?php echo $database; ?>', '<?php echo $table; ?>');"></i></td>
                                                 <td><i class="icon-trash" style="cursor: pointer;" onclick="delete_table('<?php echo $database; ?>', '<?php echo $table; ?>');"></i></td>
@@ -105,7 +105,7 @@
 
         <div class="span8">
             <div class="well" style="padding: 8px 0;height: 400px;position: relative;">
-                <?php if (isset ($_GET['table']) && !empty ($_GET['table'])): ?>
+                <?php if (isset($_GET['table']) && !empty($_GET['table'])): ?>
                     <table class="table-striped table-bordered table-condensed" style="margin-left: 20px;">
                         <tr>
                             <td class="check_all">
@@ -113,33 +113,33 @@
                                 <input type="checkbox" />
                             </td>
                             <?php foreach ($result[$_GET['database'] . '_' . $_GET['table'] . '_field'] as $key => $field): ?>
-                                <th name='<?php echo $key; ?>' style="width:<?php echo 10 * $field['size'] . 'px'; ?>">
-                            <div class='resize'>
+                                <th style="width:<?php echo $field['width'] . 'px'; ?>">
+                            <div class='resize' name="<?php echo $field['name']; ?>">
                                 <?php echo $field['name']; ?>
+                                <input type="hidden" value="<?php echo $field['name']; ?>"/>
                             </div>
                             </th>
                         <?php endforeach; ?>
                         </tr>
-                        <?php $j   = 1; ?>
-                        <?php while ($row = mysql_fetch_array ($result['result'])): ?>
+                        <?php $j = 1; ?>
+                        <?php while ($row = mysql_fetch_array($result['result'])): ?>
                             <tr>
                                 <td class="check_one" >
                                   <!--  <i class="icon-check"></i>-->
-                                    <input type="checkbox" name="<?php echo $j;?>" onclick="$(this).parent('td').parent('tr').children('td').attr('style','background-color:#EFF1F1;text-shadow: 0 1px 0 #FFFFFF;  color: #005580;')"/>
+                                    <input type="checkbox" name="<?php echo $j; ?>" onclick="$(this).parent('td').parent('tr').children('td').attr('style','background-color:#EFF1F1;text-shadow: 0 1px 0 #FFFFFF;  color: #005580;')"/>
                                 </td>
 
                                 <?php $i = 0; ?>
                                 <?php foreach ($result[$_GET['database'] . '_' . $_GET['table'] . '_field'] as $key => $field): ?>
-                                    <td>
-                                        <input type="text" name="<?php echo $field['name'].'_'.$j; ?>" style="width:<?php echo 10 * $field['size'] . 'px'; ?>" class="input-small" value="<?php echo $row[mysql_field_name ($result['result'], $i)] ?>"/>                                        
-                                    </td> 
+                                    <td><?php echo $row[mysql_field_name($result['result'], $i)] ?></td>
+                                       <!-- <input type="text" name="<?php //echo $field['name'].'_'.$j;  ?>" style="width:<?php //echo 10 * $field['size'] . 'px';  ?>" class="input-small" value="<?php //echo $row[mysql_field_name ($result['result'], $i)]  ?>"/>--> 
                                     <?php $i++; ?>
                                 <?php endforeach; ?>
 
                                 <!--
                                 <?php //for ($i = 0; $i < mysql_num_fields ($result['result']); $i++): ?>
                                 <td onclick="/*$(this).append('<input type=\'text\'/>');*/">
-                                    <input type="text" class="input-small" value="<?php //echo $row[mysql_field_name ($result['result'], $i)]  ?>"/>                                        
+                                    <input type="text" class="input-small" value="<?php //echo $row[mysql_field_name ($result['result'], $i)]   ?>"/>                                        
                                 </td>
                                 <?php //endfor; ?>
                                 -->
@@ -151,4 +151,4 @@
                     <i class="icon-pencil" style="cursor: pointer;position: absolute;bottom: 10px;left: 40px;" onclick="edit_field('<?php echo $database; ?>', '<?php echo $table; ?>');"></i>
                     <i class="icon-trash" style="cursor: pointer;position: absolute;bottom: 10px;left: 60px;" id="remove" onclick="delete_field('<?php echo $database; ?>', '<?php echo $table; ?>');"></i>
                 <?php endif; ?>
-<!--onclick="add_row('<?php //echo $_GET['database']; ?>', '<?php //echo $_GET['table']; ?>', '<?php //echo mysql_num_fields ($result['result']); ?>');"-->
+<!--onclick="add_row('<?php //echo $_GET['database'];  ?>', '<?php //echo $_GET['table'];  ?>', '<?php //echo mysql_num_fields ($result['result']);  ?>');"-->

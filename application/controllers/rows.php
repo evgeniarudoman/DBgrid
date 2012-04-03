@@ -1,37 +1,39 @@
 <?php
 
-if (!defined ('BASEPATH'))
-    exit ('No direct script access allowed');
+if (!defined('BASEPATH'))
+    exit('No direct script access allowed');
 
 class Rows extends CI_Controller
 {
 
-    public function __construct ()
+    public function __construct()
     {
-        parent::__construct ();
-        $this->load->helper (array ('form', 'url', 'html', 'database_tree'));
-        $this->load->library ('session');
+        parent::__construct();
+        $this->load->helper(array('form', 'url', 'html', 'database_tree'));
+        $this->load->library('session');
 
-        $this->load->model ('database');
-        $this->load->model ('table');
-        $this->load->model ('field');
-        $this->load->model ('type');
+        $this->load->model('database');
+        $this->load->model('table');
+        $this->load->model('field');
+        $this->load->model('type');
     }
 
-    public function add ()
+
+    public function add()
     {
-        $user_id = $this->session->userdata ('user_id');
+        $user_id = $this->session->userdata('user_id');
         $success = TRUE;
-        $this->load->model ('query');
-        $this->load->model ('basic/db_rows', 'rows');
+        $this->load->model('query');
+        $this->load->model('basic/db_rows', 'rows');
         header("Content-Type: text/html;charset=utf-8");
+
         try
         {
-            $bool = db_table_exists ($user_id, $_POST['database_name'], $_POST['table_name']);
+            $bool = db_table_exists($user_id, $_POST['database_name'], $_POST['table_name']);
 
-            if (isset ($bool) && $bool == 1)
+            if (isset($bool) && $bool == 1)
             {
-                $result = get_database_tree ($user_id);
+                $result = get_database_tree($user_id);
 
                 for ($i = 0; $i < $_POST['count']; $i++)
                 {
@@ -45,7 +47,7 @@ class Rows extends CI_Controller
                     }
                 }
 
-                $this->rows->insert ($_POST['database_name'], $_POST['table_name'], $fields, $values);
+                $this->rows->insert($_POST['database_name'], $_POST['table_name'], $fields, $values);
 
                 $success = TRUE;
             }
@@ -58,8 +60,8 @@ class Rows extends CI_Controller
         {
             $success = FALSE;
         }
-        
-        echo json_encode ($success);
+        echo json_encode($success);
     }
+
 
 }

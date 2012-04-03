@@ -182,7 +182,7 @@
                         url: '<?php echo site_url ('rows/add'); ?>',
                         data: "database_name="+"<?php echo $_GET['database'] ?>"+
                             "&table_name="+"<?php echo $_GET['table'] ?>"+
-                            values+fields+
+                            fields+values+
                             "&count="+$inputs.length,
                         success: function(response){
                             //change on something

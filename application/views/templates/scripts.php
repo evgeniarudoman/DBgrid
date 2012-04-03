@@ -1,8 +1,24 @@
 <body>
     <script language="javascript">
         $(document).ready(function() {
-            $(".resize").resizable({ 
-                handles: 'e'
+            //-----------------------------
+            $("div.resize").resizable({ 
+                handles: 'e',
+                stop: function() {
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: '<?php echo site_url ('fields/save_width') ?>',
+                        data: "database_name="+'<?php echo $_GET['database'] ?>'+
+                            "&table_name="+'<?php echo $_GET['table'] ?>'+
+                            "&field_name="+$(this).children('input[type=hidden]').val()+
+                            "&field_size="+$(this).width(),
+                        success: function(response){
+                            //change on something
+                            alert(response);
+                        }
+                    });
+                }
             });
             //-----------------------------
         });
@@ -160,6 +176,33 @@
             });
         });
     </script>
+
+    <script>
+        $(document).ready(function() {
+            $('i.icon-pencil').click(function(){
+                if ($("td.check_one input:checked").val() == 'on')
+                {
+                    var $inputs = $("td.check_one input:checked").parent('td');
+                    var $name = $("th div.resize");
+                    var row = '';
+                    var th = '';
+                    
+                    $name.each(function(k) {
+                        th += "&field"+k+"="+$(this).attr("name")+"\r\n";
+                    });
+                    alert(th);
+                    $inputs.each(function(i) {
+                        var $rows = $(this).siblings();
+                        $rows.each(function(j) {
+                            row += '&row'+i+"_"+j+'='+$(this).text()+"\r\n";
+                        });
+                    });
+                    alert(row);
+                }
+            })
+        });
+    </script>
+
     <div class="navbar navbar-fixed-top">
         <div class="navbar-inner">
             <div class="container">
