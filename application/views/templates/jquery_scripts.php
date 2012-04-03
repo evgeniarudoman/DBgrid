@@ -382,7 +382,12 @@
             modal: true,
             buttons: {
                 "YES": function(){
-                    $("#content .check").slideUp('fast');
+                    var checked = $("td.check_one input:checked");
+                    if (checked.val() == 'on')
+                    {
+                        checked.parent('td').parent('tr').slideUp();
+                    }
+                    
                     $( this ).dialog( "close" );
                 },
                 "NO": function(){

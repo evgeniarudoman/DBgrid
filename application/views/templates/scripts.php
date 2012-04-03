@@ -210,6 +210,17 @@
         });
     </script>
 
+    <script>
+        $(document).ready(function() {
+            $('i.icon-trash').click(function(){
+                if ($("td.check_one input:checked").val() == 'on')
+                {
+                    $( "#dialog-remove" ).dialog( "open" );
+                }
+            });
+        });
+    </script>
+
     <div class="navbar navbar-fixed-top">
         <div class="navbar-inner">
             <div class="container">

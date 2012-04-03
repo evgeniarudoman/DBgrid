@@ -132,14 +132,14 @@
                                 <?php $i = 0; ?>
                                 <?php foreach ($result[$_GET['database'] . '_' . $_GET['table'] . '_field'] as $key => $field): ?>
                                     <td><?php echo $row[mysql_field_name($result['result'], $i)] ?></td>
-                                       <!-- <input type="text" name="<?php //echo $field['name'].'_'.$j;  ?>" style="width:<?php //echo 10 * $field['size'] . 'px';  ?>" class="input-small" value="<?php //echo $row[mysql_field_name ($result['result'], $i)]  ?>"/>--> 
+                                       <!-- <input type="text" name="<?php //echo $field['name'].'_'.$j;   ?>" style="width:<?php //echo 10 * $field['size'] . 'px';   ?>" class="input-small" value="<?php //echo $row[mysql_field_name ($result['result'], $i)]   ?>"/>--> 
                                     <?php $i++; ?>
                                 <?php endforeach; ?>
 
                                 <!--
                                 <?php //for ($i = 0; $i < mysql_num_fields ($result['result']); $i++): ?>
                                 <td onclick="/*$(this).append('<input type=\'text\'/>');*/">
-                                    <input type="text" class="input-small" value="<?php //echo $row[mysql_field_name ($result['result'], $i)]   ?>"/>                                        
+                                    <input type="text" class="input-small" value="<?php //echo $row[mysql_field_name ($result['result'], $i)]    ?>"/>                                        
                                 </td>
                                 <?php //endfor; ?>
                                 -->
@@ -148,7 +148,7 @@
                         <?php endwhile; ?>
                     </table>
                     <i class="icon-plus" style="cursor: pointer;position: absolute;bottom: 10px;left: 20px;" id="add-row"></i>
-                    <i class="icon-pencil" style="cursor: pointer;position: absolute;bottom: 10px;left: 40px;" onclick="edit_field('<?php echo $database; ?>', '<?php echo $table; ?>');"></i>
-                    <i class="icon-trash" style="cursor: pointer;position: absolute;bottom: 10px;left: 60px;" id="remove" onclick="delete_field('<?php echo $database; ?>', '<?php echo $table; ?>');"></i>
+                    <i class="icon-pencil" style="cursor: pointer;position: absolute;bottom: 10px;left: 40px;"></i>
+                    <i class="icon-trash" style="cursor: pointer;position: absolute;bottom: 10px;left: 60px;"></i>
                 <?php endif; ?>
-<!--onclick="add_row('<?php //echo $_GET['database'];  ?>', '<?php //echo $_GET['table'];  ?>', '<?php //echo mysql_num_fields ($result['result']);  ?>');"-->
+<!--onclick="add_row('<?php //echo $_GET['database'];   ?>', '<?php //echo $_GET['table'];   ?>', '<?php //echo mysql_num_fields ($result['result']);   ?>');"-->
