@@ -181,12 +181,22 @@
             $('i.icon-pencil').click(function(){
                 if ($("td.check_one input:checked").val() == 'on')
                 {
-                    var $inputs = $("td.check_one input:checked").parent('td').siblings();
+                    var $inputs = $("td.check_one input:checked").parent('td');
+                    var $name = $("th div.resize");
                     var row = '';
+                    var th = '';
                     
-                    $inputs.each(function(i) {
-                        row += '&row'+i+'='+this.text();
+                    $name.each(function(k) {
+                        th += "&field"+k+"="+$(this).attr("name")+"\r\n";
                     });
+                    alert(th);
+                    $inputs.each(function(i) {
+                        var $rows = $(this).siblings();
+                        $rows.each(function(j) {
+                            row += '&row'+i+"_"+j+'='+$(this).text()+"\r\n";
+                        });
+                    });
+                    alert(row);
                 }
             })
         });
