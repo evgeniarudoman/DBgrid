@@ -142,6 +142,7 @@
     </script>
     <script>
         jQuery(document).ready(function(){
+            $('#accordion').accordion();
             $('#accordion .head').click(function() {
                 $(this).next().toggle();
                 return false;
@@ -224,6 +225,7 @@
     <script>
         $(document).ready(function() {
             $('.pagination li a').click(function(){
+                
                 var offset = ($(this).text()*5)-5;
                 $('.pagination li.active').removeClass('active');
                 $(this).parent('li').addClass('active');
@@ -239,6 +241,7 @@
                         $('#ajax-page').html(res);
                     }
                 });
+                return false;
             });
         });
     </script>

@@ -164,7 +164,7 @@
 <!--onclick="add_row('<?php //echo $_GET['database'];       ?>', '<?php //echo $_GET['table'];       ?>', '<?php //echo mysql_num_fields ($result['result']);       ?>');"-->
 
                 <div class="pagination">
-                    <ul style="position: absolute;bottom: 10px;left: 230px;">
+                    <ul style="position: absolute;bottom: 30px;left: 230px;">
                         <!-- <li class="prev disabled"><a href="#">&larr;</a></li>-->
                         <li class="active"><a href="#">1</a></li>
                         <?php for ($k = 2; $k <= ceil($result['num_rows']/5); $k++): ?>
