@@ -13,22 +13,21 @@ class Grid extends CI_Controller
         parent::__construct ();
 
         /*
-          $this->confg['hostname'] = "localhost";
-          $this->confg['username'] = "root";
-          $this->confg['password'] = "root";
-          $this->confg['database'] = "";
-          $this->confg['dbdriver'] = "mysql";
-          $this->confg['dbprefix'] = "";
-          $this->confg['pconnect'] = FALSE;
-          $this->confg['db_debug'] = TRUE;
-          $this->confg['cache_on'] = FALSE;
-          $this->confg['cachedir'] = "";
-          $this->confg['char_set'] = "utf8";
-          $this->confg['dbcollat'] = "utf8_general_ci";
+        $this->confg['hostname'] = "localhost";
+        $this->confg['username'] = "root";
+        $this->confg['password'] = "root";
+        $this->confg['database'] = "";
+        $this->confg['dbdriver'] = "mysql";
+        $this->confg['dbprefix'] = "";
+        $this->confg['pconnect'] = FALSE;
+        $this->confg['db_debug'] = TRUE;
+        $this->confg['cache_on'] = FALSE;
+        $this->confg['cachedir'] = "";
+        $this->confg['char_set'] = "utf8";
+        $this->confg['dbcollat'] = "utf8_general_ci";
 
-          $this->load->database ($this->confg);
-         */
-
+        $this->load->database ($this->confg);
+*/
         $this->load->helper (array ('form', 'url', 'html', 'database_tree'));
         $this->load->library ('session');
 
@@ -96,7 +95,7 @@ class Grid extends CI_Controller
             {
                 try
                 {
-                    $this->user->get_unique (array ('username' => $_POST['username']));
+                    $this->user->get_unique (array ('email' => $_POST['email']), array ('username' => $_POST['username']));
                 }
                 catch (Exception $e)
                 {

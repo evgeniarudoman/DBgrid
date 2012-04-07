@@ -235,6 +235,18 @@
                 $('input#page').val($(this).text());
                 $('.pagination li.active').removeClass('active');
                 $(this).parent('li').addClass('active');
+                
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo site_url('rows/select')?>",
+                    dataType: "html",
+                    data: "database_name="+'<?php echo $_GET['database'] ?>'+
+                            "&table_name="+'<?php echo $_GET['table'] ?>'+
+                            "&offset="+$('input#offset').val(),
+                    success: function(res) {
+                        $('#ajax-page').html(res);
+                    }
+                });
             });
         });
     </script>
