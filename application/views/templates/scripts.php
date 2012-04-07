@@ -142,7 +142,6 @@
     </script>
     <script>
         jQuery(document).ready(function(){
-            $('#accordion').accordion();
             $('#accordion .head').click(function() {
                 $(this).next().toggle();
                 return false;

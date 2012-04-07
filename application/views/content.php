@@ -138,14 +138,14 @@
                                     <?php $i = 0; ?>
                                     <?php foreach ($result[$_GET['database'] . '_' . $_GET['table'] . '_field'] as $key => $field): ?>
                                         <td><?php echo $row[mysql_field_name ($result['result'], $i)] ?></td>
-                                           <!-- <input type="text" name="<?php //echo $field['name'].'_'.$j;       ?>" style="width:<?php //echo 10 * $field['size'] . 'px';       ?>" class="input-small" value="<?php //echo $row[mysql_field_name ($result['result'], $i)]       ?>"/>--> 
+                                           <!-- <input type="text" name="<?php //echo $field['name'].'_'.$j;        ?>" style="width:<?php //echo 10 * $field['size'] . 'px';        ?>" class="input-small" value="<?php //echo $row[mysql_field_name ($result['result'], $i)]        ?>"/>--> 
                                         <?php $i++; ?>
                                     <?php endforeach; ?>
 
                                     <!--
                                     <?php //for ($i = 0; $i < mysql_num_fields ($result['result']); $i++): ?>
                                     <td onclick="/*$(this).append('<input type=\'text\'/>');*/">
-                                        <input type="text" class="input-small" value="<?php //echo $row[mysql_field_name ($result['result'], $i)]        ?>"/>                                        
+                                        <input type="text" class="input-small" value="<?php //echo $row[mysql_field_name ($result['result'], $i)]         ?>"/>                                        
                                     </td>
                                     <?php //endfor; ?>
                                     -->
@@ -160,16 +160,15 @@
                     <a href="<?php echo site_url ('export/xls') . '?' . $_SERVER["QUERY_STRING"]; ?>">
                         <i class="icon-file" style="cursor: pointer;position: absolute;bottom: 10px;left: 100px;"></i>
                     </a>
+                    <div class="pagination">
+                        <ul style="position: absolute;bottom: 30px;left: 230px;">
+                            <!-- <li class="prev disabled"><a href="#">&larr;</a></li>-->
+                            <li class="active"><a href="#">1</a></li>
+                            <?php for ($k = 2; $k <= ceil ($result['num_rows'] / 5); $k++): ?>
+                                <li><a href="#"><?php echo $k ?></a></li>
+                            <?php endfor; ?>
+                            <!-- <li class="next"><a href="#">&rarr;</a></li>-->
+                        </ul>
+                    </div>
                 <?php endif; ?>
-<!--onclick="add_row('<?php //echo $_GET['database'];       ?>', '<?php //echo $_GET['table'];       ?>', '<?php //echo mysql_num_fields ($result['result']);       ?>');"-->
-
-                <div class="pagination">
-                    <ul style="position: absolute;bottom: 30px;left: 230px;">
-                        <!-- <li class="prev disabled"><a href="#">&larr;</a></li>-->
-                        <li class="active"><a href="#">1</a></li>
-                        <?php for ($k = 2; $k <= ceil($result['num_rows']/5); $k++): ?>
-                            <li><a href="#"><?php echo $k?></a></li>
-                        <?php endfor; ?>
-                        <!-- <li class="next"><a href="#">&rarr;</a></li>-->
-                    </ul>
-                </div>
+<!--onclick="add_row('<?php //echo $_GET['database'];        ?>', '<?php //echo $_GET['table'];        ?>', '<?php //echo mysql_num_fields ($result['result']);        ?>');"-->
