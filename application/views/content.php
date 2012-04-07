@@ -155,5 +155,8 @@
                     <i class="icon-plus" style="cursor: pointer;position: absolute;bottom: 10px;left: 20px;" id="add-row"></i>
                     <i class="icon-pencil" style="cursor: pointer;position: absolute;bottom: 10px;left: 40px;"></i>
                     <i class="icon-trash" style="cursor: pointer;position: absolute;bottom: 10px;left: 60px;"></i>
+                    <a href="<?php echo site_url('export/xls').'?'.$_SERVER["QUERY_STRING"];?>">
+                        <i class="icon-file" style="cursor: pointer;position: absolute;bottom: 10px;left: 100px;"></i>
+                    </a>
                 <?php endif; ?>
 <!--onclick="add_row('<?php //echo $_GET['database'];   ?>', '<?php //echo $_GET['table'];   ?>', '<?php //echo mysql_num_fields ($result['result']);   ?>');"-->
