@@ -224,25 +224,17 @@
     <script>
         $(document).ready(function() {
             $('.pagination li a').click(function(){
-                if ($('input#page').val() < $(this).text())
-                {
-                    $('input#offset').val(Number($('input#offset').val())+5);
-                }
-                if ($('input#page').val() > $(this).text())
-                {
-                    $('input#offset').val(Number($('input#offset').val())-5);
-                }
-                $('input#page').val($(this).text());
+                var offset = ($(this).text()*5)-5;
                 $('.pagination li.active').removeClass('active');
                 $(this).parent('li').addClass('active');
                 
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo site_url('rows/select')?>",
+                    url: "<?php echo site_url ('rows/select') ?>",
                     dataType: "html",
                     data: "database_name="+'<?php echo $_GET['database'] ?>'+
-                            "&table_name="+'<?php echo $_GET['table'] ?>'+
-                            "&offset="+$('input#offset').val(),
+                        "&table_name="+'<?php echo $_GET['table'] ?>'+
+                        "&offset="+offset,
                     success: function(res) {
                         $('#ajax-page').html(res);
                     }
