@@ -8,7 +8,7 @@
                     $.ajax({
                         type: "POST",
                         dataType: "json",
-                        url: '<?php echo site_url('fields/save_width') ?>',
+                        url: '<?php echo site_url ('fields/save_width') ?>',
                         data: "database_name="+'<?php echo $_GET['database'] ?>'+
                             "&table_name="+'<?php echo $_GET['table'] ?>'+
                             "&field_name="+$(this).children('input[type=hidden]').val()+
@@ -28,7 +28,7 @@
             $.ajax({
                 type: "POST",
                 dataType: "json",
-                url: '<?php echo site_url('grid/save_theme') ?>',
+                url: '<?php echo site_url ('grid/save_theme') ?>',
                 data: "theme="+theme,
                 success: function(response){
                     //change on something
@@ -54,7 +54,7 @@
             $.ajax({
                 type: "POST",
                 dataType: "json",
-                url: '<?php echo site_url('rows/add') ?>',
+                url: '<?php echo site_url ('rows/add') ?>',
                 data: "database_name="+db_name+
                     "&table_name="+table_name+
                     // "&count="+count+
@@ -94,7 +94,7 @@
             $.ajax({
                 type: "POST",
                 dataType: "json",
-                url: '<?php echo site_url('db/delete') ?>',
+                url: '<?php echo site_url ('db/delete') ?>',
                 data: "database_name="+db_name,
                 success: function(response){
                     //change on something
@@ -109,7 +109,7 @@
             $.ajax({
                 type: "POST",
                 dataType: "json",
-                url: '<?php echo site_url('tables/delete') ?>',
+                url: '<?php echo site_url ('tables/delete') ?>',
                 data: "database_name="+db_name+
                     "&table_name="+table_name,
                 success: function(response){
@@ -163,7 +163,7 @@
                 $.ajax({
                     type: "POST",
                     dataType: "json",
-                    url: '<?php echo site_url('rows/add') ?>',
+                    url: '<?php echo site_url ('rows/add') ?>',
                     data: "database_name="+db_name+
                         "&table_name="+table_name,
                     success: function(response){
@@ -221,11 +221,28 @@
         });
     </script>
 
+    <script>
+        $(document).ready(function() {
+            $('.pagination li a').click(function(){
+                if ($('input#page').val() < $(this).text())
+                {
+                    $('input#offset').val(Number($('input#offset').val())+5);
+                }
+                if ($('input#page').val() > $(this).text())
+                {
+                    $('input#offset').val(Number($('input#offset').val())-5);
+                }
+                $('input#page').val($(this).text());
+                $('.pagination li.active').removeClass('active');
+                $(this).parent('li').addClass('active');
+            });
+        });
+    </script>
     <div class="navbar navbar-fixed-top">
         <div class="navbar-inner">
             <div class="container">
 
-                <a class="brand" href="<?php echo site_url('grid') ?>">
+                <a class="brand" href="<?php echo site_url ('grid') ?>">
                     <i class="icon-leaf icon-white"></i>
                     DBGrid
                 </a>
@@ -239,7 +256,7 @@
                 <div class="nav-collapse">
                     <ul class="nav">
                         <li class="">
-                            <a href="<?php echo site_url('grid') ?>">
+                            <a href="<?php echo site_url ('grid') ?>">
                                 <i class="icon-home icon-white"></i>
                                 &nbsp;Home
                             </a>
@@ -251,13 +268,13 @@
                             </a>
                         </li>
                         <li class="">
-                            <a href="<?php echo site_url('help') ?>">
+                            <a href="<?php echo site_url ('help') ?>">
                                 <i class="icon-flag icon-white"></i>
                                 &nbsp;Help
                             </a>
                         </li>
                         <li class="">
-                            <a href="<?php echo site_url('grid/logout') ?>">
+                            <a href="<?php echo site_url ('grid/logout') ?>">
                                 <i class="icon-off icon-white"></i>
                                 &nbsp;LogOut
                             </a>

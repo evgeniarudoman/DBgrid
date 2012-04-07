@@ -226,7 +226,7 @@ class Grid extends CI_Controller
 
                     if (isset ($err) && $err == 1)
                     {
-                        $result['result'] = mysql_query ("SELECT * FROM " . $_GET['database'] . '.' . $_GET['table']);
+                        $result['result'] = mysql_query ("SELECT * FROM " . $_GET['database'] . '.' . $_GET['table'].' LIMIT 5');
                     }
                     elseif (isset ($err) && $err == 2)
                     {
