@@ -1,7 +1,7 @@
 <body>
     <script>
         $(document).ready(function(){
-              /*  
+                
             $("#form").validate({
  
                 rules: {
@@ -44,7 +44,7 @@
                         maxlength:"<img src='/image/warning.png'>Please enter no more than 12 characters."
                     }                       
                 }
-            });*/
+            });
         });
     </script>
     <table id="auth">

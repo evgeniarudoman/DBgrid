@@ -12,16 +12,25 @@ class Grid extends CI_Controller
     {
         parent::__construct ();
 
-        $this->load->helper (array ('form', 'url', 'html', 'database_tree', 'db_connect'));
-        $this->load->library ('session');
+        /*
+          $this->confg['hostname'] = "localhost";
+          $this->confg['username'] = "root";
+          $this->confg['password'] = "root";
+          $this->confg['database'] = "";
+          $this->confg['dbdriver'] = "mysql";
+          $this->confg['dbprefix'] = "";
+          $this->confg['pconnect'] = FALSE;
+          $this->confg['db_debug'] = TRUE;
+          $this->confg['cache_on'] = FALSE;
+          $this->confg['cachedir'] = "";
+          $this->confg['char_set'] = "utf8";
+          $this->confg['dbcollat'] = "utf8_general_ci";
 
-        $this->confg = array (
-            'username' => "root",
-            'password' => "root"
-        );
-        $dd = db_connect ($this->confg);
-        //var_dump ($dd);
-        //die();
+          $this->load->database ($this->confg);
+         */
+
+        $this->load->helper (array ('form', 'url', 'html', 'database_tree'));
+        $this->load->library ('session');
 
         $this->load->model ('query');
         $this->load->model ('user');
@@ -87,9 +96,12 @@ class Grid extends CI_Controller
             {
                 try
                 {
-                    $this->query->create_user ($_POST['username'], $_POST['password']);
-
+                    $this->user->get_unique (array ('username' => $_POST['username']));
+                }
+                catch (Exception $e)
+                {
                     $this->user->setUsername (trim (str_replace (' ', '_', $_POST['username'])));
+                    $this->user->setEmail (trim ($_POST['email']));
                     $this->user->setPassword (trim (md5 ($_POST['password'])));
                     $this->user->setSessionHash ('');
                     $this->user->setThemeId (1);
@@ -98,10 +110,8 @@ class Grid extends CI_Controller
 
                     redirect (site_url ('grid/login'));
                 }
-                catch (Exception $e)
-                {
-                    $this->session->set_userdata ('error', 'Username or email is already exist.');
-                }
+
+                $this->session->set_userdata ('error', 'Username or email is already exist.');
             }
 
             $this->header ('REGISTRATION');

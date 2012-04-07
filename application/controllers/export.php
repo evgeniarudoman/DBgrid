@@ -6,11 +6,21 @@ if (!defined('BASEPATH'))
 class Export extends CI_Controller
 {
 
+    public function __construct ()
+    {
+        parent::__construct ();
+        
+        $this->load->helper (array ('form', 'url', 'html', 'database_tree'));
+        $this->load->library ('session');
+        
+        $this->load->model ('database');
+    }
+    
     public function xls()
     {
         $header = '';
         $data = '';
-        $link = mysql_connect('localhost', 'root', 'root');
+        
         $select = "SELECT * FROM `Data`.`sda`";
         $export = mysql_query($select) or die("Sql error : " . mysql_error());
         $fields = mysql_num_fields($export);

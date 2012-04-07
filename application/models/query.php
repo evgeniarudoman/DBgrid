@@ -143,18 +143,6 @@ class Query extends CI_Model
                     ');
     }
 
-    public function create_user ($username, $password)
-    {
-        $this->db->query ("CREATE USER '" . $username . "'@'localhost' 
-                            IDENTIFIED BY '" . $password . "';
-            ");
-        
-        $this->db->query ("GRANT ALL PRIVILEGES ON * . * TO '" . $username . "'@'localhost' 
-                            IDENTIFIED BY '" . $password . "' 
-                            WITH GRANT OPTION MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0 ;
-            ");
-    }
-
 }
 
 ?>
