@@ -97,7 +97,7 @@ class Query extends CI_Model
                                 `theme_id` int(10) NOT NULL,
                                 `number_of_db` int(10) NOT NULL,
                                 PRIMARY KEY (`id`),
-                                UNIQUE KEY `username` (`username`,`email`),
+                                UNIQUE KEY `username` (`username`),
                                 KEY `users_1` (`theme_id`)
                         ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
                     ');
@@ -141,6 +141,18 @@ class Query extends CI_Model
         $this->db->query ('CREATE TABLE IF NOT EXISTS `' . $db_name . '`.`' . $table_name . '` (' . $query . ')
                     ENGINE = INNODB CHARACTER SET utf8 COLLATE utf8_general_ci;
                     ');
+    }
+
+    public function create_user ($username, $password)
+    {
+        $this->db->query ("CREATE USER '" . $username . "'@'localhost' 
+                            IDENTIFIED BY '" . $password . "';
+            ");
+        
+        $this->db->query ("GRANT ALL PRIVILEGES ON * . * TO '" . $username . "'@'localhost' 
+                            IDENTIFIED BY '" . $password . "' 
+                            WITH GRANT OPTION MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0 ;
+            ");
     }
 
 }

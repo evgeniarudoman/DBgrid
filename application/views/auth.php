@@ -1,14 +1,10 @@
 <body>
     <script>
         $(document).ready(function(){
-                
+              /*  
             $("#form").validate({
  
                 rules: {
-                    email: {
-                        required: true,
-                        email:true
-                    },
                     username: {
                         required: true,
                         minlength: 6,
@@ -48,7 +44,7 @@
                         maxlength:"<img src='/image/warning.png'>Please enter no more than 12 characters."
                     }                       
                 }
-            });
+            });*/
         });
     </script>
     <table id="auth">
@@ -70,12 +66,6 @@
                                     </b>
                                 </span>
                             </td>
-                        </tr>
-                        <tr>
-                            <td><span>E-mail <b>*</b></span></td>
-                        </tr>
-                        <tr>
-                            <td><input type="text" name="email" class="val"/></td>
                         </tr>
                         <tr>
                             <td><span>Username <b>*</b></span></td>
