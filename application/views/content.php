@@ -127,48 +127,40 @@
                     <?php if (isset ($_GET['table']) && !empty ($_GET['table'])): ?>
                         <table id="myTable" class="tablesorter table-striped table-bordered table-condensed" style="margin-left: 20px;">
                             <thead>
-                            <tr>
-                                <td class="check_all">
-                                    <input type="checkbox" />
-                                </td>
-                                <?php foreach ($result[$_GET['database'] . '_' . $_GET['table'] . '_field'] as $key => $field): ?>
-                                    <th class="header" style="width:<?php echo $field['width'] . 'px'; ?>;position:relative;" onclick="$('.caret#up').hide();$('.caret#down').show();return false;">
-                                            <div class='resize' name="<?php echo $field['name']; ?>" >
-                                                <?php echo $field['name']; ?>
-                                                <input type="hidden" value="<?php echo $field['name']; ?>" />
-                                                <input type="hidden" name="sorting" value="0" />
-                                            </div>
-                                    </th>                                    
-                                <?php endforeach; ?>
+                                <tr>
+                                    <td class="check_all">
+                                        <input type="checkbox" />
+                                    </td>
+                                    <?php foreach ($result[$_GET['database'] . '_' . $_GET['table'] . '_field'] as $key => $field): ?>
+                                        <th class="header" style="width:<?php echo $field['width'] . 'px'; ?>;position:relative;" onclick="$('.caret#up').hide();$('.caret#down').show();return false;">
+                                <div class='resize' name="<?php echo $field['name']; ?>" >
+                                    <?php echo $field['name']; ?>
+                                    <input type="hidden" value="<?php echo $field['name']; ?>" />
+                                    <input type="hidden" name="sorting" value="0" />
+                                </div>
+                                </th>                                    
+                            <?php endforeach; ?>
                             </tr>
                             </thead>
                             <tbody> 
-                            <?php $j   = 1; ?>
-                            <?php while ($row = mysql_fetch_array ($result['result'])): ?>
-                                <tr>
-                                    <td class="check_one" >
-                                      <!--  <i class="icon-check"></i>-->
-                                        <input type="checkbox" name="<?php echo $j; ?>" onclick="$(this).parent('td').parent('tr').children('td').attr('style','background-color:#EFF1F1;text-shadow: 0 1px 0 #FFFFFF;  color: #005580;')"/>
-                                    </td>
+                                <?php $j   = 1; ?>
+                                <?php while ($row = mysql_fetch_array ($result['result'])): ?>
+                                    <tr>
+                                        <td class="check_one" >
+                                            <input type="checkbox" name="<?php echo $j; ?>" onclick="$(this).parent('td').parent('tr').children('td').attr('style','background-color:#EFF1F1;text-shadow: 0 1px 0 #FFFFFF;  color: #005580;')"/>
+                                        </td>
 
-                                    <?php $i = 0; ?>
-                                    <?php foreach ($result[$_GET['database'] . '_' . $_GET['table'] . '_field'] as $key => $field): ?>
-                                        <td><?php echo $row[mysql_field_name ($result['result'], $i)] ?></td>
-                                           <!-- <input type="text" name="<?php //echo $field['name'].'_'.$j;              ?>" style="width:<?php //echo 10 * $field['size'] . 'px';              ?>" class="input-small" value="<?php //echo $row[mysql_field_name ($result['result'], $i)]              ?>"/>--> 
-                                        <?php $i++; ?>
-                                    <?php endforeach; ?>
-
-                                    <!--
-                                    <?php //for ($i = 0; $i < mysql_num_fields ($result['result']); $i++): ?>
-                                    <td onclick="/*$(this).append('<input type=\'text\'/>');*/">
-                                        <input type="text" class="input-small" value="<?php //echo $row[mysql_field_name ($result['result'], $i)]               ?>"/>                                        
-                                    </td>
-                                    <?php //endfor; ?>
-                                    -->
-                                </tr>
-                                <?php $j++; ?>
-                            <?php endwhile; ?>
-                                </tbody> 
+                                        <?php $i = 0; ?>
+                                        <?php foreach ($result[$_GET['database'] . '_' . $_GET['table'] . '_field'] as $key => $field): ?>
+                                            <td>
+                                                <?php echo $row[mysql_field_name ($result['result'], $i)] ?>
+                                            </td>
+                                            <?php $i++; ?>
+                                        <?php endforeach; ?>
+                                    </tr>
+                                    <?php $j++; ?>
+                                <?php endwhile; ?>
+                            </tbody> 
                         </table>
                     </div>
                     <i class="icon-plus" style="cursor: pointer;position: absolute;bottom: 10px;left: 20px;" id="add-row"></i>
@@ -179,12 +171,10 @@
                     </a>
                     <div class="pagination">
                         <ul style="position: absolute;bottom: 30px;left: 230px;">
-                            <!-- <li class="prev disabled"><a href="#">&larr;</a></li>-->
                             <li class="active"><a href="#">1</a></li>
                             <?php for ($k = 2; $k <= ceil ($result['num_rows'] / 8); $k++): ?>
                                 <li><a href="#"><?php echo $k ?></a></li>
                             <?php endfor; ?>
-                            <!-- <li class="next"><a href="#">&rarr;</a></li>-->
                         </ul>
                     </div>
                 <?php endif; ?>
