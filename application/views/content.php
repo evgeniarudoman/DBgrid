@@ -120,7 +120,6 @@
                                 </div>
                             </div>
                         </div>
-
                     </fieldset>
                 </form>
                 <div id="ajax-page">
@@ -170,7 +169,7 @@
                         <i class="icon-file" style="cursor: pointer;position: absolute;bottom: 10px;left: 100px;"></i>
                     </a>
                     <div class="pagination">
-                        <ul style="position: absolute;bottom: 30px;left: 230px;">
+                        <ul style="position: absolute;left:20px;">
                             <li class="active"><a href="#">1</a></li>
                             <?php for ($k = 2; $k <= ceil ($result['num_rows'] / 8); $k++): ?>
                                 <li><a href="#"><?php echo $k ?></a></li>
