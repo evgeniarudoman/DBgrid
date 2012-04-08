@@ -109,7 +109,7 @@
                             // add new database by ajax
                             $.ajax({
                                 type: "POST",
-                                url: '<?php echo site_url('db/add'); ?>',
+                                url: '<?php echo site_url ('db/add'); ?>',
                                 data: "database_name="+database.val(),
                                 success: function(response){
                                     //change on something
@@ -129,7 +129,7 @@
                             // add new database by ajax
                             $.ajax({
                                 type: "POST",
-                                url: '<?php echo site_url('db/rename'); ?>',
+                                url: '<?php echo site_url ('db/rename'); ?>',
                                 data: "new_name="+database.val()+
                                     "&database_name="+$('input[type=hidden].db').val(),
                                 success: function(response){
@@ -183,7 +183,7 @@
                         $.ajax({
                             type: "POST",
                             dataType: "json",
-                            url: '<?php echo site_url('rows/add'); ?>',
+                            url: '<?php echo site_url ('rows/add'); ?>',
                             data: "database_name="+"<?php echo $_GET['database'] ?>"+
                                 "&table_name="+"<?php echo $_GET['table'] ?>"+
                                 fields+values+
@@ -203,7 +203,7 @@
                         $.ajax({
                             type: "POST",
                             dataType: "json",
-                            url: '<?php echo site_url('rows/edit'); ?>',
+                            url: '<?php echo site_url ('rows/edit'); ?>',
                             data: "database_name="+"<?php echo $_GET['database'] ?>"+
                                 "&table_name="+"<?php echo $_GET['table'] ?>"+
                                 fields+values+
@@ -292,7 +292,7 @@
                                 $.ajax({
                                     type: "POST",
                                     dataType: "json",
-                                    url: '<?php echo site_url('tables/get_type'); ?>',
+                                    url: '<?php echo site_url ('tables/get_type'); ?>',
                                     success: function(types){
                                         $.each( types, function(k, val){
                                             $( "div#table-form form.field-form select" ).append(
@@ -327,7 +327,7 @@
                             $.ajax({
                                 type: "POST",
                                 dataType: "json",
-                                url: '<?php echo site_url('tables/add'); ?>',
+                                url: '<?php echo site_url ('tables/add'); ?>',
                                 data: "table_name="+table.val()+
                                     "&count="+count.val()+
                                     "&database="+db.val()+
@@ -349,7 +349,7 @@
                     {
                         $.ajax({
                             type: "POST",
-                            url: '<?php echo site_url('tables/rename'); ?>',
+                            url: '<?php echo site_url ('tables/rename'); ?>',
                             data: "new_name="+table.val()+
                                 "&database_name="+$('input[type=hidden].db').val()+
                                 "&table_name="+$('input[type=hidden].tables').val(),
@@ -407,7 +407,7 @@
                         
                         $.ajax({
                             type: "POST",
-                            url: '<?php echo site_url('rows/remove'); ?>',
+                            url: '<?php echo site_url ('rows/remove'); ?>',
                             data: "database_name="+'<?php echo $_GET['database'] ?>'+
                                 "&table_name="+'<?php echo $_GET['table'] ?>'+hidden+"&count="+$inputs.length,
                             success: function(response){
@@ -437,14 +437,14 @@
 </script>
 <style>
     .well input[type=text]{
-        background: transparent;
-        /*border: none;
-        box-shadow: none;*/
+        /*background: transparent;
+        border: none;
+        box-shadow: none;
         margin:0;
-        padding: 0;
+        padding: 0;*/
     }
     .well input[type=checkbox]{
-        margin-top: -5px;
+        /*margin-top: -5px;*/
     }
     .ui-widget-header{
         background: #D9EDF7;
@@ -470,7 +470,7 @@
     select.text { display: inline; margin-left: 5px;}
     input.field { display:inline;}
     input[id^=size] { display:inline; width: 30px;}
-    fieldset { padding:0; border:0; margin-top:25px; }
+    fieldset { padding:0; border:0; /*margin-top:25px;*/ }
     h1 { font-size: 1.2em; margin: .6em 0; }
     div#databases-contain { width: 350px; margin: 20px 0; }
     div#databases-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }

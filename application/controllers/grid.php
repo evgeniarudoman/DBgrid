@@ -73,7 +73,7 @@ class Grid extends CI_Controller
                 //'5' => "/bootstrap/css/bootstrap-responsive.css",
                 '6' => "/bootstrap/css/bootstrap-responsive.min.css",
                 '7' => "/bootstrap/css/docs.css",
-                '8' => "/css/dialog.css"
+                //'8' => "/css/dialog.css"
             ),
         );
 

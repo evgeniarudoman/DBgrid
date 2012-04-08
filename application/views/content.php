@@ -110,6 +110,19 @@
 
         <div class="span8">
             <div class="well" style="padding: 8px 0;height: 400px;position: relative;">
+                <form class="form-horizontal">
+                    <fieldset>
+                        <div class="control-group">
+                            <div class="controls">
+                                <div class="input-append">
+                                    <input type="text" size="16" id="appendedInput" class="span2">
+                                    <span class="add-on btn"><i class="icon-search"></i></span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </form>
                 <div id="ajax-page">
                     <?php if (isset ($_GET['table']) && !empty ($_GET['table'])): ?>
                         <table class="table-striped table-bordered table-condensed" style="margin-left: 20px;">
@@ -138,14 +151,14 @@
                                     <?php $i = 0; ?>
                                     <?php foreach ($result[$_GET['database'] . '_' . $_GET['table'] . '_field'] as $key => $field): ?>
                                         <td><?php echo $row[mysql_field_name ($result['result'], $i)] ?></td>
-                                           <!-- <input type="text" name="<?php //echo $field['name'].'_'.$j;        ?>" style="width:<?php //echo 10 * $field['size'] . 'px';        ?>" class="input-small" value="<?php //echo $row[mysql_field_name ($result['result'], $i)]        ?>"/>--> 
+                                           <!-- <input type="text" name="<?php //echo $field['name'].'_'.$j;         ?>" style="width:<?php //echo 10 * $field['size'] . 'px';         ?>" class="input-small" value="<?php //echo $row[mysql_field_name ($result['result'], $i)]         ?>"/>--> 
                                         <?php $i++; ?>
                                     <?php endforeach; ?>
 
                                     <!--
                                     <?php //for ($i = 0; $i < mysql_num_fields ($result['result']); $i++): ?>
                                     <td onclick="/*$(this).append('<input type=\'text\'/>');*/">
-                                        <input type="text" class="input-small" value="<?php //echo $row[mysql_field_name ($result['result'], $i)]         ?>"/>                                        
+                                        <input type="text" class="input-small" value="<?php //echo $row[mysql_field_name ($result['result'], $i)]          ?>"/>                                        
                                     </td>
                                     <?php //endfor; ?>
                                     -->
@@ -171,4 +184,4 @@
                         </ul>
                     </div>
                 <?php endif; ?>
-<!--onclick="add_row('<?php //echo $_GET['database'];        ?>', '<?php //echo $_GET['table'];        ?>', '<?php //echo mysql_num_fields ($result['result']);        ?>');"-->
+<!--onclick="add_row('<?php //echo $_GET['database'];         ?>', '<?php //echo $_GET['table'];         ?>', '<?php //echo mysql_num_fields ($result['result']);         ?>');"-->

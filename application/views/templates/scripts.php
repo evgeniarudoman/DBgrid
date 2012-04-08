@@ -244,6 +244,23 @@
             });
         });
     </script>
+
+    <script>
+        $(function() {
+            $('#appendedInput').change(function(){
+                $.ajax({
+                    type: "POST",
+                    dataType: "html",
+                    url: '<?php echo site_url ('ajax/search?database_name=') . $_GET['database'] . '&table_name=' . $_GET['table'].'&term=' ?>'+$(this).val(),
+                    success: function(response){
+                        $('#ajax-page').html(response);
+                    }
+                });
+            
+            });
+        });
+    </script>
+
     <div class="navbar navbar-fixed-top">
         <div class="navbar-inner">
             <div class="container">
