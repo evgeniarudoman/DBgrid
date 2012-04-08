@@ -166,7 +166,7 @@ class Rows extends CI_Controller
 
             if (isset ($bool) && $bool == 1)
             {
-                $result['result'] = mysql_query ("SELECT * FROM " . $_POST['database_name'] . '.' . $_POST['table_name'] . ' LIMIT 5 OFFSET '.$_POST['offset']);
+                $result['result'] = mysql_query ("SELECT * FROM " . $_POST['database_name'] . '.' . $_POST['table_name'] . ' LIMIT 8 OFFSET '.$_POST['offset']);
                 $success          = TRUE;
             }
             else

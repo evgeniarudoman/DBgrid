@@ -181,7 +181,7 @@
                         <ul style="position: absolute;bottom: 30px;left: 230px;">
                             <!-- <li class="prev disabled"><a href="#">&larr;</a></li>-->
                             <li class="active"><a href="#">1</a></li>
-                            <?php for ($k = 2; $k <= ceil ($result['num_rows'] / 5); $k++): ?>
+                            <?php for ($k = 2; $k <= ceil ($result['num_rows'] / 8); $k++): ?>
                                 <li><a href="#"><?php echo $k ?></a></li>
                             <?php endfor; ?>
                             <!-- <li class="next"><a href="#">&rarr;</a></li>-->

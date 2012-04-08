@@ -225,7 +225,7 @@
         $(document).ready(function() {
             $('.pagination li a').click(function(){
                 
-                var offset = ($(this).text()*5)-5;
+                var offset = ($(this).text()*8)-8;
                 $('.pagination li.active').removeClass('active');
                 $(this).parent('li').addClass('active');
                 
