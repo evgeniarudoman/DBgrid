@@ -19,7 +19,7 @@ class Db_ajax extends CI_Model
         $i   = 0;
         foreach ($fields as $field)
         {
-            $str.="`" . $field . "` LIKE '" . $value . "' OR ";
+            $str.="`" . $field . "` LIKE '%" . $value . "%' OR ";
         }
         $query = substr ($str, 0, strlen ($str) - 4);
         unset ($str);

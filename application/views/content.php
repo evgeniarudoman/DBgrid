@@ -115,8 +115,8 @@
                         <div class="control-group">
                             <div class="controls">
                                 <div class="input-append">
-                                    <input type="text" size="16" id="appendedInput" class="span2">
-                                    <span class="add-on btn"><i class="icon-search"></i></span>
+                                    <input type="text" size="16" id="appendedInput" class="span2" onkeypress="if ( event.keyCode == 13 ) { search_by(); return false; }" onchange="search_by();">
+                                    <span class="add-on btn" onclick="search_by();"><i class="icon-search"></i></span>
                                 </div>
                             </div>
                         </div>
