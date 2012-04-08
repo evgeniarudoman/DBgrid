@@ -258,6 +258,60 @@
         }
     </script>
 
+    <script>
+        $(document).ready(function() 
+        { 
+            $("#myTable").tablesorter({sortList: [[0,0], [1,0]]}); 
+        } 
+    ); 
+    </script>
+    <script type="text/javascript">
+        $(function() {		
+            $("#myTable").tablesorter({sortList:[[0,0],[2,1]], widgets: ['zebra']});
+            $("#options").tablesorter({sortList: [[0,0]], headers: { 3:{sorter: false}, 4:{sorter: false}}});
+        });	
+    </script>
+
+    <style>
+        table.tablesorter {
+            margin:10px 0pt 15px;
+            font-size: 8pt;
+            text-align: left;
+            background-color: #e6EEEE;
+        }
+        table.tablesorter thead tr th, table.tablesorter tfoot tr th {
+            background-color: #e6EEEE;
+            font-size: 8pt;
+            padding: 4px;
+        }
+        table.tablesorter thead tr .header {
+            background-image: url(/image/bg.gif);
+            background-repeat: no-repeat;
+            background-position: center right;
+            cursor: pointer;
+        }
+        table.tablesorter tbody td {
+            color: #3D3D3D;
+            padding: 4px;
+            background-color: #FFF;
+            vertical-align: top;
+        }
+        table.tablesorter tbody tr.odd td {
+            background-color:#F0F0F6;
+        }
+        table.tablesorter thead tr .headerSortUp {
+            background-image: url(/image/asc.gif);
+        }
+        table.tablesorter thead tr .headerSortDown {
+            background-image: url(/image/desc.gif);
+        }
+        table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSortUp {
+            background-color: #08c;
+            color:white;
+        }
+
+    </style>
+
     <div class="navbar navbar-fixed-top">
         <div class="navbar-inner">
             <div class="container">

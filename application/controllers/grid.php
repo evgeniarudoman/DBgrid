@@ -63,7 +63,8 @@ class Grid extends CI_Controller
                 '3' => "/bootstrap/js/bootstrap.modal.js",
                 '4' => "/js/jquery-1.6.2.min.js",
                 '5' => "/js/jquery-ui-1.8.16.custom.min.js",
-                '6' => "/js/validation.js",
+                '6' => "/js/tablesorter.js",
+                '7' => "/js/validation.js",
             ),
             'styles' => array (
                 '1' => "/css/jquery-ui-1.8.18.custom.css",
