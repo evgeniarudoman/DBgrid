@@ -316,15 +316,11 @@
         <div class="navbar-inner">
             <div class="container">
 
+                <div id="countdown" class="countdownHolder"></div>
+                
                 <a class="brand" href="<?php echo site_url ('grid') ?>">
                     <i class="icon-leaf icon-white"></i>
                     DBGrid
-                </a>
-
-                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
                 </a>
 
                 <div class="nav-collapse">

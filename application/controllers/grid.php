@@ -64,7 +64,9 @@ class Grid extends CI_Controller
                 '4' => "/js/jquery-1.6.2.min.js",
                 '5' => "/js/jquery-ui-1.8.16.custom.min.js",
                 '6' => "/js/tablesorter.js",
-                '7' => "/js/validation.js",
+                //'7' => "/js/validation.js",
+                '8' => "/js/jquery.countdown.js",
+                '9' => "/js/script.js",
             ),
             'styles' => array (
                 '1' => "/css/jquery-ui-1.8.18.custom.css",
@@ -74,6 +76,8 @@ class Grid extends CI_Controller
                 //'5' => "/bootstrap/css/bootstrap-responsive.css",
                 '6' => "/bootstrap/css/bootstrap-responsive.min.css",
                 '7' => "/bootstrap/css/docs.css",
+                '8' => "/css/jquery.countdown.css",
+                //'9' => "/css/styles.css",
                 //'8' => "/css/dialog.css"
             ),
         );
