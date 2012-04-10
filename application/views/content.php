@@ -44,7 +44,7 @@
                                         <i style="float:right;" class="icon-pencil icon-white" onclick="edit_db('<?php echo $database; ?>');"></i>
                                     </a>
                                 </li>
-                                <table id="tables" style="margin-left: 15px;height: 30px;">
+                                <table id="tables" name="<?php echo $database; ?>" style="margin-left: 15px;height: 30px;">
                                     <?php if (isset ($result[$database . '_table'])): ?>
                                         <?php foreach ($result[$database . '_table'] as $table): ?>
                                             <tr>
@@ -127,8 +127,8 @@
                         <table id="myTable" class="tablesorter table-striped table-bordered table-condensed" style="margin-left: 20px;">
                             <thead>
                                 <tr>
-                                    <td class="check_all">
-                                        <input type="checkbox" />
+                                    <td >
+                                        <input type="checkbox" class="check_all"/>
                                     </td>
                                     <?php foreach ($result[$_GET['database'] . '_' . $_GET['table'] . '_field'] as $key => $field): ?>
                                         <th class="header" style="width:<?php echo $field['width'] . 'px'; ?>;position:relative;" onclick="$('.caret#up').hide();$('.caret#down').show();return false;">
@@ -146,14 +146,11 @@
                                 <?php while ($row = mysql_fetch_array ($result['result'])): ?>
                                     <tr>
                                         <td class="check_one" >
-                                            <input type="checkbox" name="<?php echo $j; ?>" onclick="$(this).parent('td').parent('tr').children('td').attr('style','background-color:#EFF1F1;text-shadow: 0 1px 0 #FFFFFF;  color: #005580;')"/>
+                                            <input type="checkbox" name="<?php echo $j; ?>" />
                                         </td>
-
                                         <?php $i = 0; ?>
                                         <?php foreach ($result[$_GET['database'] . '_' . $_GET['table'] . '_field'] as $key => $field): ?>
-                                            <td>
-                                                <?php echo $row[mysql_field_name ($result['result'], $i)] ?>
-                                            </td>
+                                            <td><?php echo $row[mysql_field_name ($result['result'], $i)] ?></td>
                                             <?php $i++; ?>
                                         <?php endforeach; ?>
                                     </tr>

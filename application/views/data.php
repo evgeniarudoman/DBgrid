@@ -1,3 +1,10 @@
+<script>
+        $(document).ready(function() 
+        { 
+            $("#myTable").tablesorter(); 
+        } 
+    ); 
+    </script>
 <table id="myTable" class="tablesorter table-striped table-bordered table-condensed" style="margin-left: 20px;">
     <thead>
         <tr>
