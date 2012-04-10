@@ -41,20 +41,20 @@
                                         <?php echo $database; ?>
                                         <i style="float:right;" class="icon-trash icon-white" onclick="delete_db('<?php echo $database; ?>');"></i>
                                         &nbsp;
-                                        <i style="float:right;" class="icon-pencil icon-white" onclick="edit_db('<?php echo $database; ?>');"></i>
+                                        <i style="float:right;width:20px" class="icon-pencil icon-white" onclick="edit_db('<?php echo $database; ?>');"></i>
                                     </a>
                                 </li>
-                                <table id="tables" name="<?php echo $database; ?>" style="margin-left: 15px;height: 30px;">
+                                <table id="tables" name="<?php echo $database; ?>" style="margin-left: 15px;height: 30px;width:100%;">
                                     <?php if (isset ($result[$database . '_table'])): ?>
                                         <?php foreach ($result[$database . '_table'] as $table): ?>
-                                            <tr>
+                                            <tr name="<?php echo $table; ?>">
                                                 <td style="width: 20px;"><i class="icon-th"></i></td>
-                                                <td>
+                                                <td style="width:200px">
                                                     <a href='/grid/index?database=<?php echo $database ?>&table=<?php echo $table; ?>'>
                                                         <?php echo $table . ' (<i>' . count ($result[$database . '_' . $table . '_field']) . '</i>)'; ?>
                                                     </a>
                                                 </td>
-                                                <td>
+                                                <td style="width:20px">
                                                     <i class="icon-pencil" style="cursor: pointer;" onclick="edit_table('<?php echo $database; ?>', '<?php echo $table; ?>');"></i>
                                                 </td>
                                                 <td>

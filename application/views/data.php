@@ -31,9 +31,7 @@
             </td>
             <?php $i = 0; ?>
             <?php foreach ($result[$database . '_' . $table . '_field'] as $key => $field): ?>
-                <td>
-                    <?php echo $row[mysql_field_name ($result['result'], $i)] ?>
-                </td>
+                <td><?php echo $row[mysql_field_name ($result['result'], $i)] ?></td>
                 <?php $i++; ?>
             <?php endforeach; ?>
         </tr>

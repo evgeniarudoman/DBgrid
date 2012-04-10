@@ -8,7 +8,7 @@
                     $.ajax({
                         type: "POST",
                         dataType: "json",
-                        url: '<?php echo site_url('fields/save_width') ?>',
+                        url: '<?php echo site_url ('fields/save_width') ?>',
                         data: "database_name="+'<?php echo $_GET['database'] ?>'+
                             "&table_name="+'<?php echo $_GET['table'] ?>'+
                             "&field_name="+$(this).children('input[type=hidden]').val()+
@@ -28,7 +28,7 @@
             $.ajax({
                 type: "POST",
                 dataType: "json",
-                url: '<?php echo site_url('grid/save_theme') ?>',
+                url: '<?php echo site_url ('grid/save_theme') ?>',
                 data: "theme="+theme,
                 success: function(response){
                     //change on something
@@ -54,7 +54,7 @@
             $.ajax({
                 type: "POST",
                 dataType: "json",
-                url: '<?php echo site_url('rows/add') ?>',
+                url: '<?php echo site_url ('rows/add') ?>',
                 data: "database_name="+db_name+
                     "&table_name="+table_name+
                     // "&count="+count+
@@ -94,7 +94,7 @@
             $.ajax({
                 type: "POST",
                 dataType: "json",
-                url: '<?php echo site_url('db/delete') ?>',
+                url: '<?php echo site_url ('db/delete') ?>',
                 data: "database_name="+db_name,
                 success: function(response){
                     //change on something
@@ -109,7 +109,7 @@
             $.ajax({
                 type: "POST",
                 dataType: "json",
-                url: '<?php echo site_url('tables/delete') ?>',
+                url: '<?php echo site_url ('tables/delete') ?>',
                 data: "database_name="+db_name+
                     "&table_name="+table_name,
                 success: function(response){
@@ -147,8 +147,11 @@
                 return false;
             }).next().hide();
             
-<?php if (isset($_GET['database']) && !empty($_GET['database'])): ?>
+<?php if (isset ($_GET['database']) && !empty ($_GET['database'])): ?>
             $('table#tables[name=<?php echo $_GET['database'] ?>]').show();
+    <?php if (isset ($_GET['table']) && !empty ($_GET['table'])): ?>
+        $('table#tables[name=<?php echo $_GET['database'] ?>] tr[name=<?php echo $_GET['table'] ?>]').attr('style','background-color:#EFF1F1;');
+    <?php endif; ?>
 <?php endif; ?>
     });
     </script>
@@ -167,7 +170,7 @@
                 $.ajax({
                     type: "POST",
                     dataType: "json",
-                    url: '<?php echo site_url('rows/add') ?>',
+                    url: '<?php echo site_url ('rows/add') ?>',
                     data: "database_name="+db_name+
                         "&table_name="+table_name,
                     success: function(response){
@@ -235,7 +238,7 @@
                 
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo site_url('rows/select') ?>",
+                    url: "<?php echo site_url ('rows/select') ?>",
                     dataType: "html",
                     data: "database_name="+'<?php echo $_GET['database'] ?>'+
                         "&table_name="+'<?php echo $_GET['table'] ?>'+
@@ -254,7 +257,7 @@
             $.ajax({
                 type: "POST",
                 dataType: "html",
-                url: '<?php echo site_url('ajax/search?database_name=') . $_GET['database'] . '&table_name=' . $_GET['table'] . '&term=' ?>'+$('#appendedInput').val(),
+                url: '<?php echo site_url ('ajax/search?database_name=') . $_GET['database'] . '&table_name=' . $_GET['table'] . '&term=' ?>'+$('#appendedInput').val(),
                 success: function(response){
                     $('#ajax-page').html(response);
                 }
@@ -342,7 +345,7 @@
 
                 <!--<div id="countdown" class="countdownHolder"></div>-->
 
-                <a class="brand" href="<?php echo site_url('grid') ?>">
+                <a class="brand" href="<?php echo site_url ('grid') ?>">
                     <i class="icon-leaf icon-white"></i>
                     DBGrid
                 </a>
@@ -350,7 +353,7 @@
                 <div class="nav-collapse">
                     <ul class="nav">
                         <li class="">
-                            <a href="<?php echo site_url('grid') ?>">
+                            <a href="<?php echo site_url ('grid') ?>">
                                 <i class="icon-home icon-white"></i>
                                 &nbsp;Home
                             </a>
@@ -362,13 +365,13 @@
                             </a>
                         </li>
                         <li class="">
-                            <a href="<?php echo site_url('help') ?>">
+                            <a href="<?php echo site_url ('help') ?>">
                                 <i class="icon-flag icon-white"></i>
                                 &nbsp;Help
                             </a>
                         </li>
                         <li class="">
-                            <a href="<?php echo site_url('grid/logout') ?>">
+                            <a href="<?php echo site_url ('grid/logout') ?>">
                                 <i class="icon-off icon-white"></i>
                                 &nbsp;LogOut
                             </a>
