@@ -41,6 +41,7 @@ if (!function_exists('get_database_tree'))
 
                     $grid->type->select(array('id' => $type_id));
                     $result[$database->getName() . '_' . $table->getName() . '_field'][$field->getId()]['type'] = $grid->type->getType();
+                    $result[$database->getName() . '_' . $table->getName() . '_field'][$field->getId()]['type_name'] = $grid->type->getName();
                 }
             }
         }

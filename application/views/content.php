@@ -3,14 +3,14 @@
         <div class="span4"> 
             <div class="alert alert-info" style="">
                 <ul class="breadcrumb" style="background:none; border:none;box-shadow: none;color:#333;padding: 0;margin: 0;">
-                    <?php if (isset ($_GET['database'])): ?>
+                    <?php if (isset($_GET['database'])): ?>
                         <li>
-                            <a href="<?php echo site_url ('grid') ?>">Home</a>
+                            <a href="<?php echo site_url('grid') ?>">Home</a>
                             <span class="divider">/</span>
                         </li>
-                        <?php if (isset ($_GET['table'])): ?>
+                        <?php if (isset($_GET['table'])): ?>
                             <li>
-                                <a href="<?php echo site_url ('grid/index?database=' . $_GET['database']) ?>">
+                                <a href="<?php echo site_url('grid/index?database=' . $_GET['database']) ?>">
                                     <?php echo $_GET['database']; ?>
                                 </a> 
                                 <span class="divider">/</span>
@@ -33,7 +33,7 @@
             <div id="accordion">
                 <div class="well" style="padding: 8px 0;height: 320px;">
                     <ul class="nav nav-list">
-                        <?php if (isset ($result['databases'])): ?>
+                        <?php if (isset($result['databases'])): ?>
                             <?php foreach ($result['databases'] as $database): ?>
                                 <li class="active head">
                                     <a href="#">
@@ -45,13 +45,13 @@
                                     </a>
                                 </li>
                                 <table id="tables" name="<?php echo $database; ?>" style="margin-left: 15px;height: 30px;width:100%;">
-                                    <?php if (isset ($result[$database . '_table'])): ?>
+                                    <?php if (isset($result[$database . '_table'])): ?>
                                         <?php foreach ($result[$database . '_table'] as $table): ?>
                                             <tr name="<?php echo $table; ?>">
                                                 <td style="width: 20px;"><i class="icon-th"></i></td>
-                                                <td style="width:200px">
+                                                <td style="width:247px">
                                                     <a href='/grid/index?database=<?php echo $database ?>&table=<?php echo $table; ?>'>
-                                                        <?php echo $table . ' (<i>' . count ($result[$database . '_' . $table . '_field']) . '</i>)'; ?>
+                                                        <?php echo $table . ' (<i>' . count($result[$database . '_' . $table . '_field']) . '</i>)'; ?>
                                                     </a>
                                                 </td>
                                                 <td style="width:20px">
@@ -110,20 +110,21 @@
 
         <div class="span8">
             <div class="well" style="padding: 8px 0;height: 400px;position: relative;">
-                <form class="form-horizontal">
-                    <fieldset>
-                        <div class="control-group">
-                            <div class="controls">
-                                <div class="input-append">
-                                    <input type="text" size="16" id="appendedInput" class="span2" onkeypress="if ( event.keyCode == 13 ) { search_by(); return false; }" onchange="search_by();">
-                                    <span class="add-on btn" onclick="search_by();"><i class="icon-search"></i></span>
+                <?php if (isset($_GET['table']) && !empty($_GET['table'])): ?>
+                    <form class="form-horizontal">
+                        <fieldset>
+                            <div class="control-group">
+                                <div class="controls">
+                                    <div class="input-append">
+                                        <input type="text" size="16" id="appendedInput" class="span2" onkeypress="if ( event.keyCode == 13 ) { search_by(); return false; }" onchange="search_by();">
+                                        <span class="add-on btn" onclick="search_by();"><i class="icon-search"></i></span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </fieldset>
-                </form>
-                <div id="ajax-page">
-                    <?php if (isset ($_GET['table']) && !empty ($_GET['table'])): ?>
+                        </fieldset>
+                    </form>
+                    <i class="icon-plus" style="cursor: pointer;bottom: 10px;margin-left: 20px;" id="add-field"></i>
+                    <div id="ajax-page">
                         <table id="myTable" class="tablesorter table-striped table-bordered table-condensed" style="margin-left: 20px;">
                             <thead>
                                 <tr>
@@ -142,15 +143,31 @@
                             </tr>
                             </thead>
                             <tbody> 
-                                <?php $j   = 1; ?>
-                                <?php while ($row = mysql_fetch_array ($result['result'])): ?>
+                                <?php $j = 1; ?>
+                                <?php while ($row = mysql_fetch_array($result['result'])): ?>
                                     <tr>
                                         <td class="check_one" >
                                             <input type="checkbox" name="<?php echo $j; ?>" />
                                         </td>
                                         <?php $i = 0; ?>
                                         <?php foreach ($result[$_GET['database'] . '_' . $_GET['table'] . '_field'] as $key => $field): ?>
-                                            <td><?php echo $row[mysql_field_name ($result['result'], $i)] ?></td>
+                                            <?php if ($field['type_name'] == 'чекбокс'): ?>
+                                                <td><input type="checkbox"/></td>
+                                            <?php elseif ($field['type_name'] == 'переключатель'): ?>
+                                                <td><input type="radio" name="<?php echo $field['name']?>"/></td>
+                                            <?php elseif ($field['type_name'] == 'файл'): ?>
+                                                <td>FILE</td>
+                                            <?php elseif ($field['type_name'] == 'список'): ?>
+                                                <td>
+                                                    <select name="select" class="text ui-widget-content ui-corner-all">
+                                                        <option value="" selected="selected"> -- choose database -- </option>
+                                                    </select>
+                                                </td>
+                                            <?php elseif ($field['type_name'] == 'дата'): ?>
+                                                <td><input type="text" class="datepicker" style="width:65px;height:10px;" value="<?php echo $row[mysql_field_name($result['result'], $i)] ?>"/></td>
+                                            <?php else: ?>
+                                                <td><?php echo $row[mysql_field_name($result['result'], $i)] ?></td>
+                                            <?php endif; ?>
                                             <?php $i++; ?>
                                         <?php endforeach; ?>
                                     </tr>
@@ -162,13 +179,13 @@
                     <i class="icon-plus" style="cursor: pointer;position: absolute;bottom: 10px;left: 20px;" id="add-row"></i>
                     <i class="icon-pencil" style="cursor: pointer;position: absolute;bottom: 10px;left: 40px;"></i>
                     <i class="icon-trash" style="cursor: pointer;position: absolute;bottom: 10px;left: 60px;"></i>
-                    <a href="<?php echo site_url ('export/xls') . '?' . $_SERVER["QUERY_STRING"]; ?>">
+                    <a href="<?php echo site_url('export/xls') . '?' . $_SERVER["QUERY_STRING"]; ?>">
                         <i class="icon-file" style="cursor: pointer;position: absolute;bottom: 10px;left: 100px;"></i>
                     </a>
                     <div class="pagination">
                         <ul style="position: absolute;left:20px;">
                             <li class="active"><a href="#">1</a></li>
-                            <?php for ($k = 2; $k <= ceil ($result['num_rows'] / 8); $k++): ?>
+                            <?php for ($k = 2; $k <= ceil($result['num_rows'] / 8); $k++): ?>
                                 <li><a href="#"><?php echo $k ?></a></li>
                             <?php endfor; ?>
                         </ul>

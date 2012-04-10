@@ -20,6 +20,14 @@ class Type extends Data_Row {
         $this->row->type = $value;
     }
     
+    public function getName() {
+        return $this->row->name;
+    }
+
+    public function setName($value) {
+        $this->row->name = $value;
+    }
+    
    
 
     public static function table_name() {

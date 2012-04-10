@@ -25,13 +25,42 @@
             <pre>
             <?php //var_dump($result) ?>
             </pre>
-            --><?php if (isset ($_GET['database']) && !empty ($_GET['database']) && isset ($_GET['table']) && !empty ($_GET['table'])): ?>
+            --><?php if (isset($_GET['database']) && !empty($_GET['database']) && isset($_GET['table']) && !empty($_GET['table'])): ?>
                 <?php foreach ($result[$_GET['database'] . '_' . $_GET['table'] . '_field'] as $key => $field): ?>
                     <th name='<?php echo $key; ?>'><?php echo $field['name']; ?></th>
                     <th name='<?php echo $key; ?>'>
                         <input type="text" name="<?php echo $field['name']; ?>" id="database" class="text ui-widget-content ui-corner-all" style="width:<?php echo 10 * $field['size'] . 'px'; ?>"/>
                     </th>
                 <?php endforeach; ?>
+            <?php endif; ?>
+        </fieldset>
+    </form>
+</div>
+<!-- end row form -->
+
+<!-- create new row form  -->
+<div id="field-form" title="Add field" class="ui-dialog-content ui-widget-content" style="width: auto; min-height: 0px; height: 216px;display: none; " scrolltop="0" scrollleft="0">
+    <p class="validateTips"></p>
+    <form>
+        <fieldset>
+            <!--
+            <pre>
+            <?php //var_dump($result) ?>
+            </pre>
+            --><?php if (isset($_GET['database']) && !empty($_GET['database']) && isset($_GET['table']) && !empty($_GET['table'])): ?>
+                <label for="field_name">Field name</label>
+                <input type="text" name="field_name" class="text ui-widget-content ui-corner-all" />
+                <label for="field_type">Type</label>
+                <select name='type' class='text ui-widget-content ui-corner-all'>
+                    <option value="" selected="selected"> -- choose type -- </option>
+                    <?php if (isset($list_type) && !empty($list_type)): ?>
+                        <?php foreach ($list_type as $key => $type): ?>
+                            <option value="<?php echo $type ?>"><?php echo $type ?></option>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </select>
+                <label for="size">Size</label>
+                <input type="text" name="size" class="text ui-widget-content ui-corner-all" />
             <?php endif; ?>
         </fieldset>
     </form>
@@ -50,7 +79,7 @@
             <label for="db">Database name</label>
             <select name="db" id="db" class="text ui-widget-content ui-corner-all">
                 <option value="" selected="selected"> -- choose database -- </option>
-                <?php if (isset ($list_database) && !empty ($list_database)): ?>
+                <?php if (isset($list_database) && !empty($list_database)): ?>
                     <?php foreach ($list_database as $key => $database): ?>
                         <option value="<?php echo $database ?>"><?php echo $database ?></option>
                     <?php endforeach; ?>

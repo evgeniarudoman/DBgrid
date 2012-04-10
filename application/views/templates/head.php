@@ -1,7 +1,8 @@
+<?php header('Content-type: text/html; charset=utf-8'); ?>
 <!doctype html public "-//W3C//DTD HTML 4.0 //EN">
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title><?php echo $title; ?></title>
 
         <?php foreach ($scripts as $script): ?>
