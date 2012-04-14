@@ -23,7 +23,7 @@
                     });
                     
                     $( "div#table-form form.table-form select" ).html(
-                        "<option value='' selected='selected'> -- выбрать базу данных -- </option>"+
+                    "<option value='' selected='selected'> -- выбрать базу данных -- </option>"+
                         options);
                 }
             });
@@ -45,13 +45,13 @@
         var db = $( "#db" )
         var database= $( "#database" ),
         allFields = $( [] ).add( db ).add( table ).add( count ).add( database ),
-        tips = $( ".validateTips" );
+        tips = $( "p.validateTips" );
         
         // @function Highlight error
         // param t - field
         function updateTips( t ) {
             tips
-            .append('<div class="ui-widget"><div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"><p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span><strong></strong> '+t+'</p></div></div>')
+            .html('<div class="ui-widget"><div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"><p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span><strong></strong> '+t+'</p></div></div>')
             //.addClass('alert alert-error')#B94A48 #EED3D7 #F2DEDE
             setTimeout(function() {
                 tips.removeClass( "ui-state-highlight", 1500 );
@@ -170,8 +170,8 @@
                 }
             },
             open: function() {
-                $('p.validateTips').empty();
-                $('p.validateTips').removeClass("alert alert-error");
+                $('#database-form div.ui-widget').empty();
+                allFields.val("");
             }
         });
         // end of creating new database
@@ -185,7 +185,6 @@
             buttons: {
                 "Add": function() {
                     var bValid = true;
-                    allFields.removeClass( "ui-state-error" );
 
                     var $inputs = $('#row-form input');
 
@@ -327,8 +326,7 @@
             buttons: {
                 "Create": function() {
                     var bValid = true;
-                    var fValid = true;
-                    allFields.removeClass( "ui-state-error" );
+                    var fValid = false;
                     
                     bValid = bValid && checkEmpty( table, "Поле имени таблицы не должно быть пустым.");
                     bValid = bValid && checkRegexp( table, /^[a-zа-я]([a-zа-я_])+$/i, "Поле имени таблицы должно содержать буквы, нижнее подчерквание и начинаться с букв." );
@@ -341,15 +339,9 @@
 
                     
                         if ( bValid ) 
-                        {                        
-                            allFields.removeClass( "ui-state-error" );
-                       
+                        {
                             if ( $('input[type=hidden].valid').val() == 'true') 
-                            {                            
-                                $( "#tables tbody" ).append( "<tr>" +
-                                    "<td>"+"<div class='icon table'></div>"+"</td>"+
-                                    "<td>"+"<a href='/grid/index?database="+table.val()+"'>" + table.val() + "</td>" +
-                                    "</tr>" );
+                            {
                                 $( "div#table-form form.field-form table" ).append( 
                                 "<tr><td><p>Ключ</p></td><td><p>Имя поля</p></td><td><p>Тип</p></td><td><p>Размер поля</p></td></tr>");
                             
@@ -358,16 +350,15 @@
                                 {
                                     $( "div#table-form form.field-form table" ).append(
                                     "<tr><td><input type='radio' name='check' id='check' value='"+i+"' class='field ui-widget-content ui-corner-all'></td>"+
-                                        "<td><input type='text' name='field"+i+"' id='field"+i+"' class='field ui-widget-content ui-corner-all'></td>"+
-                                        "<td><select name='type"+i+"' id='type"+i+"' class='text ui-widget-content ui-corner-all'>"+
-                                        "<option value='' selected='selected'> -- choose type -- </option>"+
+                                        "<td><input type='text' name='field"+i+"' id='field"+i+"' style='width:100px;' class='field ui-widget-content ui-corner-all'></td>"+
+                                        "<td><select name='type"+i+"' id='type"+i+"' style='width:150px;' class='text ui-widget-content ui-corner-all'>"+
+                                        "<option value='' selected='selected'> -- выбрать тип -- </option>"+
                                         "</select></td>"+
                                         "<td><input type='text' name='size"+i+"' id='size"+i+"' class='field ui-widget-content ui-corner-all'></td></tr>");
                                 
                                     $('input[type=hidden].valid').val('false');
                                 }
                             
-                                //http://vk.com/id11456991
                                 // get type from db
                                 $.ajax({
                                     type: "POST",
@@ -381,14 +372,22 @@
                                     }
                                 })
                             }
-                        
-                            for (i=1;i<=count.val();i++)
-                            {
-                                fValid = fValid && checkEmpty( $('input[name=field'+i+']'), "Имя поля #"+i+" не должно быть пустым.");
-                                fValid = fValid && checkEmpty( $('select[name=type'+i+']'), "Выберите тип для поля #"+i+".");
-                                fValid = fValid && checkEmpty( $('input[name=check]'), "Вы долны выбрать начальный ключ нажатием радиокнопки.");
-                                fValid = fValid && checkRegexp( $('input[name=size'+i+']'), /^[0-9]+$/i, "Размер поля должен содержать только числа." );
+                            if ($('div#table-form form.table-form fieldset').length == 0){
+                                var fValid = true;
+                                for (i=1;i<=count.val();i++)
+                                {
+                                    fValid = fValid && checkEmpty( $('input[name=field'+i+']'), "Имя поля #"+i+" не должно быть пустым.");
+                                    fValid = fValid && checkEmpty( $('select[name=type'+i+']'), "Выберите тип для поля #"+i+".");
+                                    fValid = fValid && checkEmpty( $('input[name=check]'), "Вы должны выбрать начальный ключ нажатием радиокнопки.");
+                                    fValid = fValid && checkRegexp( $('input[name=size'+i+']'), /^[0-9]+$/i, "Размер поля должен содержать только числа." );
+                                }
                             }
+                            else
+                            {
+                                $('#table-form div.ui-widget').empty();
+                            }
+                            $('div#table-form form.table-form').empty();
+                            $('div#table-form form.field-form').show();
                         }
                         if (fValid) 
                         {
@@ -416,14 +415,17 @@
                                 success: function(response){
                                     //change on something
                                     alert(response);
+                                    
+                                    $( "li.head[name=<?php if (isset ($_GET['database'])) echo $_GET['database']; ?>]").next().append( "<tr>" +
+                                    "<td style='width:20px;'>"+"<i class='icon-th'></i>"+"</td>"+
+                                    "<td style='width:247px'>"+"<a href='/grid/index?database=<?php if (isset ($_GET['database'])) echo $_GET['database']; ?>"+"&table="+table.val()+"'>" + table.val() + "</td>" +
+                                    '<td style="width:20px"><i class="icon-pencil" title="Переименовать таблицу" style="cursor: pointer;" onclick="edit_table(\"<?php if (isset ($_GET['database'])) echo $_GET['database']; ?>\", \"<?php if (isset ($_GET['table'])) echo $_GET['table']; ?>\");"></i></td><td><i class="icon-trash" title="Удалить таблицу" style="cursor: pointer;" onclick="delete_table(\"<?php if (isset ($_GET['database'])) echo $_GET['database']; ?>\", \"<?php if (isset ($_GET['table'])) echo $_GET['table']; ?>\");"></i></td>'+
+                                    "</tr>" );
                                 }
                             });
                             
                             $( this ).dialog( "close" );
                         }
-                        
-                        $('div#table-form form.table-form').empty();
-                        $('div#table-form form.field-form').show();
                     }
                     else
                     {
@@ -447,8 +449,9 @@
                     $( this ).dialog( "close" );
                 }
             },
-            close: function() {
-                allFields.val( "" ).removeClass( "ui-state-error" );
+            open: function() {
+                $('#table-form div.ui-widget').empty();
+                allFields.val("");
             }
         });
     });

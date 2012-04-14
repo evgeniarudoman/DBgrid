@@ -35,11 +35,9 @@
                     <ul class="nav nav-list">
                         <?php if (isset($result['databases'])): ?>
                             <?php foreach ($result['databases'] as $database): ?>
-                                <li class="active head">
+                                <li class="active head" name="<?php echo $database; ?>">
                                     <a href="#">
-                                        <i class="icon-list-alt icon-white"></i>
-                                        <?php echo $database; ?>
-                                        <i style="float:right;" title="Удалить базу данных" class="icon-trash icon-white" onclick="delete_db('<?php echo $database; ?>');"></i>
+                                        <i class="icon-list-alt icon-white"></i><?php echo $database; ?><i style="float:right;" title="Удалить базу данных" class="icon-trash icon-white" onclick="delete_db('<?php echo $database; ?>');"></i>
                                     </a>
                                 </li>
                                 <table id="tables" name="<?php echo $database; ?>" style="margin-left: 15px;height: 30px;width:100%;">
