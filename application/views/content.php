@@ -39,9 +39,7 @@
                                     <a href="#">
                                         <i class="icon-list-alt icon-white"></i>
                                         <?php echo $database; ?>
-                                        <i style="float:right;" class="icon-trash icon-white" onclick="delete_db('<?php echo $database; ?>');"></i>
-                                        &nbsp;
-                                        <i style="float:right;width:20px" class="icon-pencil icon-white" onclick="edit_db('<?php echo $database; ?>');"></i>
+                                        <i style="float:right;" title="Удалить базу данных" class="icon-trash icon-white" onclick="delete_db('<?php echo $database; ?>');"></i>
                                     </a>
                                 </li>
                                 <table id="tables" name="<?php echo $database; ?>" style="margin-left: 15px;height: 30px;width:100%;">
@@ -55,10 +53,10 @@
                                                     </a>
                                                 </td>
                                                 <td style="width:20px">
-                                                    <i class="icon-pencil" style="cursor: pointer;" onclick="edit_table('<?php echo $database; ?>', '<?php echo $table; ?>');"></i>
+                                                    <i class="icon-pencil" title="Переименовать таблицу" style="cursor: pointer;" onclick="edit_table('<?php echo $database; ?>', '<?php echo $table; ?>');"></i>
                                                 </td>
                                                 <td>
-                                                    <i class="icon-trash" style="cursor: pointer;" onclick="delete_table('<?php echo $database; ?>', '<?php echo $table; ?>');"></i>
+                                                    <i class="icon-trash" title="Удалить таблицу" style="cursor: pointer;" onclick="delete_table('<?php echo $database; ?>', '<?php echo $table; ?>');"></i>
                                                 </td>
                                             <?php endforeach; ?>
                                         <?php else: ?>
@@ -75,33 +73,33 @@
                 </div>
                 <div class="btn-toolbar" style="margin-bottom: 9px">
                     <div class="btn-group">
-                        <a class="btn btn-primary btn-mini" href="#"><i class="icon-plus icon-white"></i> Create</a>
-                        <a onclick="open_dropdown('icon-plus');" class="btn btn-primary dropdown-toggle btn-mini" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+                        <a class="btn btn-primary btn-mini" href="#"><i class="icon-plus icon-white"></i> Создать</a>
+                        <a onclick="" class="btn btn-primary dropdown-toggle btn-mini" title="Создать базу/таблицу" data-toggle="dropdown" href="#"><span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li style="background-color: #08C;"><a href="#" style="color:#fff;"><i class="icon-plus"></i> Create</a></li>
+                            <li style="background-color: #08C;"><a href="#" style="color:#fff;"><i class="icon-plus"></i> Создать</a></li>
                             <li class="divider"></li>
-                            <li><a href="#" id="create-database"><i class="icon-list-alt"></i> Database</a></li>
-                            <li><a href="#" id="create-table"><i class="icon-th"></i> Table</a></li>
+                            <li><a href="#" id="create-database"><i class="icon-list-alt"></i> База данных</a></li>
+                            <li><a href="#" id="create-table"><i class="icon-th"></i> Таблица</a></li>
                         </ul>
                     </div>
                     <div class="btn-group">
                         <a class="btn btn-primary btn-mini" href="#"><i class="icon-random icon-white"></i></a>
-                        <a onclick="open_dropdown('icon-random');" class="btn btn-primary dropdown-toggle btn-mini" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+                        <a onclick="open_dropdown('icon-random');" title="Связи создать/удалить" class="btn btn-primary dropdown-toggle btn-mini" data-toggle="dropdown" href="#"><span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li style="background-color: #08C;"><a href="#" style="color:#fff;"><i class="icon-random"></i> Relations</a></li>
+                            <li style="background-color: #08C;"><a href="#" style="color:#fff;"><i class="icon-random"></i> Связи</a></li>
                             <li class="divider"></li>
-                            <li><a href="#"><i class="icon-plus"></i> Create</a></li>
-                            <li><a href="#"><i class="icon-trash"></i> Remove</a></li>
+                            <li><a href="#"><i class="icon-plus"></i> Создать</a></li>
+                            <li><a href="#"><i class="icon-trash"></i> Удалить</a></li>
                         </ul>
                     </div>
                     <div class="btn-group dropup" style="float:right;">
                         <a class="btn btn-primary btn-mini" href="#"><i class="icon-th-large icon-white"></i></a>
-                        <a onclick="open_dropdown('icon-th-large');" class="btn btn-primary dropdown-toggle btn-mini" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+                        <a onclick="open_dropdown('icon-th-large');" title="Выбрать тему" class="btn btn-primary dropdown-toggle btn-mini" data-toggle="dropdown" href="#"><span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li style="background-color: #08C;"><a href="#" style="color:#fff;"><i class="icon-th-large"></i> Choose theme</a></li>
+                            <li style="background-color: #08C;"><a href="#" style="color:#fff;"><i class="icon-th-large"></i> Выбрать тему</a></li>
                             <li class="divider"></li>
-                            <li><a href="" onclick="get_theme('blue');return false;"><i class="icon-tint"></i> Blue</a></li>
-                            <li><a href="" onclick="get_theme('gray');return false;"><i class="icon-tint"></i> Gray</a></li>
+                            <li><a href="" onclick="get_theme('blue');return false;"><i class="icon-tint"></i> Голубая</a></li>
+                            <li><a href="" onclick="get_theme('gray');return false;"><i class="icon-tint"></i> Серая</a></li>
                         </ul>
                     </div>
                 </div>
@@ -115,7 +113,7 @@
                         <fieldset>
                             <div class="control-group">
                                 <div class="controls">
-                                    <div class="input-append">
+                                    <div class="input-append" title="Поиск">
                                         <input type="text" size="16" id="appendedInput" class="span2" onkeypress="if ( event.keyCode == 13 ) { search_by(); return false; }" onchange="search_by();">
                                         <span class="add-on btn" onclick="search_by();"><i class="icon-search"></i></span>
                                     </div>
@@ -123,12 +121,15 @@
                             </div>
                         </fieldset>
                     </form>
-                    <i class="icon-plus" style="cursor: pointer;bottom: 10px;margin-left: 20px;" id="add-field"></i>
+                    <div class="save-changes alert alert-info" style="width: 240px;margin-left: 30px;height:20px;display:inline;display:none;">
+                        Вы должны сохранить все изменения.</i>
+                    </div>
+                    <i class="icon-plus" title="Добавить столбец" style="cursor: pointer;bottom: 10px;margin-left: 20px;" id="add-field"></i>
                     <div id="ajax-page">
                         <table id="myTable" class="tablesorter table-striped table-bordered table-condensed" style="margin-left: 20px;">
                             <thead>
                                 <tr>
-                                    <td >
+                                    <td title="Выбрать все строки">
                                         <input type="checkbox" class="check_all"/>
                                     </td>
                                     <?php foreach ($result[$_GET['database'] . '_' . $_GET['table'] . '_field'] as $key => $field): ?>
@@ -140,12 +141,26 @@
                                 </div>
                                 </th>                                    
                             <?php endforeach; ?>
+                            <td></td>
                             </tr>
                             </thead>
                             <tbody> 
                                 <?php $j = 1; ?>
                                 <?php while ($row = mysql_fetch_array($result['result'])): ?>
-                                    <tr>
+                                    <tr class="real<?php echo $j; ?>">
+                                        <td class="check_one" title="Выбрать строку">
+                                            <input type="checkbox" name="<?php echo $j; ?>" />
+                                        </td>
+                                        <?php $i = 0; ?>
+                                        <?php foreach ($result[$_GET['database'] . '_' . $_GET['table'] . '_field'] as $key => $field): ?>
+                                            <td><?php echo $row[mysql_field_name($result['result'], $i)] ?></td>
+                                            <?php $i++; ?>
+                                        <?php endforeach; ?>
+                                        <td class="edit_one" >
+                                            <i class="icon-pencil" title="Редактировать строку" style="cursor:pointer" name="<?php echo $j; ?>"></i>
+                                        </td>
+                                    </tr>
+                                    <tr style="display:none;" class="edit<?php echo $j; ?>">
                                         <td class="check_one" >
                                             <input type="checkbox" name="<?php echo $j; ?>" />
                                         </td>
@@ -154,9 +169,9 @@
                                             <?php if ($field['type_name'] == 'чекбокс'): ?>
                                                 <td><input type="checkbox"/></td>
                                             <?php elseif ($field['type_name'] == 'переключатель'): ?>
-                                                <td><input type="radio" name="<?php echo $field['name']?>"/></td>
+                                                <td><input type="radio" name="<?php echo $field['name'] ?>"/></td>
                                             <?php elseif ($field['type_name'] == 'файл'): ?>
-                                                <td>FILE</td>
+                                                <td><input id="photo<?php echo $j ?>"class="input-file btn btn-primary" type="file"/></td>
                                             <?php elseif ($field['type_name'] == 'список'): ?>
                                                 <td>
                                                     <select name="select" class="text ui-widget-content ui-corner-all">
@@ -166,21 +181,24 @@
                                             <?php elseif ($field['type_name'] == 'дата'): ?>
                                                 <td><input type="text" class="datepicker" style="width:65px;height:10px;" value="<?php echo $row[mysql_field_name($result['result'], $i)] ?>"/></td>
                                             <?php else: ?>
-                                                <td><?php echo $row[mysql_field_name($result['result'], $i)] ?></td>
+                                                <td><input type="text" style="width:65px;height:10px;" value="<?php echo $row[mysql_field_name($result['result'], $i)] ?>"/></td>
                                             <?php endif; ?>
                                             <?php $i++; ?>
                                         <?php endforeach; ?>
+                                        <td class="edit_one" >
+                                            <i class="icon-ok" title="Сохранить изменения" style="cursor:pointer" name="<?php echo $j; ?>"></i>
+                                        </td>
                                     </tr>
                                     <?php $j++; ?>
                                 <?php endwhile; ?>
                             </tbody> 
                         </table>
                     </div>
-                    <i class="icon-plus" style="cursor: pointer;position: absolute;bottom: 10px;left: 20px;" id="add-row"></i>
-                    <i class="icon-pencil" style="cursor: pointer;position: absolute;bottom: 10px;left: 40px;"></i>
-                    <i class="icon-trash" style="cursor: pointer;position: absolute;bottom: 10px;left: 60px;"></i>
+                    <i class="icon-plus" title="Добавить строку" style="cursor: pointer;position: absolute;bottom: 10px;left: 20px;" id="add-row"></i>
+                    <i class="icon-pencil" title="Редактировать строку" style="cursor: pointer;position: absolute;bottom: 10px;left: 40px;"></i>
+                    <i class="icon-trash" title="Удалить строку" style="cursor: pointer;position: absolute;bottom: 10px;left: 60px;"></i>
                     <a href="<?php echo site_url('export/xls') . '?' . $_SERVER["QUERY_STRING"]; ?>">
-                        <i class="icon-file" style="cursor: pointer;position: absolute;bottom: 10px;left: 100px;"></i>
+                        <i class="icon-file" title="Экспорт в XLS" style="cursor: pointer;position: absolute;bottom: 10px;left: 100px;"></i>
                     </a>
                     <div class="pagination">
                         <ul style="position: absolute;left:20px;">

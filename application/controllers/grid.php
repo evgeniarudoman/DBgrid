@@ -69,6 +69,9 @@ class Grid extends CI_Controller
                 //'7' => "/js/validation.js",
                 '8' => "/js/jquery.countdown.js",
                 '9' => "/js/script.js",
+                '10' => "/uploadify/swfobject.js",
+                '11' => "/uploadify/jquery.uploadify.v2.1.4.min.js",
+                '12' => "/uploadify/uploadify-script.js",
             ),
             'styles' => array(
                 '1' => "/css/jquery-ui-1.8.18.custom.css",
@@ -79,6 +82,7 @@ class Grid extends CI_Controller
                 '6' => "/bootstrap/css/bootstrap-responsive.min.css",
                 '7' => "/bootstrap/css/docs.css",
                 '8' => "/css/jquery.countdown.css",
+                '9' => "/uploadify/uploadify.css",
             //'9' => "/css/styles.css",
             //'8' => "/css/dialog.css"
             ),
@@ -103,12 +107,11 @@ class Grid extends CI_Controller
             {
                 try
                 {
-                    $this->user->get_unique(array('email' => $_POST['email']), array('username' => $_POST['username']));
+                    $this->user->get_unique(array('username' => $_POST['username']));
                 }
                 catch (Exception $e)
                 {
                     $this->user->setUsername(trim(str_replace(' ', '_', $_POST['username'])));
-                    $this->user->setEmail(trim($_POST['email']));
                     $this->user->setPassword(trim(md5($_POST['password'])));
                     $this->user->setSessionHash('');
                     $this->user->setThemeId(1);
@@ -220,6 +223,7 @@ class Grid extends CI_Controller
             }
             catch (Exception $e)
             {
+                $this->session->set_userdata('session_hash', '');
                 redirect(site_url('grid/login'));
             }
 

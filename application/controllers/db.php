@@ -105,5 +105,16 @@ class Db extends CI_Controller
         echo json_encode($success);
     }
 
+    public function select ()
+    {
+        $databases = $this->database->load_collection ("dbgrid");
+
+        foreach ($databases as $database)
+        {
+            $list_db[] = array ('key' => $database->getName ());
+        }
+
+        echo json_encode ($list_db);
+    }
 
 }

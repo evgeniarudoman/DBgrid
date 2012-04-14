@@ -8,9 +8,9 @@
                     $.ajax({
                         type: "POST",
                         dataType: "json",
-                        url: '<?php echo site_url ('fields/save_width') ?>',
-                        data: "database_name="+'<?php echo $_GET['database'] ?>'+
-                            "&table_name="+'<?php echo $_GET['table'] ?>'+
+                        url: '<?php echo site_url('fields/save_width') ?>',
+                        data: "database_name="+'<?php if (isset($_GET['database'])) echo $_GET['database'] ?>'+
+                            "&table_name="+'<?php if (isset($_GET['table'])) echo $_GET['table'] ?>'+
                             "&field_name="+$(this).children('input[type=hidden]').val()+
                             "&field_size="+$(this).width(),
                         success: function(response){
@@ -28,7 +28,7 @@
             $.ajax({
                 type: "POST",
                 dataType: "json",
-                url: '<?php echo site_url ('grid/save_theme') ?>',
+                url: '<?php echo site_url('grid/save_theme') ?>',
                 data: "theme="+theme,
                 success: function(response){
                     //change on something
@@ -54,7 +54,7 @@
             $.ajax({
                 type: "POST",
                 dataType: "json",
-                url: '<?php echo site_url ('rows/add') ?>',
+                url: '<?php echo site_url('rows/add') ?>',
                 data: "database_name="+db_name+
                     "&table_name="+table_name+
                     // "&count="+count+
@@ -91,17 +91,8 @@
     </script>
     <script>        
         function delete_db(db_name){
-            $.ajax({
-                type: "POST",
-                dataType: "json",
-                url: '<?php echo site_url ('db/delete') ?>',
-                data: "database_name="+db_name,
-                success: function(response){
-                    //change on something
-                    alert(response);
-                    $('.db_'+db_name).empty();
-                }
-            });
+            $('input[type=hidden].db').val(db_name);
+            $( "#database-remove" ).dialog( "open" );
         }
     </script>
     <script>        
@@ -109,7 +100,7 @@
             $.ajax({
                 type: "POST",
                 dataType: "json",
-                url: '<?php echo site_url ('tables/delete') ?>',
+                url: '<?php echo site_url('tables/delete') ?>',
                 data: "database_name="+db_name+
                     "&table_name="+table_name,
                 success: function(response){
@@ -147,21 +138,15 @@
                 return false;
             }).next().hide();
             
-<?php if (isset ($_GET['database']) && !empty ($_GET['database'])): ?>
+<?php if (isset($_GET['database']) && !empty($_GET['database'])): ?>
             $('table#tables[name=<?php echo $_GET['database'] ?>]').show();
-    <?php if (isset ($_GET['table']) && !empty ($_GET['table'])): ?>
-        $('table#tables[name=<?php echo $_GET['database'] ?>] tr[name=<?php echo $_GET['table'] ?>]').attr('style','background-color:#EFF1F1;');
+    <?php if (isset($_GET['table']) && !empty($_GET['table'])): ?>
+                    $('table#tables[name=<?php echo $_GET['database'] ?>] tr[name=<?php echo $_GET['table'] ?>]').attr('style','background-color:#EFF1F1;');
     <?php endif; ?>
 <?php endif; ?>
     });
     </script>
-    <script>
-        function open_dropdown(class_name){
-            $('.btn-group').removeClass('open');
-            $('.btn-group .'+class_name).parent('a').parent('div').addClass('open');
-            return false;
-        }
-    </script>
+
     <script>
         $(document).ready(function() {
             $('.well input.input-small').change(function(){
@@ -170,7 +155,7 @@
                 $.ajax({
                     type: "POST",
                     dataType: "json",
-                    url: '<?php echo site_url ('rows/add') ?>',
+                    url: '<?php echo site_url('rows/add') ?>',
                     data: "database_name="+db_name+
                         "&table_name="+table_name,
                     success: function(response){
@@ -209,7 +194,7 @@
                         });
                     });
                     
-                    $('input[type=hidden].db').val('<?php echo $_GET['database'] ?>');
+                    $('input[type=hidden].db').val('<?php if (isset($_GET['database'])) echo $_GET['database'] ?>');
                     $( "#row-form" ).dialog( "open" );
                     
                 }
@@ -225,6 +210,28 @@
                     $( "#dialog-remove" ).dialog( "open" );
                 }
             });
+            
+            //----------------------
+            
+            $('html').click(function(){
+                if ($('div.open').length == 1)
+                    $('div.open').removeClass('open');
+            });
+            
+            //----------------------
+            
+            $('a.dropdown-toggle').click(function(){
+                if ($('div.open').length == 1)
+                {
+                    $('div.open').removeClass('open');
+                }
+                else
+                {
+                    $('.btn-group').removeClass('open');
+                    $(this).parent('div').addClass('open');
+                }
+                return false;
+            });
         });
     </script>
 
@@ -238,10 +245,10 @@
                 
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo site_url ('rows/select') ?>",
+                    url: "<?php echo site_url('rows/select') ?>",
                     dataType: "html",
-                    data: "database_name="+'<?php echo $_GET['database'] ?>'+
-                        "&table_name="+'<?php echo $_GET['table'] ?>'+
+                    data: "database_name="+'<?php if (isset($_GET['database'])) echo $_GET['database'] ?>'+
+                        "&table_name="+'<?php if (isset($_GET['table'])) echo $_GET['table'] ?>'+
                         "&offset="+offset,
                     success: function(res) {
                         $('#ajax-page').html(res);
@@ -251,13 +258,20 @@
             });
         });
     </script>
-
+<?php if (isset($_GET['database'])) 
+    $database = $_GET['database'];
+    else 
+        $database = NULL; ?>
+<?php if (isset($_GET['table'])) 
+    $table = $_GET['table'];
+    else 
+        $table = NULL; ?>
     <script>
         function search_by(){ 
             $.ajax({
                 type: "POST",
                 dataType: "html",
-                url: '<?php echo site_url ('ajax/search?database_name=') . $_GET['database'] . '&table_name=' . $_GET['table'] . '&term=' ?>'+$('#appendedInput').val(),
+                url: '<?php echo site_url('ajax/search?database_name=') . $database . '&table_name=' . $table . '&term=' ?>'+$('#appendedInput').val(),
                 success: function(response){
                     $('#ajax-page').html(response);
                 }
@@ -269,13 +283,20 @@
         $(document).ready(function(){
             $('input[type=checkbox]').click(function(){ 
                 if ($(this).is(':checked'))
-                { 
+                {
                     $(this).parent('td').parent('tr').children('td').attr('style','background-color:#EFF1F1;text-shadow: 0 1px 0 #FFFFFF;  color: #005580;');
                 }
                 else
                 {
                     $(this).parent('td').parent('tr').children('td').removeAttr('style');
                 }
+            });
+            //---------------------------------------------------------------------
+            $('#ajax-page td.edit_one i.icon-pencil').click(function(){
+                var name = $(this).attr('name');
+                $('tr.edit'+name).show();
+                $('tr.real'+name).hide();
+                $('div.save-changes').show();
             });
             //---------------------------------------------------------------------
             $('input[type=checkbox].check_all').click(function(){ 
@@ -342,38 +363,35 @@
     <div class="navbar navbar-fixed-top">
         <div class="navbar-inner">
             <div class="container">
-
-                <!--<div id="countdown" class="countdownHolder"></div>-->
-
-                <a class="brand" href="<?php echo site_url ('grid') ?>">
+                <a class="brand" href="<?php echo site_url('grid') ?>" title="DBGrid">
                     <i class="icon-leaf icon-white"></i>
                     DBGrid
                 </a>
 
                 <div class="nav-collapse">
                     <ul class="nav">
-                        <li class="">
-                            <a href="<?php echo site_url ('grid') ?>">
+                        <li class="" title="Главная">
+                            <a href="<?php echo site_url('grid') ?>">
                                 <i class="icon-home icon-white"></i>
-                                &nbsp;Home
+                                &nbsp;Главная
                             </a>
                         </li>
-                        <li class="">
+                        <li class="" title="Обновить">
                             <a href="">
                                 <i class="icon-repeat icon-white"></i>
-                                &nbsp;Reload
+                                &nbsp;Обновить
                             </a>
                         </li>
-                        <li class="">
-                            <a href="<?php echo site_url ('help') ?>">
+                        <li class="" title="Помощь">
+                            <a href="<?php echo site_url('help') ?>">
                                 <i class="icon-flag icon-white"></i>
-                                &nbsp;Help
+                                &nbsp;Помощь
                             </a>
                         </li>
-                        <li class="">
-                            <a href="<?php echo site_url ('grid/logout') ?>">
+                        <li class="" title="Выйти">
+                            <a href="<?php echo site_url('grid/logout') ?>">
                                 <i class="icon-off icon-white"></i>
-                                &nbsp;LogOut
+                                &nbsp;Выйти
                             </a>
                         </li>
                     </ul>

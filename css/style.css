@@ -71,6 +71,7 @@ body {
     width: 250px;
     margin-bottom: 15px;
     position: relative;
+    border-color: #DDD;
 }
 
 #login label {
@@ -135,6 +136,7 @@ body {
     text-align: center;
     width: 250px;
     margin-bottom: 15px;
+    border-color: #DDD;
     /*  position: relative;*/
 }
 

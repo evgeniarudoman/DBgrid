@@ -64,14 +64,15 @@ class Query extends CI_Model
         if (mysql_num_rows ($query->result_id) < 2)
         {
             $this->db->query ("INSERT INTO `" . $this->db_name . "`.`themes` (`id`, `style`, `color`) VALUES
-                            (1, 'blue', ''),
-                            (2, 'gray', '');
+                            (1, 'голубая', ''),
+                            (2, 'серая', '');
                     ");
         }
         unset ($query);
 
         $this->db->query ('CREATE TABLE IF NOT EXISTS `' . $this->db_name . '`.`types` (
                             `id` int(11) NOT NULL AUTO_INCREMENT,
+                            `name` varchar(100) NOT NULL,
                             `type` varchar(100) NOT NULL,
                             PRIMARY KEY (`id`)
                         ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
@@ -80,9 +81,14 @@ class Query extends CI_Model
         $query = $this->db->query ('SELECT * FROM `' . $this->db_name . '`.`types`');
         if (mysql_num_rows ($query->result_id) < 2)
         {
-            $this->db->query ("INSERT INTO `" . $this->db_name . "`.`types` (`id`, `type`) VALUES
-                                (1, 'int'),
-                                (2, 'text');
+            $this->db->query ("INSERT INTO `" . $this->db_name . "`.`types` (`id`, `name`, `type`) VALUES
+                                (1, 'число', 'int'),
+                                (2, 'текст', 'varchar'),
+                                (3, 'дата', 'date'),
+                                (4, 'файл', 'varchar'),
+                                (5, 'чекбокс', 'tinyint'),
+                                (6, 'список', 'varchar'),
+                                (7, 'переключатель', 'tinyint');
                     ");
         }
         unset ($query);
@@ -92,8 +98,6 @@ class Query extends CI_Model
                                 `username` varchar(100) NOT NULL,
                                 `password` varchar(50) NOT NULL,
                                 `session_hash` varchar(100) NOT NULL,
-                                `mysql_username` varchar(100) NOT NULL,
-                                `mysql_password` varchar(50) NOT NULL,
                                 `theme_id` int(10) NOT NULL,
                                 `number_of_db` int(10) NOT NULL,
                                 PRIMARY KEY (`id`),

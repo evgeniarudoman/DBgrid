@@ -23,7 +23,7 @@ class Db_fields extends CI_Model
     {
         $size = ' ('.$size.') ';
         $this->db->query('ALTER TABLE `' . $db_name . '`.`' . $table_name . '` ADD 
-                        `' . $field . '` ' . $type . '' . $size . ' NOT NULL ');
+                        `' . $field . '` ' . $type . '' . $size . ' NOT NULL DEFAULT "00/00/0000"');
     }
 
 
