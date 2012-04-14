@@ -150,7 +150,7 @@ class Tables extends CI_Controller
 
         foreach ($types as $type)
         {
-            $list_type[] = array ('key' => $type->getType ());
+            $list_type[] = array ('key' => $type->getName ());
         }
 
         echo json_encode ($list_type);

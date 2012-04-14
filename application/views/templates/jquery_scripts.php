@@ -51,9 +51,8 @@
         // param t - field
         function updateTips( t ) {
             tips
-            .text( t )
-            .append("<i class='icon-exclamation-sign'></i>")
-            .addClass( "alert alert-error" );
+            .append('<div class="ui-widget"><div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"><p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span><strong></strong> '+t+'</p></div></div>')
+            //.addClass('alert alert-error')#B94A48 #EED3D7 #F2DEDE
             setTimeout(function() {
                 tips.removeClass( "ui-state-highlight", 1500 );
             }, 500 );
@@ -331,15 +330,14 @@
                     var fValid = true;
                     allFields.removeClass( "ui-state-error" );
                     
-                    bValid = bValid && checkEmpty( table, "Table name must be not empty");
-                    bValid = bValid && checkLength( table, "table", 3, 16 );
-                    bValid = bValid && checkRegexp( table, /^[a-z]([0-9a-z_])+$/i, "Table name may consist of a-z, 0-9, underscores, begin with a letter." );
+                    bValid = bValid && checkEmpty( table, "Поле имени таблицы не должно быть пустым.");
+                    bValid = bValid && checkRegexp( table, /^[a-zа-я]([a-zа-я_])+$/i, "Поле имени таблицы должно содержать буквы, нижнее подчерквание и начинаться с букв." );
                         
                     if ( $('input[type=hidden].tables').val() == 0) 
                     {
-                        bValid = bValid && checkEmpty( count, "Count of fields must be not empty");
-                        bValid = bValid && checkRegexp( count, /^[0-9]+$/i, "Count of fields may consist only numbers." );
-                        bValid = bValid && checkEmpty( db, "Choose the database name");                    
+                        bValid = bValid && checkEmpty( count, "Поле количество полей не должно быть пустым.");
+                        bValid = bValid && checkRegexp( count, /^[0-9]+$/i, "Поле количество полей должно содержать только цифры." );
+                        bValid = bValid && checkEmpty( db, "Поле имени базы данных не должно быть пустым.");                    
 
                     
                         if ( bValid ) 
@@ -353,7 +351,7 @@
                                     "<td>"+"<a href='/grid/index?database="+table.val()+"'>" + table.val() + "</td>" +
                                     "</tr>" );
                                 $( "div#table-form form.field-form table" ).append( 
-                                "<tr><td><p>key</p></td><td><p>field name</p></td><td><p>type</p></td><td><p>size of field</p></td></tr>");
+                                "<tr><td><p>Ключ</p></td><td><p>Имя поля</p></td><td><p>Тип</p></td><td><p>Размер поля</p></td></tr>");
                             
                                 var i;
                                 for (i=1;i<=count.val();i++)
@@ -385,11 +383,11 @@
                             }
                         
                             for (i=1;i<=count.val();i++)
-                            {                    
-                                fValid = fValid && checkEmpty( $('input[name=field'+i+']'), "Field name #"+i+" must be not empty");
-                                fValid = fValid && checkEmpty( $('select[name=type'+i+']'), "Choose the type #"+i);
-                                fValid = fValid && checkEmpty( $('input[name=check]'), "You need to choose primary key by click radio button");
-                                fValid = fValid && checkRegexp( $('input[name=size'+i+']'), /^[0-9]+$/i, "Size of fields may consist only numbers." );
+                            {
+                                fValid = fValid && checkEmpty( $('input[name=field'+i+']'), "Имя поля #"+i+" не должно быть пустым.");
+                                fValid = fValid && checkEmpty( $('select[name=type'+i+']'), "Выберите тип для поля #"+i+".");
+                                fValid = fValid && checkEmpty( $('input[name=check]'), "Вы долны выбрать начальный ключ нажатием радиокнопки.");
+                                fValid = fValid && checkRegexp( $('input[name=size'+i+']'), /^[0-9]+$/i, "Размер поля должен содержать только числа." );
                             }
                         }
                         if (fValid) 
@@ -592,6 +590,6 @@
     div#databases-contain { width: 350px; margin: 20px 0; }
     div#databases-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
     div#databases-contain table td, div#databases-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
-    .ui-dialog .ui-state-error { background: none; color: #363636; border: 1px solid #FF3853; }
     .validateTips { border: 1px solid transparent; padding: 0.3em; }
+    .ui-dialog .ui-state-error { /*background: #B94A48 #EED3D7 #F2DEDE*/; }
 </style>
