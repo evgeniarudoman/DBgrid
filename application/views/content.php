@@ -58,7 +58,7 @@
                                                 </td>
                                             <?php endforeach; ?>
                                         <?php else: ?>
-                                            <td style="width: 20px;"><i class="icon-th"></i></td>
+                                            <td style="width: 20px;" class='no_table'><i class="icon-th"></i></td>
                                             <td><i>No tables.</i></td>
                                         <?php endif; ?>
                                     </tr>

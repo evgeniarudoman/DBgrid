@@ -118,13 +118,13 @@
                         
                         if ( $('input[type=hidden].db').val() == 0) 
                         {
-                            $( "ul.nav.nav-list" ).append( "<li class='active head'>" +
+                            $( "ul.nav.nav-list" ).append( "<li class='active head' >" +
                                 "<a href='#'>"+"<i class='icon-list-alt icon-white'></i>"+"&nbsp;"+
                                 database.val()+
                                 "<i onclick='delete_db(\""+database.val()+"\");' title='Удалить базу данных' class='icon-trash icon-white' style='float:right;'></i>"+
                                 "</a></li>"+
                                 "<table id='tables' name='"+database.val()+"' style='margin-left: 15px;height: 30px;width:100%;'>"+
-                                "<tr>"+"<td style='width: 20px;'><i class='icon-th'></i></td>"+"<td><i>No tables.</i></td>"+"</tr>"
+                                "<tr>"+"<td style='width: 20px;' class='no_table'><i class='icon-th'></i></td>"+"<td><i>No tables.</i></td>"+"</tr>"
                         ); 
                                 
                             // add new database by ajax
@@ -416,7 +416,7 @@
                                     //change on something
                                     alert(response);
                                     
-                                    $( "li.head[name=<?php if (isset ($_GET['database'])) echo $_GET['database']; ?>]").next().append( "<tr>" +
+                                    $( "table#tables[name="+db.val()+"] tbody").append( "<tr>" +
                                     "<td style='width:20px;'>"+"<i class='icon-th'></i>"+"</td>"+
                                     "<td style='width:247px'>"+"<a href='/grid/index?database=<?php if (isset ($_GET['database'])) echo $_GET['database']; ?>"+"&table="+table.val()+"'>" + table.val() + "</td>" +
                                     '<td style="width:20px"><i class="icon-pencil" title="Переименовать таблицу" style="cursor: pointer;" onclick="edit_table(\"<?php if (isset ($_GET['database'])) echo $_GET['database']; ?>\", \"<?php if (isset ($_GET['table'])) echo $_GET['table']; ?>\");"></i></td><td><i class="icon-trash" title="Удалить таблицу" style="cursor: pointer;" onclick="delete_table(\"<?php if (isset ($_GET['database'])) echo $_GET['database']; ?>\", \"<?php if (isset ($_GET['table'])) echo $_GET['table']; ?>\");"></i></td>'+
