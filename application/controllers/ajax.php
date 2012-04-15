@@ -58,7 +58,7 @@ class Ajax extends CI_Controller
                     'database' => $_GET['database_name'],
                     'table' => $_GET['table_name'],
                 ))
-        );;
+        );
     }
 
 }

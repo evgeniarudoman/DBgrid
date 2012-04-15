@@ -11,12 +11,26 @@
         });
         
         $( "#create-table" ).click(function() {
+            //$('div#table-form ').append('<form class="table-form"><fieldset class="control-group"><label for="table">Имя таблицы</label><input type="text" name="table" id="table" class="text ui-widget-content ui-corner-all"><label for="count">Количество полей</label><input type="text" name="count" id="count" class="text ui-widget-content ui-corner-all"><label for="db">Имя базы данных</label><select name="db" id="db" class="text ui-widget-content ui-corner-all"></select></fieldset></form>');
+            /*$.ajax({
+                type: "POST",
+                dataType: "html",
+                url: '<?php //echo site_url ('tables/form');  ?>',
+                success: function(response){
+                    //change on something
+                    alert(response);
+                                    
+                    $('div#table-form').html(response);
+                }
+            });*/
+            
             $.ajax({
                 type: "POST",
                 dataType: "json",
                 url: '<?php echo site_url ('db/select'); ?>',
                 success: function(types){
                     var options="";
+                    // $('div#table-form form.field-form').hide();
                     
                     $.each( types, function(k, val){
                         options+=  "<option value='"+val.key+"'>"+val.key+"</option>";
@@ -109,58 +123,24 @@
             modal: true,
             buttons: {
                 "Create": function() {
+                    $('div#ajax-loading-left').show();
+                    
                     var bValid = true;
 
                     bValid = bValid && checkEmpty( database, "Поле имени базы данных не должно быть пустым.");
                     bValid = bValid && checkRegexp( database, /^[a-zа-я]([a-zа-я_])+$/i, "Поле имени базы данных должно содержать буквы, нижнее подчерквание и начинаться с букв." );
                    
                     if ( bValid ) {
-                        
-                        if ( $('input[type=hidden].db').val() == 0) 
-                        {
-                            $( "ul.nav.nav-list" ).append( "<li class='active head' >" +
-                                "<a href='#'>"+"<i class='icon-list-alt icon-white'></i>"+"&nbsp;"+
-                                database.val()+
-                                "<i onclick='delete_db(\""+database.val()+"\");' title='Удалить базу данных' class='icon-trash icon-white' style='float:right;'></i>"+
-                                "</a></li>"+
-                                "<table id='tables' name='"+database.val()+"' style='margin-left: 15px;height: 30px;width:100%;'>"+
-                                "<tr>"+"<td style='width: 20px;' class='no_table'><i class='icon-th'></i></td>"+"<td><i>No tables.</i></td>"+"</tr>"
-                        ); 
-                                
-                            // add new database by ajax
-                            $.ajax({
-                                type: "POST",
-                                url: '<?php echo site_url ('db/add'); ?>',
-                                data: "database_name="+database.val(),
-                                success: function(response){
-                                    //change on something
-                                    alert(response);
-                                }
-                            })
-                        }
-                        else
-                        {
-                            $( "ul.nav.nav-list" ).append( "<li class='active head'>" +
-                                "<a href='#'>"+"<i class='icon-list-alt icon-white'></i>"+
-                                database.val()+
-                                "<i onclick='delete_db('data');' class='icon-trash icon-white' style='float:right;'></i>"+
-                                "<i onclick='edit_db('data');' class='icon-pencil icon-white' style='float:right;'></i>"+
-                                "</a>");
-                                
-                            // add new database by ajax
-                            $.ajax({
-                                type: "POST",
-                                url: '<?php echo site_url ('db/rename'); ?>',
-                                data: "new_name="+database.val()+
-                                    "&database_name="+$('input[type=hidden].db').val(),
-                                success: function(response){
-                                    //change on something
-                                    alert(response);
-                                }
-                            });
-                            
-                            $('input[type=hidden].db').val(0);
-                        }
+                        $.ajax({
+                            type: "POST",
+                            dataType:"html",
+                            url: '<?php echo site_url ('db/add'); ?>',
+                            data: "database_name="+database.val(),
+                            success: function(response){
+                                $('div#ajax-loading-left').hide();
+                                $('div#accordion div.well').html(response);
+                            }
+                        });
                         
                         $( this ).dialog( "close" );
                     }
@@ -325,123 +305,99 @@
             modal: true,
             buttons: {
                 "Create": function() {
+                    $('div#ajax-loading-left').show();
+                    
                     var bValid = true;
                     var fValid = false;
                     
                     bValid = bValid && checkEmpty( table, "Поле имени таблицы не должно быть пустым.");
                     bValid = bValid && checkRegexp( table, /^[a-zа-я]([a-zа-я_])+$/i, "Поле имени таблицы должно содержать буквы, нижнее подчерквание и начинаться с букв." );
-                        
-                    if ( $('input[type=hidden].tables').val() == 0) 
-                    {
-                        bValid = bValid && checkEmpty( count, "Поле количество полей не должно быть пустым.");
-                        bValid = bValid && checkRegexp( count, /^[0-9]+$/i, "Поле количество полей должно содержать только цифры." );
-                        bValid = bValid && checkEmpty( db, "Поле имени базы данных не должно быть пустым.");                    
+                      
+                    bValid = bValid && checkEmpty( count, "Поле количество полей не должно быть пустым.");
+                    bValid = bValid && checkRegexp( count, /^[0-9]+$/i, "Поле количество полей должно содержать только цифры." );
+                    bValid = bValid && checkEmpty( db, "Поле имени базы данных не должно быть пустым.");                    
 
                     
-                        if ( bValid ) 
+                    if ( bValid ) 
+                    {
+                        if ( $('input[type=hidden].valid').val() == 'true') 
                         {
-                            if ( $('input[type=hidden].valid').val() == 'true') 
-                            {
-                                $( "div#table-form form.field-form table" ).append( 
-                                "<tr><td><p>Ключ</p></td><td><p>Имя поля</p></td><td><p>Тип</p></td><td><p>Размер поля</p></td></tr>");
+                            $( "div#table-form form.field-form table" ).append( 
+                            "<tr><td><p>Ключ</p></td><td><p>Имя поля</p></td><td><p>Тип</p></td><td><p>Размер поля</p></td></tr>");
                             
-                                var i;
-                                for (i=1;i<=count.val();i++)
-                                {
-                                    $( "div#table-form form.field-form table" ).append(
-                                    "<tr><td><input type='radio' name='check' id='check' value='"+i+"' class='field ui-widget-content ui-corner-all'></td>"+
-                                        "<td><input type='text' name='field"+i+"' id='field"+i+"' style='width:100px;' class='field ui-widget-content ui-corner-all'></td>"+
-                                        "<td><select name='type"+i+"' id='type"+i+"' style='width:150px;' class='text ui-widget-content ui-corner-all'>"+
-                                        "<option value='' selected='selected'> -- выбрать тип -- </option>"+
-                                        "</select></td>"+
-                                        "<td><input type='text' name='size"+i+"' id='size"+i+"' class='field ui-widget-content ui-corner-all'></td></tr>");
-                                
-                                    $('input[type=hidden].valid').val('false');
-                                }
-                            
-                                // get type from db
-                                $.ajax({
-                                    type: "POST",
-                                    dataType: "json",
-                                    url: '<?php echo site_url ('tables/get_type'); ?>',
-                                    success: function(types){
-                                        $.each( types, function(k, val){
-                                            $( "div#table-form form.field-form select" ).append(
-                                            "<option value='"+val.key+"'>"+val.key+"</option>"); 
-                                        });
-                                    }
-                                })
-                            }
-                            if ($('div#table-form form.table-form fieldset').length == 0){
-                                var fValid = true;
-                                for (i=1;i<=count.val();i++)
-                                {
-                                    fValid = fValid && checkEmpty( $('input[name=field'+i+']'), "Имя поля #"+i+" не должно быть пустым.");
-                                    fValid = fValid && checkEmpty( $('select[name=type'+i+']'), "Выберите тип для поля #"+i+".");
-                                    fValid = fValid && checkEmpty( $('input[name=check]'), "Вы должны выбрать начальный ключ нажатием радиокнопки.");
-                                    fValid = fValid && checkRegexp( $('input[name=size'+i+']'), /^[0-9]+$/i, "Размер поля должен содержать только числа." );
-                                }
-                            }
-                            else
-                            {
-                                $('#table-form div.ui-widget').empty();
-                            }
-                            $('div#table-form form.table-form').empty();
-                            $('div#table-form form.field-form').show();
-                        }
-                        if (fValid) 
-                        {
-                            var fields = '';
-                            var types = '';
-                            var sizes = '';
-                        
+                            var i;
                             for (i=1;i<=count.val();i++)
                             {
-                                fields += "&field"+i+"="+$('input#field'+i).val();
-                                types += "&type"+i+"="+$('#type'+i+' option:selected').text();
-                                sizes += "&size"+i+"="+$('input#size'+i).val();
+                                $( "div#table-form form.field-form table" ).append(
+                                "<tr><td><input type='radio' name='check' id='check' value='"+i+"' class='field ui-widget-content ui-corner-all'></td>"+
+                                    "<td><input type='text' name='field"+i+"' id='field"+i+"' style='width:100px;' class='field ui-widget-content ui-corner-all'></td>"+
+                                    "<td><select name='type"+i+"' id='type"+i+"' style='width:150px;' class='text ui-widget-content ui-corner-all'>"+
+                                    "<option value='' selected='selected'> -- выбрать тип -- </option>"+
+                                    "</select></td>"+
+                                    "<td><input type='text' name='size"+i+"' id='size"+i+"' class='field ui-widget-content ui-corner-all'></td></tr>");
+                                
+                                $('input[type=hidden].valid').val('false');
                             }
-                        
-                            // add table and fields by ajax
+                            
+                            // get type from db
                             $.ajax({
                                 type: "POST",
                                 dataType: "json",
-                                url: '<?php echo site_url ('tables/add'); ?>',
-                                data: "table_name="+table.val()+
-                                    "&count="+count.val()+
-                                    "&database="+db.val()+
-                                    "&radio="+$('input#check:checked').val()+
-                                    fields+types+sizes,
-                                success: function(response){
-                                    //change on something
-                                    alert(response);
-                                    
-                                    $( "table#tables[name="+db.val()+"] tbody").append( "<tr>" +
-                                    "<td style='width:20px;'>"+"<i class='icon-th'></i>"+"</td>"+
-                                    "<td style='width:247px'>"+"<a href='/grid/index?database=<?php if (isset ($_GET['database'])) echo $_GET['database']; ?>"+"&table="+table.val()+"'>" + table.val() + "</td>" +
-                                    '<td style="width:20px"><i class="icon-pencil" title="Переименовать таблицу" style="cursor: pointer;" onclick="edit_table(\"<?php if (isset ($_GET['database'])) echo $_GET['database']; ?>\", \"<?php if (isset ($_GET['table'])) echo $_GET['table']; ?>\");"></i></td><td><i class="icon-trash" title="Удалить таблицу" style="cursor: pointer;" onclick="delete_table(\"<?php if (isset ($_GET['database'])) echo $_GET['database']; ?>\", \"<?php if (isset ($_GET['table'])) echo $_GET['table']; ?>\");"></i></td>'+
-                                    "</tr>" );
+                                url: '<?php echo site_url ('tables/get_type'); ?>',
+                                success: function(types){
+                                    $.each( types, function(k, val){
+                                        $( "div#table-form form.field-form select" ).append(
+                                        "<option value='"+val.key+"'>"+val.key+"</option>"); 
+                                    });
                                 }
-                            });
-                            
-                            $( this ).dialog( "close" );
+                            })
                         }
+                        if ($('div#table-form form.table-form fieldset').length == 0){
+                            var fValid = true;
+                            for (i=1;i<=count.val();i++)
+                            {
+                                fValid = fValid && checkEmpty( $('input[name=field'+i+']'), "Имя поля #"+i+" не должно быть пустым.");
+                                fValid = fValid && checkEmpty( $('select[name=type'+i+']'), "Выберите тип для поля #"+i+".");
+                                fValid = fValid && checkEmpty( $('input[name=check]'), "Вы должны выбрать начальный ключ нажатием радиокнопки.");
+                                fValid = fValid && checkRegexp( $('input[name=size'+i+']'), /^[0-9]+$/i, "Размер поля должен содержать только числа." );
+                            }
+                        }
+                        else
+                        {
+                            $('#table-form div.ui-widget').empty();
+                        }
+                        $('div#table-form form.table-form').empty();
+                        $('div#table-form form.field-form').show();
                     }
-                    else
+                    if (fValid) 
                     {
+                        var fields = '';
+                        var types = '';
+                        var sizes = '';
+                        
+                        for (i=1;i<=count.val();i++)
+                        {
+                            fields += "&field"+i+"="+$('input#field'+i).val();
+                            types += "&type"+i+"="+$('#type'+i+' option:selected').text();
+                            sizes += "&size"+i+"="+$('input#size'+i).val();
+                        }
+                        
+                        // add table and fields by ajax
                         $.ajax({
                             type: "POST",
-                            url: '<?php echo site_url ('tables/rename'); ?>',
-                            data: "new_name="+table.val()+
-                                "&database_name="+$('input[type=hidden].db').val()+
-                                "&table_name="+$('input[type=hidden].tables').val(),
+                            dataType: "html",
+                            url: '<?php echo site_url ('tables/add'); ?>',
+                            data: "table_name="+table.val()+
+                                "&count="+count.val()+
+                                "&database="+db.val()+
+                                "&radio="+$('input#check:checked').val()+
+                                fields+types+sizes,
                             success: function(response){
-                                //change on something
-                                alert(response);
+                                $('div#ajax-loading-left').hide();
+                                $('div#accordion div.well').html(response);
                             }
                         });
-                        
-                        $('input[type=hidden].db').val(0);
+                            
                         $( this ).dialog( "close" );
                     }
                 },
@@ -457,6 +413,39 @@
     });
     // end of creating new table
     
+    
+    $(function() {
+        $( "#table-edit-form" ).dialog({
+            autoOpen: false,
+            height: 300,
+            width: 400,
+            modal: true,
+            buttons: {
+                "YES": function(){
+                    $('div#ajax-loading-left').show();
+                    
+                    $.ajax({
+                        type: "POST",
+                        dataType: "html",
+                        url: '<?php echo site_url ('tables/rename'); ?>',
+                        data: "new_name="+$('input#table-e').val()+
+                            "&database_name="+$('input[type=hidden].db').val()+
+                            "&table_name="+$('input[type=hidden].tables').val(),
+                        success: function(response){
+                            $('div#ajax-loading-left').hide();
+                            $('div#accordion div.well').html(response);
+                        }
+                    });
+                        
+                    $('input[type=hidden].db').val(0);
+                    $( this ).dialog( "close" );
+                },
+                "NO": function(){
+                    $( this ).dialog( "close" );
+                }                  
+            }
+        });
+    });
     
     $(function() {
         $( "#dialog-remove" ).dialog({
@@ -518,15 +507,48 @@
             modal: true,
             buttons: {
                 "YES": function(){
+                    $('div#ajax-loading-left').show();
+                    
                     $.ajax({
                         type: "POST",
-                        dataType: "json",
+                        dataType: "html",
                         url: '<?php echo site_url ('db/delete') ?>',
                         data: "database_name="+$('input[type=hidden].db').val(),
                         success: function(response){
-                            //change on something
-                            alert(response);
-                            $('table#tables[name='+$('input[type=hidden].db').val()+']').empty().prev().empty();
+                            $('div#ajax-loading-left').hide();
+                            $('div#accordion div.well').html(response);
+                        }
+                    });
+                    
+                    $( this ).dialog( "close" );
+                },
+                "NO": function(){
+                    $( this ).dialog( "close" );
+                }                  
+            }
+        });
+    });
+    
+    
+    $(function() {
+        $( "#table-remove" ).dialog({
+            autoOpen: false,
+            height: 300,
+            width: 400,
+            modal: true,
+            buttons: {
+                "YES": function(){
+                    $('div#ajax-loading-left').show();
+                    
+                    $.ajax({
+                        type: "POST",
+                        dataType: "html",
+                        url: '<?php echo site_url ('tables/delete') ?>',
+                        data: "database_name="+$('input[type=hidden].db').val()+
+                            "&table_name="+$('input[type=hidden].tables').val(),
+                        success: function(response){
+                            $('div#ajax-loading-left').hide();
+                            $('div#accordion div.well').html(response);
                         }
                     });
                     

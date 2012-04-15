@@ -10,6 +10,12 @@
 </div>
 <!-- end delete rows-->
 
+<!-- delete rows-->
+<div id="table-remove" title="Удаление базы данных" style="display: none;">
+    Вы уверенны, что хотите удалить эту базу данных?
+</div>
+<!-- end delete rows-->
+
 <!-- create new database form -->    
 <div id="database-form" title="Добавление базы данных" class="ui-dialog-content ui-widget-content" style="width: auto; min-height: 0px; height: 216px;display: none; " scrolltop="0" scrollleft="0">
     <p class="validateTips">Все поля обязательны для заполнения.</p>
@@ -119,6 +125,18 @@
         <input type="hidden" class="db" value="0"/>
         <input type="hidden" class="tables" value="0"/>
         <input type="hidden" class="rows" value="0"/>
+    </form>
+</div>
+<!-- end table form -->
+
+<!-- create new table form -->    
+<div id="table-edit-form" title="Переименовывание таблицы" class="ui-dialog-content ui-widget-content" style="width: auto; min-height: 0px; height: 216px;display: none; " scrolltop="0" scrollleft="0">
+    <p class="validateTips">Все поля обязательны для заполнения.</p>
+    <form class="table-form">
+        <fieldset class="control-group">
+            <label for="table">Имя таблицы</label>
+            <input type="text" name="table" id="table-e" class="text ui-widget-content ui-corner-all">
+        </fieldset>
     </form>
 </div>
 <!-- end table form -->

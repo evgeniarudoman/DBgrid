@@ -65,7 +65,7 @@
                                 </table>
                             <?php endforeach; ?>
                         <?php else: ?>
-                            <i>No databases.</i>
+                            <i class="no_db">No databases.</i>
                         <?php endif; ?>
                     </ul>
                 </div>

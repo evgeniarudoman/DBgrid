@@ -1,4 +1,11 @@
 <body>
+    <div id="ajax-loading-left" style="display:none;">
+    <img src="/image/ajax-loader.gif"/>
+</div>
+<body>
+    <div id="ajax-loading-right" style="display:none;">
+    <img src="/image/ajax-loader.gif"/>
+</div>
     <script language="javascript">
         $(document).ready(function() {
             //-----------------------------
@@ -97,18 +104,9 @@
     </script>
     <script>        
         function delete_table(db_name, table_name){
-            $.ajax({
-                type: "POST",
-                dataType: "json",
-                url: '<?php echo site_url('tables/delete') ?>',
-                data: "database_name="+db_name+
-                    "&table_name="+table_name,
-                success: function(response){
-                    //change on something
-                    alert(response);
-                    $('.db_'+table_name).empty();
-                }
-            });
+            $('input[type=hidden].db').val(db_name);
+            $('input[type=hidden].tables').val(table_name);
+            $( "#table-remove" ).dialog( "open" );
         }
     </script>
     <script>    
@@ -124,11 +122,8 @@
         function edit_table(db_name, table_name){
             $('input[type=hidden].db').val(db_name);
             $('input[type=hidden].tables').val(table_name);
-            $('#db').hide();
-            $('label[for=db]').hide();
-            $('#count').hide();
-            $('label[for=count]').hide();
-            $( "#table-form" ).dialog( "open" );
+            $('input#table-e').val(table_name);
+            $( "#table-edit-form" ).dialog( "open" );
         }
     </script>
     <script>

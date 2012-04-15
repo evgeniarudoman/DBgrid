@@ -89,7 +89,15 @@ class Tables extends CI_Controller
             $success = '* Message - ' . $e->getMessage () . "\r\n" . "* Line # - " . $e->getLine () . "\r\n" . "* File - " . $e->getFile ();
         }
 
-        echo json_encode ($success);
+        $result = get_database_tree ($user_id);
+        json_encode ($this->load->view (
+                        'left_menu', array (
+                    'result' => $result,
+                    'success' => $success,
+                            'data'=>$_POST['database']
+                ))
+        );
+        //echo json_encode ($success);
     }
 
     public function delete ()
@@ -116,7 +124,14 @@ class Tables extends CI_Controller
             $success = '* Message - ' . $e->getMessage () . "\r\n" . "* Line # - " . $e->getLine () . "\r\n" . "* File - " . $e->getFile ();
         }
 
-        echo json_encode ($success);
+        $result = get_database_tree ($user_id);
+        json_encode ($this->load->view (
+                        'left_menu', array (
+                    'result' => $result,
+                    'success' => $success,
+                            'data'=>$_POST['database_name']
+                ))
+        );
     }
 
     public function rename ()
@@ -145,7 +160,14 @@ class Tables extends CI_Controller
             $success = '* Message - ' . $e->getMessage () . "\r\n" . "* Line # - " . $e->getLine () . "\r\n" . "* File - " . $e->getFile ();
         }
 
-        echo json_encode ($success);
+        $result = get_database_tree ($user_id);
+        json_encode ($this->load->view (
+                        'left_menu', array (
+                    'result' => $result,
+                    'success' => $success,
+                            'data'=>$_POST['database_name']
+                ))
+        );
     }
 
     public function get_type ()
@@ -158,6 +180,11 @@ class Tables extends CI_Controller
         }
 
         echo json_encode ($list_type);
+    }
+    
+    public function form ()
+    {
+        json_encode ($this->load->view ('templates/table-form'));
     }
 
 }
