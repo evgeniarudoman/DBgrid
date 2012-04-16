@@ -113,7 +113,8 @@
                 <div class="wells" style="padding: 8px 0;height: 400px;position: relative;">
                     <?php if (isset ($_GET['table']) && !empty ($_GET['table'])): ?>
                     <div id="tabs-1" class="ui-tabs-panel ui-widget-content ui-corner-bottom">
-                        <table id="myTable" class="tablesorter table-striped table-bordered table-condensed" style="margin-left: 20px;">
+                        <div id="structure">
+                        <table id="myTables" class="tablesorter table-striped table-bordered table-condensed" style="margin-left: 20px;">
                             <tr>
                                 <td title="Выбрать все строки" style="background-color: #E6EEEE">
                                     <input type="checkbox" class="check_all"/>
@@ -143,6 +144,7 @@
                                 <?php endforeach; ?>
                             </tbody> 
                         </table>
+                            </div>
                         <i class="icon-plus" title="Добавить столбец" style="cursor: pointer;position: absolute;bottom: 10px;left: 20px;" id="add-field"></i>
                         <i class="icon-pencil" title="Редактировать столбец" style="cursor: pointer;position: absolute;bottom: 10px;left: 40px;" id="edit-field"></i>
                         <i class="icon-trash" title="Удалить столбец" style="cursor: pointer;position: absolute;bottom: 10px;left: 60px;" id="remove-field"></i>

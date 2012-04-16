@@ -15,7 +15,7 @@
             /*$.ajax({
                 type: "POST",
                 dataType: "html",
-                url: '<?php //echo site_url ('tables/form');   ?>',
+                url: '<?php //echo site_url ('tables/form');    ?>',
                 success: function(response){
                     //change on something
                     alert(response);
@@ -177,13 +177,14 @@
                         values += '&value'+i+'='+$(this).val();
                         td += '<td>'+$(this).val()+'</td>';
                     });
-                    
+                    alert(fields);
+                    alert(values);
                     if ( $('input[type=hidden].db').val() == 0) 
                     {
                         // add new database by ajax
                         $.ajax({
                             type: "POST",
-                            dataType: "json",
+                            dataType: "html",
                             url: '<?php echo site_url ('rows/add'); ?>',
                             data: "database_name="+"<?php if (isset ($_GET['database'])) echo $_GET['database'] ?>"+
                                 "&table_name="+"<?php if (isset ($_GET['table'])) echo $_GET['table'] ?>"+
@@ -193,9 +194,7 @@
                                 //change on something
                                 alert(response);
                             
-                                $('table.table-striped').append(
-                                '<tr><td class="check_one"><input type="checkbox"></td>'+td+'</tr>'
-                            );
+                                $('#ajax-page').html(response);
                             }
                         });
                     }
@@ -251,7 +250,7 @@
                     var val = $('input[name=field_name]').val();
                     $.ajax({
                         type: "POST",
-                        dataType: "json",
+                        dataType: "html",
                         url: '<?php echo site_url ('fields/add'); ?>',
                         data: "database_name="+"<?php if (isset ($_GET['database'])) echo $_GET['database'] ?>"+
                             "&table_name="+"<?php if (isset ($_GET['table'])) echo $_GET['table'] ?>"+
@@ -262,9 +261,12 @@
                             //change on something
                             alert(response);
                             
+                            $('div#structure').html(response);
+                             
                             $('table#myTable thead tr').append(
                             '<th class="header" style="width:60px;position:relative;" onclick="$(\'.caret#up\').hide();$(\'.caret#down\').show();return false;"><div class="resize" name="'+val+'">'+val+'<input type="hidden" value="'+val+'"><input type="hidden" name="sorting" value="0"></div></th>'
                         );
+                            
                             var select = $('select[name=type] option:selected').val();
                         
                             if(select == 'дата')
@@ -462,7 +464,8 @@
                         var $inputs = checked.parent('td');
                         var $name = $("th div.resize");
                         var row = '';
-                        var hidden = '';
+                        var fields = '';
+                        var values = '';
                     
                         $inputs.each(function() {
                             var $rows = $(this).siblings();
@@ -471,7 +474,8 @@
                                 $name.each(function(z) {
                                     if (z == j)
                                     {
-                                        hidden += "&"+$(this).attr("name")+'='+row;
+                                        fields += "&field"+z+'='+$(this).attr("name");
+                                        values += "&value"+z+'='+row;
                                     }   
                                 });
                             });
@@ -481,7 +485,7 @@
                             type: "POST",
                             url: '<?php echo site_url ('rows/remove'); ?>',
                             data: "database_name="+'<?php if (isset ($_GET['database'])) echo $_GET['database'] ?>'+
-                                "&table_name="+'<?php if (isset ($_GET['table'])) echo $_GET['table'] ?>'+hidden+"&count="+$inputs.length,
+                                "&table_name="+'<?php if (isset ($_GET['table'])) echo $_GET['table'] ?>'+fields+values+"&count="+$inputs.length,
                             success: function(response){
                                 //change on something
                                 checked.parent('td').parent('tr').slideUp();

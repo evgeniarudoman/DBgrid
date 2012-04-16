@@ -147,7 +147,15 @@ class Fields extends CI_Controller
             $success = '* Message - ' . $e->getMessage() . "\r\n" . "* Line # - " . $e->getLine() . "\r\n" . "* File - " . $e->getFile();
         }
 
-        echo json_encode($success);
+        $result = get_database_tree ($user_id);
+        json_encode ( $this->load->view (
+                        'structure', array (
+                    'result' => $result,
+                    'success' => $success,
+                            'database' => $_POST['database_name'],
+                            'table' => $_POST['table_name']
+                ))
+        );
     }
 
 

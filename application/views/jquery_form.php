@@ -64,7 +64,7 @@
                     <?php elseif ($field['type_name'] == 'дата'): ?>
                         <td><input type="text" class="text ui-widget-content ui-corner-all datepicker" style="width:65px;height:10px;" value="--/--/----"/></td>
                     <?php else: ?>
-                        <td><input class="text ui-widget-content ui-corner-all" type="text" style="width:<?php echo $width ?>;height:10px;" value=""/></td>
+                        <td><input class="text ui-widget-content ui-corner-all" type="text" style="width:<?php echo $width ?>;height:10px;" value="" name="<?php echo $field['name']?>"/></td>
                     <?php endif; ?>
                     </th>
                     <?php $i++; ?>

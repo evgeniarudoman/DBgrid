@@ -59,7 +59,17 @@ class Rows extends CI_Controller
         {
             $success = FALSE;
         }
-        echo json_encode ($success);
+        
+        $result = get_database_tree ($user_id);
+        $result['result'] = mysql_query ("SELECT * FROM " . $_POST['database_name'] . '.' . $_POST['table_name'] . ' LIMIT 8');
+        
+        json_encode ($this->load->view (
+                'data', array (
+                    'result' => $result,
+                    'database' => $_POST['database_name'],
+                    'table' => $_POST['table_name'],
+                ))
+        );
     }
 
     public function edit ()
@@ -86,11 +96,12 @@ class Rows extends CI_Controller
                         {
                             $values[]     = $_POST['value' . $i];
                             $fields[]     = $_POST['field' . $i];
-                            $old_values[] = $_POST['old_' . $_POST['field' . $i]];
+                            $old_values[] = $_POST['old' . $i];
                         }
                     }
                 }
 
+                var_dump($fields, $values);
                 $this->rows->update ($_POST['database_name'], $_POST['table_name'], $fields, $values, $old_values);
 
                 $success = TRUE;
@@ -127,14 +138,13 @@ class Rows extends CI_Controller
                 {
                     foreach ($result[$_POST['database_name'] . '_' . $_POST['table_name'] . '_field'] as $field)
                     {
-                        if (isset ($_POST[$field['name']]))
+                        if ($field['name'] == $_POST['field' . $i])
                         {
-                            $values[] = $_POST[$field['name']];
-                            $fields[] = $field['name'];
+                            $values[]     = $_POST['value' . $i];
+                            $fields[]     = $_POST['field' . $i];
                         }
                     }
                 }
-
                 $this->rows->remove ($_POST['database_name'], $_POST['table_name'], $fields, $values);
 
                 $success = TRUE;

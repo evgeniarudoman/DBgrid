@@ -181,8 +181,8 @@
                             $name.each(function(z) {
                                 if (z == j)
                                 {
-                                    $('input#database[name='+$(this).attr("name")+']').val(row);
-                                    hidden += "&old_"+$(this).attr("name")+'='+row;
+                                    $('div#row-form input[name='+$(this).attr("name")+']').val(row);
+                                    hidden += "&old"+z+'='+row;
                                     $('input[type=hidden].rows').val(hidden);    
                                 }   
                             });
