@@ -50,21 +50,23 @@
                             $width = 100 . 'px';
                         ?>
                         <?php if ($field['type_name'] == 'чекбокс'): ?>
-                        <td><input type="checkbox"/><br/></td>
+                        <td><input type="checkbox" name="<?php echo $field['name']?>" number="<?php echo $i;?>"/><br/></td>
                     <?php elseif ($field['type_name'] == 'переключатель'): ?>
-                        <td><input type="radio" name="<?php echo $field['name'] ?>"/><br/></td>
+                        <td><input type="radio" name="<?php echo $field['name'] ?>" number="<?php echo $i;?>"/><br/></td>
                     <?php elseif ($field['type_name'] == 'файл'): ?>
-                        <td><input id="photo<?php echo $i ?>" style="display:block;" class="input-file btn btn-primary" type="file"/><br/></td>
+                        <td><br/><input id="photo<?php echo $i ?>" style="display:block;" number="<?php echo $i;?>" class="input-file btn btn-primary" type="file" name="<?php echo $field['name']?>"/><br/></td>
                     <?php elseif ($field['type_name'] == 'список'): ?>
-                        <td>
-                            <select name="select" class="text ui-widget-content ui-corner-all">
-                                <option value="" selected="selected"> -- choose database -- </option>
+                        <td><br/>
+                            <select number="<?php echo $i;?>" name="<?php echo $field['name']?>" class="text ui-widget-content ui-corner-all">
+                                <option value="" selected="selected"> -- choose -- </option>
                             </select><br/>
                         </td>
                     <?php elseif ($field['type_name'] == 'дата'): ?>
-                        <td><input type="text" class="text ui-widget-content ui-corner-all datepicker" style="width:65px;height:10px;" value="--/--/----"/><br/></td>
+                        <td><input type="text" number="<?php echo $i;?>" class="text ui-widget-content ui-corner-all datepicker" style="width:75px;height:10px;" value="--/--/----" name="<?php echo $field['name']?>"/><br/></td>
+                    <?php elseif ($field['type_name'] == 'число'): ?>
+                        <td><input type="text" number="<?php echo $i;?>" class="text ui-widget-content ui-corner-all" style="width:75px;height:10px;" value="0" name="<?php echo $field['name']?>"/><br/></td>
                     <?php else: ?>
-                        <td><textarea class="text ui-widget-content ui-corner-all" type="text" style="display:block;" value="" name="<?php echo $field['name']?>"></textarea><br/></td>
+                        <td><textarea number="<?php echo $i;?>" class="text ui-widget-content ui-corner-all" type="text" style="display:block;" value="" name="<?php echo $field['name']?>"></textarea><br/></td>
                     <?php endif; ?>
                     </th>
                     <?php $i++; ?>
@@ -96,8 +98,8 @@
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </select>
-                <label for="size">Размер</label>
-                <input type="text" name="size" class="text ui-widget-content ui-corner-all" />
+                <!--<label for="size">Размер</label>
+                <input type="text" name="size" class="text ui-widget-content ui-corner-all" />-->
             <?php endif; ?>
         </fieldset>
     </form>

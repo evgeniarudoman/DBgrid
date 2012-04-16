@@ -173,14 +173,16 @@
                                             <td title="Выбрать все строки">
                                                 <input type="checkbox" class="check_all"/>
                                             </td>
+                                            <?php $n=0;?>
                                             <?php foreach ($result[$_GET['database'] . '_' . $_GET['table'] . '_field'] as $key => $field): ?>
                                                 <th class="header" style="width:<?php echo $field['width'] . 'px'; ?>;position:relative;" onclick="$('.caret#up').hide();$('.caret#down').show();return false;">
-                                        <div class='resize' name="<?php echo $field['name']; ?>" >
+                                        <div class='resize' number="<?php echo $n;?>" name="<?php echo $field['name']; ?>" >
                                             <?php echo $field['name']; ?>
                                             <input type="hidden" value="<?php echo $field['name']; ?>" />
                                             <input type="hidden" name="sorting" value="0" />
                                         </div>
-                                        </th>                                    
+                                        </th>
+                                        <?php $n++;?>
                                     <?php endforeach; ?>
                                     <td></td>
                                     </tr>

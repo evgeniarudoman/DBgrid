@@ -34,18 +34,35 @@ class Rows extends CI_Controller
             {
                 $result = get_database_tree ($user_id);
 
-                for ($i = 0; $i < $_POST['count']; $i++)
+                $count = $_POST['count_input'] + $_POST['count_textarea'] + $_POST['count_select'] + $_POST['count_checkbox'];
+                for ($i     = 0; $i < $count; $i++)
                 {
                     foreach ($result[$_POST['database_name'] . '_' . $_POST['table_name'] . '_field'] as $field)
                     {
-                        if ($field['name'] == $_POST['field' . $i])
+                        if (isset ($_POST['field_textarea_' . $i]) && $field['name'] == $_POST['field_textarea_' . $i])
                         {
-                            $values[] = $_POST['value' . $i];
-                            $fields[] = $_POST['field' . $i];
+                            $values[] = $_POST['value_textarea_' . $i];
+                            $fields[] = $_POST['field_textarea_' . $i];
+                        }
+                        elseif (isset ($_POST['field_input_' . $i]) && $field['name'] == $_POST['field_input_' . $i])
+                        {
+                            $values[] = $_POST['value_input_' . $i];
+                            $fields[] = $_POST['field_input_' . $i];
+                        }
+                        elseif (isset ($_POST['field_select_' . $i]) && $field['name'] == $_POST['field_select_' . $i])
+                        {
+                            $values[] = $_POST['value_select_' . $i];
+                            $fields[] = $_POST['field_select_' . $i];
+                        }
+                        elseif (isset ($_POST['field_checkbox_' . $i]) && $field['name'] == $_POST['field_checkbox_' . $i])
+                        {
+                            $values[] = 1;
+                            $fields[] = $_POST['field_checkbox_' . $i];
                         }
                     }
                 }
-
+                var_dump ($fields);
+                var_dump ($values);
                 $this->rows->insert ($_POST['database_name'], $_POST['table_name'], $fields, $values);
 
                 $success = TRUE;
@@ -87,21 +104,41 @@ class Rows extends CI_Controller
             if (isset ($bool) && $bool == 1)
             {
                 $result = get_database_tree ($user_id);
-
-                for ($i = 0; $i < $_POST['count']; $i++)
+                $count  = $_POST['count_input'] + $_POST['count_textarea'] + $_POST['count_select'] + $_POST['count_checkbox'];
+                for ($i      = 0; $i < $count; $i++)
                 {
                     foreach ($result[$_POST['database_name'] . '_' . $_POST['table_name'] . '_field'] as $field)
                     {
-                        if ($field['name'] == $_POST['field' . $i])
+                        if (isset ($_POST['field_textarea_' . $i]) && $field['name'] == $_POST['field_textarea_' . $i])
                         {
-                            $values[]     = $_POST['value' . $i];
-                            $fields[]     = $_POST['field' . $i];
-                            $old_values[] = $_POST['old' . $i];
+                            $values[]     = $_POST['value_textarea_' . $i];
+                            $fields[]     = $_POST['field_textarea_' . $i];
+                            $old_values[] = $_POST['old_textarea_' . $i];
+                        }
+                        elseif (isset ($_POST['field_input_' . $i]) && $field['name'] == $_POST['field_input_' . $i])
+                        {
+                            $values[]     = $_POST['value_input_' . $i];
+                            $fields[]     = $_POST['field_input_' . $i];
+                            $old_values[] = $_POST['old_input_' . $i];
+                        }
+                        elseif (isset ($_POST['field_select_' . $i]) && $field['name'] == $_POST['field_select_' . $i])
+                        {
+                            $values[]     = $_POST['value_select_' . $i];
+                            $fields[]     = $_POST['field_select_' . $i];
+                            $old_values[] = $_POST['old_select_' . $i];
+                        }
+                        elseif (isset ($_POST['field_checkbox_' . $i]) && $field['name'] == $_POST['field_checkbox_' . $i])
+                        {
+                            $values[]     = 1;
+                            $fields[]     = $_POST['field_checkbox_' . $i];
+                            $old_values[] = $_POST['old_checkbox_' . $i];
                         }
                     }
                 }
+                var_dump ($fields);
+                var_dump ($values);
+                var_dump ($old_values);
 
-                var_dump ($fields, $values);
                 $this->rows->update ($_POST['database_name'], $_POST['table_name'], $fields, $values, $old_values);
 
                 $success = TRUE;

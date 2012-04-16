@@ -15,7 +15,7 @@
             /*$.ajax({
                 type: "POST",
                 dataType: "html",
-                url: '<?php //echo site_url ('tables/form');      ?>',
+                url: '<?php //echo site_url ('tables/form');       ?>',
                 success: function(response){
                     //change on something
                     alert(response);
@@ -164,21 +164,35 @@
             modal: true,
             buttons: {
                 "Add": function() {
-                    var bValid = true;
-
-                    var $inputs = $('#row-form input');
-
                     var fields = '';
                     var values = '';
-                    var td;
-                    
-                    $inputs.each(function(i) {
-                        fields += '&field'+i+'='+this.name;
-                        values += '&value'+i+'='+$(this).val();
-                        td += '<td>'+$(this).val()+'</td>';
+
+                    var $textareas = $('#row-form textarea');
+                    $textareas.each(function(k) {
+                        fields += '&field_textarea_'+$(this).attr("number")+'='+this.name;
+                        values += '&value_textarea_'+$(this).attr("number")+'='+$(this).val();
                     });
-                    alert(fields);
-                    alert(values);
+                    
+                    var $inputs = $('#row-form input[type=text]');
+                    $inputs.each(function(k) {
+                        fields += '&field_input_'+$(this).attr("number")+'='+this.name;
+                        values += '&value_input_'+$(this).attr("number")+'='+$(this).val();
+                    });
+                    
+                    var $checkboxs = $('#row-form input:checked');
+                    $checkboxs.each(function(k) {
+                        fields += '&field_checkbox_'+$(this).attr("number")+'='+this.name;
+                        values += '&value_checkbox_'+$(this).attr("number")+'='+$(this).val();
+                    });
+                    
+                    var $selects = $('#row-form select');
+                    $selects.each(function(k) {
+                        fields += '&field_select_'+$(this).attr("number")+'='+this.name;
+                        values += '&value_select_'+$(this).attr("number")+'='+$(this).text();
+                    });
+                    
+                    //alert(fields);
+                    //alert(values);
                     if ( $('input[type=hidden].db').val() == 0) 
                     {
                         // add new database by ajax
@@ -189,7 +203,10 @@
                             data: "database_name="+"<?php if (isset ($_GET['database'])) echo $_GET['database'] ?>"+
                                 "&table_name="+"<?php if (isset ($_GET['table'])) echo $_GET['table'] ?>"+
                                 fields+values+
-                                "&count="+$inputs.length,
+                                "&count_input="+$inputs.length+
+                                "&count_textarea="+$textareas.length+
+                                "&count_select="+$selects.length+
+                                "&count_checkbox="+$checkboxs.length,
                             success: function(response){
                                 //change on something
                                 alert(response);
@@ -200,6 +217,12 @@
                     }
                     else
                     {
+                        var $checkboxs = $('#row-form input');
+                        $checkboxs.each(function(k) {
+                            fields += '&field_checkbox_'+$(this).attr("number")+'='+this.name;
+                            values += '&value_checkbox_'+$(this).attr("number")+'='+$(this).val();
+                        });
+                    
                         $.ajax({
                             type: "POST",
                             dataType: "json",
@@ -207,7 +230,10 @@
                             data: "database_name="+"<?php if (isset ($_GET['database'])) echo $_GET['database'] ?>"+
                                 "&table_name="+"<?php if (isset ($_GET['table'])) echo $_GET['table'] ?>"+
                                 fields+values+
-                                "&count="+$inputs.length+
+                                "&count_input="+$inputs.length+
+                                "&count_textarea="+$textareas.length+
+                                "&count_select="+$selects.length+
+                                "&count_checkbox="+$checkboxs.length+
                                 $('input[type=hidden].rows').val(),
                             success: function(response){
                                 //change on something
@@ -255,8 +281,8 @@
                         data: "database_name="+"<?php if (isset ($_GET['database'])) echo $_GET['database'] ?>"+
                             "&table_name="+"<?php if (isset ($_GET['table'])) echo $_GET['table'] ?>"+
                             "&field_name="+val+
-                            "&type="+$('select[name=type] option:selected').val()+
-                            "&size="+$('input[name=size]').val(),
+                            "&type="+$('select[name=type] option:selected').val(),//+
+                        //"&size="+$('input[name=size]').val(),
                         success: function(response){
                             //change on something
                             alert(response);
@@ -285,8 +311,11 @@
                     $( this ).dialog( "close" );
                 }
             },
-            close: function() {
-                allFields.val( "" ).removeClass( "ui-state-error" );
+            open: function() {
+                $('#field-form div.ui-widget').empty();
+                $('#field-form input').val('');
+                $('#field-form select').val('');
+                allFields.val("");
             }
         });
         // end of creating new field
