@@ -126,7 +126,7 @@ class Fields extends CI_Controller
                     $this->field->db_name = "dbgrid";
                     $this->field->load_collection("dbgrid");
 
-                    $this->fields->add($_POST['database_name'], $_POST['table_name'], $_POST['field_name'], $this->type->getType(), $_POST['size'], $after = NULL);
+                    $this->fields->add($_POST['database_name'], $_POST['table_name'], $_POST['field_name'], $this->type->getType(), $this->type->getSize(), $this->type->getDefault(), $after = NULL);
 
                     $this->field->setName($_POST['field_name']);
                     $this->field->setTypeId($this->type->getId());

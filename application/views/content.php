@@ -107,8 +107,8 @@
         <div class="span8">
             <div id="tabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all">
                 <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
-                    <li class="ui-state-default ui-corner-top ui-tabs-selected ui-state-active"><a href="#tabs-1" onclick="return false;">Структура</a></li>
-                    <li class="ui-state-default ui-corner-top "><a href="#tabs-2" onclick="return false;">Обзор</a></li>
+                    <li class="ui-state-default ui-corner-top "><a href="#tabs-1" onclick="return false;">Структура</a></li>
+                    <li class="ui-state-default ui-corner-top ui-tabs-selected ui-state-active"><a href="#tabs-2" onclick="return false;">Обзор</a></li>
                 </ul>
                 <div class="wells" style="padding: 8px 0;height: 400px;position: relative;">
                     <?php if (isset ($_GET['table']) && !empty ($_GET['table'])): ?>

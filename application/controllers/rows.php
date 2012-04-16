@@ -59,12 +59,12 @@ class Rows extends CI_Controller
         {
             $success = FALSE;
         }
-        
-        $result = get_database_tree ($user_id);
+
+        $result           = get_database_tree ($user_id);
         $result['result'] = mysql_query ("SELECT * FROM " . $_POST['database_name'] . '.' . $_POST['table_name'] . ' LIMIT 8');
-        
+
         json_encode ($this->load->view (
-                'data', array (
+                        'data', array (
                     'result' => $result,
                     'database' => $_POST['database_name'],
                     'table' => $_POST['table_name'],
@@ -101,7 +101,7 @@ class Rows extends CI_Controller
                     }
                 }
 
-                var_dump($fields, $values);
+                var_dump ($fields, $values);
                 $this->rows->update ($_POST['database_name'], $_POST['table_name'], $fields, $values, $old_values);
 
                 $success = TRUE;
@@ -140,8 +140,8 @@ class Rows extends CI_Controller
                     {
                         if ($field['name'] == $_POST['field' . $i])
                         {
-                            $values[]     = $_POST['value' . $i];
-                            $fields[]     = $_POST['field' . $i];
+                            $values[] = $_POST['value' . $i];
+                            $fields[] = $_POST['field' . $i];
                         }
                     }
                 }
@@ -176,7 +176,7 @@ class Rows extends CI_Controller
 
             if (isset ($bool) && $bool == 1)
             {
-                $result['result'] = mysql_query ("SELECT * FROM " . $_POST['database_name'] . '.' . $_POST['table_name'] . ' LIMIT 8 OFFSET '.$_POST['offset']);
+                $result['result'] = mysql_query ("SELECT * FROM " . $_POST['database_name'] . '.' . $_POST['table_name'] . ' LIMIT 8 OFFSET ' . $_POST['offset']);
                 $success          = TRUE;
             }
             else
@@ -190,12 +190,34 @@ class Rows extends CI_Controller
         }
 
         json_encode ($this->load->view (
-                'data', array (
+                        'data', array (
                     'result' => $result,
                     'database' => $_POST['database_name'],
                     'table' => $_POST['table_name'],
                 ))
         );
+    }
+
+    public function get_table ()
+    {
+        header ("Content-Type: text/html;charset=utf-8");
+        $user_id = $this->session->userdata ('user_id');
+
+        $bool = db_table_exists ($user_id, $_POST['database_name'], $_POST['table_name']);
+
+        if (isset ($bool) && $bool == 1)
+        {
+            $result           = get_database_tree ($user_id);
+            $result['result'] = mysql_query ("SELECT * FROM " . $_POST['database_name'] . '.' . $_POST['table_name'] . ' LIMIT 8');
+
+            json_encode ($this->load->view (
+                            'data', array (
+                        'result' => $result,
+                        'database' => $_POST['database_name'],
+                        'table' => $_POST['table_name'],
+                    ))
+            );
+        }
     }
 
 }

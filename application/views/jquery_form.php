@@ -50,21 +50,21 @@
                             $width = 100 . 'px';
                         ?>
                         <?php if ($field['type_name'] == 'чекбокс'): ?>
-                        <td><input type="checkbox"/></td>
+                        <td><input type="checkbox"/><br/></td>
                     <?php elseif ($field['type_name'] == 'переключатель'): ?>
-                        <td><input type="radio" name="<?php echo $field['name'] ?>"/></td>
+                        <td><input type="radio" name="<?php echo $field['name'] ?>"/><br/></td>
                     <?php elseif ($field['type_name'] == 'файл'): ?>
-                        <td><input id="photo<?php echo $i ?>" class="input-file btn btn-primary" type="file"/></td>
+                        <td><input id="photo<?php echo $i ?>" style="display:block;" class="input-file btn btn-primary" type="file"/><br/></td>
                     <?php elseif ($field['type_name'] == 'список'): ?>
                         <td>
                             <select name="select" class="text ui-widget-content ui-corner-all">
                                 <option value="" selected="selected"> -- choose database -- </option>
-                            </select>
+                            </select><br/>
                         </td>
                     <?php elseif ($field['type_name'] == 'дата'): ?>
-                        <td><input type="text" class="text ui-widget-content ui-corner-all datepicker" style="width:65px;height:10px;" value="--/--/----"/></td>
+                        <td><input type="text" class="text ui-widget-content ui-corner-all datepicker" style="width:65px;height:10px;" value="--/--/----"/><br/></td>
                     <?php else: ?>
-                        <td><input class="text ui-widget-content ui-corner-all" type="text" style="width:<?php echo $width ?>;height:10px;" value="" name="<?php echo $field['name']?>"/></td>
+                        <td><textarea class="text ui-widget-content ui-corner-all" type="text" style="display:block;" value="" name="<?php echo $field['name']?>"></textarea><br/></td>
                     <?php endif; ?>
                     </th>
                     <?php $i++; ?>

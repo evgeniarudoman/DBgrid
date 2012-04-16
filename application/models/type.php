@@ -28,6 +28,22 @@ class Type extends Data_Row {
         $this->row->name = $value;
     }
     
+    public function getSize() {
+        return $this->row->size;
+    }
+
+    public function setSize($value) {
+        $this->row->size = $value;
+    }
+    
+    public function getDefault() {
+        return $this->row->default;
+    }
+
+    public function setDefault($value) {
+        $this->row->default = $value;
+    }
+    
    
 
     public static function table_name() {

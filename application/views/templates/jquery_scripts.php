@@ -15,7 +15,7 @@
             /*$.ajax({
                 type: "POST",
                 dataType: "html",
-                url: '<?php //echo site_url ('tables/form');    ?>',
+                url: '<?php //echo site_url ('tables/form');      ?>',
                 success: function(response){
                     //change on something
                     alert(response);
@@ -262,28 +262,20 @@
                             alert(response);
                             
                             $('div#structure').html(response);
-                             
-                            $('table#myTable thead tr').append(
-                            '<th class="header" style="width:60px;position:relative;" onclick="$(\'.caret#up\').hide();$(\'.caret#down\').show();return false;"><div class="resize" name="'+val+'">'+val+'<input type="hidden" value="'+val+'"><input type="hidden" name="sorting" value="0"></div></th>'
-                        );
                             
-                            var select = $('select[name=type] option:selected').val();
-                        
-                            if(select == 'дата')
-                                var data = '<input type="text" class="datepicker" style="width:65px;height:10px;" value="00/00/0000"/>';
-                            else if(select == 'файл')
-                                var data = 'FILE';
-                            else if(select == 'чекбокс')
-                                var data = '<input type="checkbox"/>';
-                            else if(select == 'список')
-                                var data = '<select name="select" class="text ui-widget-content ui-corner-all"><option value="" selected="selected"> -- choose database -- </option></select>';
-                            else if(select == 'переключатель')
-                                var data = '<input type="radio" name="'+val+'"/>';
-                            
-                            $('table#myTable tbody tr').append(
-                            '<td onclick="$(this).datepicker();">'+data+'</td>'
-                        );
+                            $.ajax({
+                                type: "POST",
+                                dataType: "html",
+                                url: '<?php echo site_url ('rows/get_table'); ?>',
+                                data: "database_name="+"<?php if (isset ($_GET['database'])) echo $_GET['database'] ?>"+
+                                    "&table_name="+"<?php if (isset ($_GET['table'])) echo $_GET['table'] ?>",
+                                success: function(response){
+                                    alert(response);
+                                    $('#ajax-page').html(response);
+                                }
+                            });
                         }
+                        
                     });
                         
                     $( this ).dialog( "close" );
