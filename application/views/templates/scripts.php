@@ -144,7 +144,7 @@
 
     <script>
         $(document).ready(function() {
-            $('.well input.input-small').change(function(){
+            $('.wells input.input-small').change(function(){
                 alert(this.name+' = '+$(this).val());
                
                 $.ajax({
@@ -323,6 +323,12 @@
             background-color: #e6EEEE;
         }
         table.tablesorter thead tr th, table.tablesorter tfoot tr th {
+            background-color: #e6EEEE;
+            font-size: 8pt;
+            padding: 4px;
+        }
+        
+        table.tablesorter tr th{
             background-color: #e6EEEE;
             font-size: 8pt;
             padding: 4px;

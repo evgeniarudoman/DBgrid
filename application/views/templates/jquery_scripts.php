@@ -15,7 +15,7 @@
             /*$.ajax({
                 type: "POST",
                 dataType: "html",
-                url: '<?php //echo site_url ('tables/form');  ?>',
+                url: '<?php //echo site_url ('tables/form');   ?>',
                 success: function(response){
                     //change on something
                     alert(response);
@@ -423,7 +423,7 @@
             buttons: {
                 "YES": function(){
                     $('div#ajax-loading-left').show();
-                    
+                    alert($('input#table-e').val()+', '+$('input[type=hidden].db').val()+', '+$('input[type=hidden].tables').val())
                     $.ajax({
                         type: "POST",
                         dataType: "html",
@@ -575,15 +575,20 @@
         });
     });
 </script>
+<script>
+    $(function() {
+        $( "#tabs" ).tabs();
+    });
+</script>
 <style>
-    .well input[type=text]{
+    .wells input[type=text]{
         /*background: transparent;
         border: none;
         box-shadow: none;
         margin:0;
         padding: 0;*/
     }
-    .well input[type=checkbox]{
+    .wells input[type=checkbox]{
         /*margin-top: -5px;*/
     }
     .ui-widget-header{
@@ -617,4 +622,5 @@
     div#databases-contain table td, div#databases-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
     .validateTips { border: 1px solid transparent; padding: 0.3em; }
     .ui-dialog .ui-state-error { /*background: #B94A48 #EED3D7 #F2DEDE*/; }
+    div#tabs a{font-size: 13px;}
 </style>

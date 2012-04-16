@@ -3,14 +3,14 @@
         <div class="span4"> 
             <div class="alert alert-info" style="">
                 <ul class="breadcrumb" style="background:none; border:none;box-shadow: none;color:#333;padding: 0;margin: 0;">
-                    <?php if (isset($_GET['database'])): ?>
+                    <?php if (isset ($_GET['database'])): ?>
                         <li>
-                            <a href="<?php echo site_url('grid') ?>">Home</a>
+                            <a href="<?php echo site_url ('grid') ?>">Home</a>
                             <span class="divider">/</span>
                         </li>
-                        <?php if (isset($_GET['table'])): ?>
+                        <?php if (isset ($_GET['table'])): ?>
                             <li>
-                                <a href="<?php echo site_url('grid/index?database=' . $_GET['database']) ?>">
+                                <a href="<?php echo site_url ('grid/index?database=' . $_GET['database']) ?>">
                                     <?php echo $_GET['database']; ?>
                                 </a> 
                                 <span class="divider">/</span>
@@ -31,9 +31,9 @@
                 </ul>
             </div>
             <div id="accordion">
-                <div class="well" style="padding: 8px 0;height: 320px;">
+                <div class="well" style="padding: 8px 0;height: 360px;">
                     <ul class="nav nav-list">
-                        <?php if (isset($result['databases'])): ?>
+                        <?php if (isset ($result['databases'])): ?>
                             <?php foreach ($result['databases'] as $database): ?>
                                 <li class="active head" name="<?php echo $database; ?>">
                                     <a href="#">
@@ -41,13 +41,13 @@
                                     </a>
                                 </li>
                                 <table id="tables" name="<?php echo $database; ?>" style="margin-left: 15px;height: 30px;width:100%;">
-                                    <?php if (isset($result[$database . '_table'])): ?>
+                                    <?php if (isset ($result[$database . '_table'])): ?>
                                         <?php foreach ($result[$database . '_table'] as $table): ?>
                                             <tr name="<?php echo $table; ?>">
                                                 <td style="width: 20px;"><i class="icon-th"></i></td>
                                                 <td style="width:247px">
                                                     <a href='/grid/index?database=<?php echo $database ?>&table=<?php echo $table; ?>'>
-                                                        <?php echo $table . ' (<i>' . count($result[$database . '_' . $table . '_field']) . '</i>)'; ?>
+                                                        <?php echo $table . ' (<i>' . count ($result[$database . '_' . $table . '_field']) . '</i>)'; ?>
                                                     </a>
                                                 </td>
                                                 <td style="width:20px">
@@ -105,105 +105,147 @@
         </div>
 
         <div class="span8">
-            <div class="well" style="padding: 8px 0;height: 400px;position: relative;">
-                <?php if (isset($_GET['table']) && !empty($_GET['table'])): ?>
-                    <form class="form-horizontal">
-                        <fieldset>
-                            <div class="control-group">
-                                <div class="controls">
-                                    <div class="input-append" title="Поиск">
-                                        <input type="text" size="16" id="appendedInput" class="span2" onkeypress="if ( event.keyCode == 13 ) { search_by(); return false; }" onchange="search_by();">
-                                        <span class="add-on btn" onclick="search_by();"><i class="icon-search"></i></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </fieldset>
-                    </form>
-                    <div class="save-changes alert alert-info" style="width: 240px;margin-left: 30px;height:20px;display:inline;display:none;">
-                        Вы должны сохранить все изменения.</i>
-                    </div>
-                    <i class="icon-plus" title="Добавить столбец" style="cursor: pointer;bottom: 10px;margin-left: 20px;" id="add-field"></i>
-                    <div id="ajax-page">
+            <div id="tabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all">
+                <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+                    <li class="ui-state-default ui-corner-top ui-tabs-selected ui-state-active"><a href="#tabs-1" onclick="return false;">Структура</a></li>
+                    <li class="ui-state-default ui-corner-top "><a href="#tabs-2" onclick="return false;">Обзор</a></li>
+                </ul>
+                <div class="wells" style="padding: 8px 0;height: 400px;position: relative;">
+                    <?php if (isset ($_GET['table']) && !empty ($_GET['table'])): ?>
+                    <div id="tabs-1" class="ui-tabs-panel ui-widget-content ui-corner-bottom">
                         <table id="myTable" class="tablesorter table-striped table-bordered table-condensed" style="margin-left: 20px;">
-                            <thead>
-                                <tr>
-                                    <td title="Выбрать все строки">
-                                        <input type="checkbox" class="check_all"/>
-                                    </td>
-                                    <?php foreach ($result[$_GET['database'] . '_' . $_GET['table'] . '_field'] as $key => $field): ?>
-                                        <th class="header" style="width:<?php echo $field['width'] . 'px'; ?>;position:relative;" onclick="$('.caret#up').hide();$('.caret#down').show();return false;">
-                                <div class='resize' name="<?php echo $field['name']; ?>" >
-                                    <?php echo $field['name']; ?>
-                                    <input type="hidden" value="<?php echo $field['name']; ?>" />
-                                    <input type="hidden" name="sorting" value="0" />
-                                </div>
-                                </th>                                    
-                            <?php endforeach; ?>
-                            <td></td>
+                            <tr>
+                                <td title="Выбрать все строки" style="background-color: #E6EEEE">
+                                    <input type="checkbox" class="check_all"/>
+                                </td>
+                                <th style="position:relative;background-color: #E6EEEE">
+                                    Имя поля
+                                </th>
+                                <th style="position:relative;background-color: #E6EEEE">
+                                    Тип
+                                </th>
                             </tr>
-                            </thead>
                             <tbody> 
-                                <?php $j = 1; ?>
-                                <?php while ($row = mysql_fetch_array($result['result'])): ?>
-                                    <tr class="real<?php echo $j; ?>">
+                                <?php $s = 1; ?>
+                                <?php foreach ($result[$_GET['database'] . '_' . $_GET['table'] . '_field'] as $key => $field): ?>
+                                    <tr>
                                         <td class="check_one" title="Выбрать строку">
-                                            <input type="checkbox" name="<?php echo $j; ?>" />
+                                            <input type="checkbox" name="<?php echo $s; ?>" />
                                         </td>
-                                        <?php $i = 0; ?>
-                                        <?php foreach ($result[$_GET['database'] . '_' . $_GET['table'] . '_field'] as $key => $field): ?>
-                                            <td><?php echo $row[mysql_field_name($result['result'], $i)] ?></td>
-                                            <?php $i++; ?>
-                                        <?php endforeach; ?>
-                                        <td class="edit_one" >
-                                            <i class="icon-pencil" title="Редактировать строку" style="cursor:pointer" name="<?php echo $j; ?>"></i>
+                                        <td>
+                                            <?php echo $field['name']; ?>
+                                        </td>
+                                        <td>
+                                            <?php echo $field['type_name']; ?>
                                         </td>
                                     </tr>
-                                    <tr style="display:none;" class="edit<?php echo $j; ?>">
-                                        <td class="check_one" >
-                                            <input type="checkbox" name="<?php echo $j; ?>" />
-                                        </td>
-                                        <?php $i = 0; ?>
-                                        <?php foreach ($result[$_GET['database'] . '_' . $_GET['table'] . '_field'] as $key => $field): ?>
-                                            <?php if ($field['type_name'] == 'чекбокс'): ?>
-                                                <td><input type="checkbox"/></td>
-                                            <?php elseif ($field['type_name'] == 'переключатель'): ?>
-                                                <td><input type="radio" name="<?php echo $field['name'] ?>"/></td>
-                                            <?php elseif ($field['type_name'] == 'файл'): ?>
-                                                <td><input id="photo<?php echo $j ?>"class="input-file btn btn-primary" type="file"/></td>
-                                            <?php elseif ($field['type_name'] == 'список'): ?>
-                                                <td>
-                                                    <select name="select" class="text ui-widget-content ui-corner-all">
-                                                        <option value="" selected="selected"> -- choose database -- </option>
-                                                    </select>
-                                                </td>
-                                            <?php elseif ($field['type_name'] == 'дата'): ?>
-                                                <td><input type="text" class="datepicker" style="width:65px;height:10px;" value="<?php echo $row[mysql_field_name($result['result'], $i)] ?>"/></td>
-                                            <?php else: ?>
-                                                <td><input type="text" style="width:65px;height:10px;" value="<?php echo $row[mysql_field_name($result['result'], $i)] ?>"/></td>
-                                            <?php endif; ?>
-                                            <?php $i++; ?>
-                                        <?php endforeach; ?>
-                                        <td class="edit_one" >
-                                            <i class="icon-ok" title="Сохранить изменения" style="cursor:pointer" name="<?php echo $j; ?>"></i>
-                                        </td>
-                                    </tr>
-                                    <?php $j++; ?>
-                                <?php endwhile; ?>
+                                    <?php $s++; ?>
+                                <?php endforeach; ?>
                             </tbody> 
                         </table>
+                        <i class="icon-plus" title="Добавить столбец" style="cursor: pointer;position: absolute;bottom: 10px;left: 20px;" id="add-field"></i>
+                        <i class="icon-pencil" title="Редактировать столбец" style="cursor: pointer;position: absolute;bottom: 10px;left: 40px;" id="edit-field"></i>
+                        <i class="icon-trash" title="Удалить столбец" style="cursor: pointer;position: absolute;bottom: 10px;left: 60px;" id="remove-field"></i>
                     </div>
-                    <i class="icon-plus" title="Добавить строку" style="cursor: pointer;position: absolute;bottom: 10px;left: 20px;" id="add-row"></i>
-                    <i class="icon-pencil" title="Редактировать строку" style="cursor: pointer;position: absolute;bottom: 10px;left: 40px;"></i>
-                    <i class="icon-trash" title="Удалить строку" style="cursor: pointer;position: absolute;bottom: 10px;left: 60px;"></i>
-                    <a href="<?php echo site_url('export/xls') . '?' . $_SERVER["QUERY_STRING"]; ?>">
-                        <i class="icon-file" title="Экспорт в XLS" style="cursor: pointer;position: absolute;bottom: 10px;left: 100px;"></i>
-                    </a>
-                    <div class="pagination">
-                        <ul style="position: absolute;left:20px;">
-                            <li class="active"><a href="#">1</a></li>
-                            <?php for ($k = 2; $k <= ceil($result['num_rows'] / 8); $k++): ?>
-                                <li><a href="#"><?php echo $k ?></a></li>
-                            <?php endfor; ?>
-                        </ul>
+                    <div id="tabs-2" class="ui-tabs-panel ui-widget-content ui-corner-bottom ui-tabs-hide">
+                            <form class="form-horizontal">
+                                <fieldset>
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <div class="input-append" title="Поиск">
+                                                <input type="text" size="16" id="appendedInput" class="span2" onkeypress="if ( event.keyCode == 13 ) { search_by(); return false; }" onchange="search_by();">
+                                                <span class="add-on btn" onclick="search_by();"><i class="icon-search"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                            <div class="save-changes alert alert-info" style="width: 240px;margin-left: 30px;height:20px;display:inline;display:none;">
+                                Вы должны сохранить все изменения.</i>
+                            </div>
+                            
+                            <div id="ajax-page">
+                                <table id="myTable" class="tablesorter table-striped table-bordered table-condensed" style="margin-left: 20px;">
+                                    <thead>
+                                        <tr>
+                                            <td title="Выбрать все строки">
+                                                <input type="checkbox" class="check_all"/>
+                                            </td>
+                                            <?php foreach ($result[$_GET['database'] . '_' . $_GET['table'] . '_field'] as $key => $field): ?>
+                                                <th class="header" style="width:<?php echo $field['width'] . 'px'; ?>;position:relative;" onclick="$('.caret#up').hide();$('.caret#down').show();return false;">
+                                        <div class='resize' name="<?php echo $field['name']; ?>" >
+                                            <?php echo $field['name']; ?>
+                                            <input type="hidden" value="<?php echo $field['name']; ?>" />
+                                            <input type="hidden" name="sorting" value="0" />
+                                        </div>
+                                        </th>                                    
+                                    <?php endforeach; ?>
+                                    <td></td>
+                                    </tr>
+                                    </thead>
+                                    <tbody> 
+                                        <?php $j   = 1; ?>
+                                        <?php while ($row = mysql_fetch_array ($result['result'])): ?>
+                                            <tr class="real<?php echo $j; ?>">
+                                                <td class="check_one" title="Выбрать строку">
+                                                    <input type="checkbox" name="<?php echo $j; ?>" />
+                                                </td>
+                                                <?php $i = 0; ?>
+                                                <?php foreach ($result[$_GET['database'] . '_' . $_GET['table'] . '_field'] as $key => $field): ?>
+                                                    <td><?php echo $row[mysql_field_name ($result['result'], $i)] ?></td>
+                                                    <?php $i++; ?>
+                                                <?php endforeach; ?>
+                                                <td class="edit_one" >
+                                                    <i class="icon-pencil" title="Редактировать строку" style="cursor:pointer" name="<?php echo $j; ?>"></i>
+                                                </td>
+                                            </tr>
+                                            <tr style="display:none;" class="edit<?php echo $j; ?>">
+                                                <td class="check_one" >
+                                                    <input type="checkbox" name="<?php echo $j; ?>" />
+                                                </td>
+                                                <?php $i = 0; ?>
+                                                <?php foreach ($result[$_GET['database'] . '_' . $_GET['table'] . '_field'] as $key => $field): ?>
+                                                    <?php if ($field['type_name'] == 'чекбокс'): ?>
+                                                        <td><input type="checkbox"/></td>
+                                                    <?php elseif ($field['type_name'] == 'переключатель'): ?>
+                                                        <td><input type="radio" name="<?php echo $field['name'] ?>"/></td>
+                                                    <?php elseif ($field['type_name'] == 'файл'): ?>
+                                                        <td><input id="photo<?php echo $j ?>"class="input-file btn btn-primary" type="file"/></td>
+                                                    <?php elseif ($field['type_name'] == 'список'): ?>
+                                                        <td>
+                                                            <select name="select" class="text ui-widget-content ui-corner-all">
+                                                                <option value="" selected="selected"> -- choose database -- </option>
+                                                            </select>
+                                                        </td>
+                                                    <?php elseif ($field['type_name'] == 'дата'): ?>
+                                                        <td><input type="text" class="datepicker" style="width:65px;height:10px;" value="<?php echo $row[mysql_field_name ($result['result'], $i)] ?>"/></td>
+                                                    <?php else: ?>
+                                                        <td><input type="text" style="width:65px;height:10px;" value="<?php echo $row[mysql_field_name ($result['result'], $i)] ?>"/></td>
+                                                    <?php endif; ?>
+                                                    <?php $i++; ?>
+                                                <?php endforeach; ?>
+                                                <td class="edit_one" >
+                                                    <i class="icon-ok" title="Сохранить изменения" style="cursor:pointer" name="<?php echo $j; ?>"></i>
+                                                </td>
+                                            </tr>
+                                            <?php $j++; ?>
+                                        <?php endwhile; ?>
+                                    </tbody> 
+                                </table>
+                            </div>
+                            <i class="icon-plus" title="Добавить строку" style="cursor: pointer;position: absolute;bottom: 10px;left: 20px;" id="add-row"></i>
+                            <i class="icon-pencil" title="Редактировать строку" style="cursor: pointer;position: absolute;bottom: 10px;left: 40px;"></i>
+                            <i class="icon-trash" title="Удалить строку" style="cursor: pointer;position: absolute;bottom: 10px;left: 60px;"></i>
+                            <a href="<?php echo site_url ('export/xls') . '?' . $_SERVER["QUERY_STRING"]; ?>">
+                                <i class="icon-file" title="Экспорт в XLS" style="cursor: pointer;position: absolute;bottom: 10px;left: 100px;"></i>
+                            </a>
+                            <div class="pagination">
+                                <ul style="position: absolute;left:20px;">
+                                    <li class="active"><a href="#">1</a></li>
+                                    <?php for ($k = 2; $k <= ceil ($result['num_rows'] / 8); $k++): ?>
+                                        <li><a href="#"><?php echo $k ?></a></li>
+                                    <?php endfor; ?>
+                                </ul>
+                            </div>
+                        <?php endif; ?>
                     </div>
-                <?php endif; ?>
