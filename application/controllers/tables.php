@@ -39,7 +39,7 @@ class Tables extends CI_Controller
                     $fields[$i] = array (
                         'field' => $_POST['field' . $i],
                         'type' => $this->type->getType(),
-                        'size' => $_POST['size' . $i]
+                        'size' => $this->type->getSize()
                     );
                 }
                 unset ($i);
@@ -63,7 +63,7 @@ class Tables extends CI_Controller
                 {
                     $this->field->db_name = "dbgrid";
                     $this->field->setName ($_POST['field' . $i]);
-                    $this->field->setSize ($_POST['size' . $i]);
+                    //$this->field->setSize ($this->type->getSize());
                     $this->field->setWidth (20);
                     if ($_POST['radio'] == $i)
                     {

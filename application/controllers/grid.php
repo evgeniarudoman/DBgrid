@@ -39,6 +39,7 @@ class Grid extends CI_Controller
         $this->theme->db_name = "dbgrid";
 
         $this->query->create_default_db();
+        $this->query->insert_default();
     }
 
 
@@ -47,10 +48,10 @@ class Grid extends CI_Controller
 
         switch ($theme)
         {
-            case 'gray':
+            case 'серая':
                 $theme_css = "/bootstrap/css/bootstrap.gray.css";
                 break;
-            case 'blue':
+            case 'голубая':
                 $theme_css = "/bootstrap/css/bootstrap.css";
                 break;
             case NULL:
@@ -274,6 +275,13 @@ class Grid extends CI_Controller
                 $list_type[] = $type->getName();
             }
 
+            $this->load->model('theme');
+            $themes = $this->theme->load_collection("dbgrid");
+            foreach ($themes as $theme)
+            {
+                $list_theme[] = $theme->getName();
+            }
+            
             $this->load->view('templates/scripts');
             $this->load->view('templates/jquery_scripts');
             $this->load->view('jquery_form', array(
@@ -283,6 +291,7 @@ class Grid extends CI_Controller
             ));
             $this->load->view('content', array(
                 'result' => $result,
+                'list_theme' => $list_theme,
             ));
             $this->load->view('templates/menu_button');
         }

@@ -52,47 +52,7 @@ class Query extends CI_Model
                             KEY `tables_2` (`user_id`)
                         ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
                     ');
-        $this->db->query ('CREATE TABLE IF NOT EXISTS `' . $this->db_name . '`.`themes` (
-                            `id` int(11) NOT NULL AUTO_INCREMENT,
-                            `style` varchar(100) NOT NULL,
-                            `color` varchar(100) NOT NULL,
-                            PRIMARY KEY (`id`)
-                        ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
-                    ');
-
-        $query = $this->db->query ('SELECT * FROM `' . $this->db_name . '`.`themes`');
-        if (mysql_num_rows ($query->result_id) < 2)
-        {
-            $this->db->query ("INSERT INTO `" . $this->db_name . "`.`themes` (`id`, `style`, `color`) VALUES
-                            (1, 'голубая', ''),
-                            (2, 'серая', '');
-                    ");
-        }
-        unset ($query);
-
-        $this->db->query ('CREATE TABLE IF NOT EXISTS `' . $this->db_name . '`.`types` (
-                            `id` int(11) NOT NULL AUTO_INCREMENT,
-                            `name` varchar(100) NOT NULL,
-                            `type` varchar(100) NOT NULL,
-                            PRIMARY KEY (`id`)
-                        ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
-                    ');
-
-        $query = $this->db->query ('SELECT * FROM `' . $this->db_name . '`.`types`');
-        if (mysql_num_rows ($query->result_id) < 2)
-        {
-            $this->db->query ("INSERT INTO `" . $this->db_name . "`.`types` (`id`, `name`, `type`) VALUES
-                                (1, 'число', 'int'),
-                                (2, 'текст', 'varchar'),
-                                (3, 'дата', 'date'),
-                                (4, 'файл', 'varchar'),
-                                (5, 'чекбокс', 'tinyint'),
-                                (6, 'список', 'varchar'),
-                                (7, 'переключатель', 'tinyint');
-                    ");
-        }
-        unset ($query);
-
+        
         $this->db->query ('CREATE TABLE IF NOT EXISTS `' . $this->db_name . '`.`users` (
                                 `id` int(11) NOT NULL AUTO_INCREMENT,
                                 `username` varchar(100) NOT NULL,
@@ -104,6 +64,25 @@ class Query extends CI_Model
                                 UNIQUE KEY `username` (`username`),
                                 KEY `users_1` (`theme_id`)
                         ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+                    ');
+        
+        
+        $this->db->query ('CREATE TABLE IF NOT EXISTS `' . $this->db_name . '`.`types` (
+                            `id` int(11) NOT NULL AUTO_INCREMENT,
+                            `name` varchar(100) NOT NULL,
+                            `type` varchar(100) NOT NULL,
+                            `size` int(11) NOT NULL,
+                            `default` varchar(50) NOT NULL,
+                            PRIMARY KEY (`id`)
+                        ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+                    ');
+
+        $this->db->query ('CREATE TABLE IF NOT EXISTS `' . $this->db_name . '`.`themes` (
+                            `id` int(11) NOT NULL AUTO_INCREMENT,
+                            `name` varchar(100) NOT NULL,
+                            `style` varchar(100) NOT NULL,
+                            PRIMARY KEY (`id`)
+                        ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
                     ');
 
         /*
@@ -126,6 +105,33 @@ class Query extends CI_Model
           ADD CONSTRAINT `users_1` FOREIGN KEY (`theme_id`) REFERENCES `themes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
           ');
          */
+    }
+    
+    public function insert_default()
+    {
+        $query = $this->db->query('SELECT * FROM `' . $this->db_name . '`.`themes`');
+        if (mysql_num_rows($query->result_id) < 2)
+        {
+            $this->db->query("INSERT INTO `" . $this->db_name . "`.`themes` (`id`, `name`, `style`) VALUES
+                            (1, 'голубая', ''),
+                            (2, 'серая', '');
+                    ");
+        }
+        unset($query);
+
+        $query = $this->db->query('SELECT * FROM `' . $this->db_name . '`.`types`');
+        if (mysql_num_rows($query->result_id) < 2)
+        {
+            $this->db->query("INSERT INTO `" . $this->db_name . "`.`types` (`id`, `name`, `type`, `size`, `default`) VALUES
+                                (1, 'число', 'bigint', 20, ''),
+                                (2, 'текст', 'varchar', 255, ''),
+                                (3, 'дата', 'varchar', 40, '00/00/0000'),
+                                (4, 'файл', 'varchar', 40, ''),
+                                (5, 'чекбокс', 'tinyint', 1, '0'),
+                                (6, 'список', 'varchar', 255, '');
+                    ");
+        }
+        unset($query);
     }
 
     public function show_tables ()

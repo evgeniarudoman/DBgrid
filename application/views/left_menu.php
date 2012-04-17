@@ -10,7 +10,6 @@
 <?php endif; ?>
     });
 </script>
-<?php echo $success; ?>
 <ul class="nav nav-list">
     <?php if (isset ($result['databases'])): ?>
         <?php foreach ($result['databases'] as $database): ?>

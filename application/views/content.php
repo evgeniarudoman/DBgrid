@@ -96,8 +96,9 @@
                         <ul class="dropdown-menu">
                             <li style="background-color: #08C;"><a href="#" style="color:#fff;"><i class="icon-th-large"></i> Выбрать тему</a></li>
                             <li class="divider"></li>
-                            <li><a href="" onclick="get_theme('blue');return false;"><i class="icon-tint"></i> Голубая</a></li>
-                            <li><a href="" onclick="get_theme('gray');return false;"><i class="icon-tint"></i> Серая</a></li>
+                            <?php foreach ($list_theme as $theme): ?>
+                            <li><a href="" onclick="get_theme('<?php echo $theme?>');return false;"><i class="icon-tint"></i> <?php echo $theme?></a></li>
+                            <?php endforeach;?>
                         </ul>
                     </div>
                 </div>

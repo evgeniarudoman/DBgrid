@@ -24,6 +24,7 @@ class Rows extends CI_Controller
         $success = TRUE;
         $this->load->model ('query');
         $this->load->model ('basic/db_rows', 'rows');
+        
         header ("Content-Type: text/html;charset=utf-8");
 
         try
@@ -61,8 +62,8 @@ class Rows extends CI_Controller
                         }
                     }
                 }
-                var_dump ($fields);
-                var_dump ($values);
+                //var_dump ($fields);
+                //var_dump ($values);
                 $this->rows->insert ($_POST['database_name'], $_POST['table_name'], $fields, $values);
 
                 $success = TRUE;
@@ -135,9 +136,9 @@ class Rows extends CI_Controller
                         }
                     }
                 }
-                var_dump ($fields);
-                var_dump ($values);
-                var_dump ($old_values);
+                //var_dump ($fields);
+                //var_dump ($values);
+                //var_dump ($old_values);
 
                 $this->rows->update ($_POST['database_name'], $_POST['table_name'], $fields, $values, $old_values);
 
@@ -152,7 +153,17 @@ class Rows extends CI_Controller
         {
             $success = FALSE;
         }
-        echo json_encode ($success);
+        
+        $result           = get_database_tree ($user_id);
+        $result['result'] = mysql_query ("SELECT * FROM " . $_POST['database_name'] . '.' . $_POST['table_name'] . ' LIMIT 8');
+
+        json_encode ($this->load->view (
+                        'data', array (
+                    'result' => $result,
+                    'database' => $_POST['database_name'],
+                    'table' => $_POST['table_name'],
+                ))
+        );
     }
 
     public function remove ()
