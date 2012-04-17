@@ -155,16 +155,19 @@
                                 <fieldset>
                                     <div class="control-group">
                                         <div class="controls">
-                                            <div class="input-append" title="Поиск">
-                                                <input type="text" size="16" id="appendedInput" class="span2" onkeypress="if ( event.keyCode == 13 ) { search_by(); return false; }" onchange="search_by();">
-                                                <span class="add-on btn" onclick="search_by();"><i class="icon-search"></i></span>
+                                            <div class="input-prepend" title="Поиск">
+                                                <span class="add-on btn" style="margin-right: -5px;" onclick="search_by();"><i class="icon-search"></i></span>
+                                                <input type="text" size="16" id="prependedInput" class="span2" onkeypress="if ( event.keyCode == 13 ) { search_by(); return false; }" onchange="search_by();">
                                             </div>
                                         </div>
                                     </div>
                                 </fieldset>
                             </form>
-                            <div class="save-changes alert alert-info" style="width: 240px;margin-left: 30px;height:20px;display:inline;display:none;">
-                                Вы должны сохранить все изменения.</i>
+                            <div class="save-changes ui-state-highlight" style="padding-left: 10px;padding-top: 5px;margin-bottom: 15px;width: 275px;margin-left: 25px;height:20px;display:inline;display:none;">
+                                <p>
+                                    <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+                                    <strong></strong> Вы должны сохранить все изменения.
+                                </p>
                             </div>
                             
                             <div id="ajax-page">
