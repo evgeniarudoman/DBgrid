@@ -5,6 +5,10 @@ body {
     font-size: 30px;
 }
 
+.ui-dialog object {
+    margin-top: 20px;
+}
+
 /*--------right side of registration and authorisation--------*/
 #right {
     color: #333333;
@@ -403,4 +407,7 @@ a:link, a:visited {
     left: 62%;
     z-index: 2;
     top: 30%;
+}
+span.star{
+    color:#08c;
 }

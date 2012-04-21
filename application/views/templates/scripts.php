@@ -15,9 +15,11 @@
                     $.ajax({
                         type: "POST",
                         dataType: "json",
-                        url: '<?php echo site_url ('fields/save_width') ?>',
-                        data: "database_name="+'<?php if (isset ($_GET['database'])) echo $_GET['database'] ?>'+
-                            "&table_name="+'<?php if (isset ($_GET['table'])) echo $_GET['table'] ?>'+
+                        url: '<?php echo site_url('fields/save_width') ?>',
+                        data: "database_name="+'<?php if (isset($_GET['database']))
+    echo $_GET['database'] ?>'+
+                            "&table_name="+'<?php if (isset($_GET['table']))
+    echo $_GET['table'] ?>'+
                             "&field_name="+$(this).children('input[type=hidden]').val()+
                             "&field_size="+$(this).width(),
                         success: function(response){
@@ -35,7 +37,7 @@
             $.ajax({
                 type: "POST",
                 dataType: "json",
-                url: '<?php echo site_url ('grid/save_theme') ?>',
+                url: '<?php echo site_url('grid/save_theme') ?>',
                 data: "theme="+theme,
                 success: function(response){
                     //change on something
@@ -61,7 +63,7 @@
             $.ajax({
                 type: "POST",
                 dataType: "json",
-                url: '<?php echo site_url ('rows/add') ?>',
+                url: '<?php echo site_url('rows/add') ?>',
                 data: "database_name="+db_name+
                     "&table_name="+table_name+
                     // "&count="+count+
@@ -133,9 +135,9 @@
                 return false;
             }).next().hide();
             
-<?php if (isset ($_GET['database']) && !empty ($_GET['database'])): ?>
+<?php if (isset($_GET['database']) && !empty($_GET['database'])): ?>
             $('table#tables[name=<?php echo $_GET['database'] ?>]').show();
-    <?php if (isset ($_GET['table']) && !empty ($_GET['table'])): ?>
+    <?php if (isset($_GET['table']) && !empty($_GET['table'])): ?>
                     $('table#tables[name=<?php echo $_GET['database'] ?>] tr[name=<?php echo $_GET['table'] ?>]').attr('style','background-color:#EFF1F1;');
     <?php endif; ?>
 <?php endif; ?>
@@ -150,7 +152,7 @@
                 $.ajax({
                     type: "POST",
                     dataType: "json",
-                    url: '<?php echo site_url ('rows/add') ?>',
+                    url: '<?php echo site_url('rows/add') ?>',
                     data: "database_name="+db_name+
                         "&table_name="+table_name,
                     success: function(response){
@@ -199,6 +201,12 @@
                                         hidden += "&old_select_"+$(this).attr("number")+'='+row;
                                     }
                                     
+                                    if($('#row-form input[type=hidden][file='+$(this).attr("name")+']').length == 1)
+                                    {
+                                        $('#row-form input[type=hidden][file='+$(this).attr("name")+']').val(row);
+                                        hidden += "&old_file_"+$(this).attr("number")+'='+row;
+                                    }
+                    
                                     if($('div#row-form input[type=checkbox][name='+$(this).attr("name")+']').length == 1)
                                     {
                                         if (row == 1)
@@ -213,7 +221,8 @@
                         });
                     });
                     //alert(hidden);
-                    $('input[type=hidden].db').val('<?php if (isset ($_GET['database'])) echo $_GET['database'] ?>');
+                    $('input[type=hidden].db').val('<?php if (isset($_GET['database']))
+                        echo $_GET['database'] ?>');
                     $( "#row-form" ).dialog( "open" );
                     
                 }
@@ -223,10 +232,19 @@
 
     <script>
         $(document).ready(function() {
-            $('i.icon-trash').click(function(){
-                if ($("td.check_one input:checked").val() == 'on')
+            $('#tabs-2 i.icon-trash').click(function(){
+                if ($("#tabs-2 td.check_one input:checked").val() == 'on')
                 { 
                     $( "#dialog-remove" ).dialog( "open" );
+                }
+            });
+            
+            //----------------------
+            
+            $('#tabs-1 i.icon-trash').click(function(){
+                if ($("td.check_one input:checked").val() == 'on')
+                { 
+                    $( "#remove-field" ).dialog( "open" );
                 }
             });
             
@@ -264,10 +282,12 @@
                 
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo site_url ('rows/select') ?>",
+                    url: "<?php echo site_url('rows/select') ?>",
                     dataType: "html",
-                    data: "database_name="+'<?php if (isset ($_GET['database'])) echo $_GET['database'] ?>'+
-                        "&table_name="+'<?php if (isset ($_GET['table'])) echo $_GET['table'] ?>'+
+                    data: "database_name="+'<?php if (isset($_GET['database']))
+    echo $_GET['database'] ?>'+
+                        "&table_name="+'<?php if (isset($_GET['table']))
+    echo $_GET['table'] ?>'+
                         "&offset="+offset,
                     success: function(res) {
                         $('#ajax-page').html(res);
@@ -278,23 +298,23 @@
         });
     </script>
     <?php
-    if (isset ($_GET['database']))
+    if (isset($_GET['database']))
         $database = $_GET['database'];
     else
         $database = NULL;
     ?>
     <?php
-    if (isset ($_GET['table']))
-        $table    = $_GET['table'];
+    if (isset($_GET['table']))
+        $table = $_GET['table'];
     else
-        $table    = NULL;
+        $table = NULL;
     ?>
     <script>
         function search_by(){ 
             $.ajax({
                 type: "POST",
                 dataType: "html",
-                url: '<?php echo site_url ('ajax/search?database_name=') . $database . '&table_name=' . $table . '&term=' ?>'+$('#appendedInput').val(),
+                url: '<?php echo site_url('ajax/search?database_name=') . $database . '&table_name=' . $table . '&term=' ?>'+$('#appendedInput').val(),
                 success: function(response){
                     $('#ajax-page').html(response);
                 }
@@ -392,7 +412,7 @@
     <div class="navbar navbar-fixed-top">
         <div class="navbar-inner">
             <div class="container">
-                <a class="brand" href="<?php echo site_url ('grid') ?>" title="DBGrid">
+                <a class="brand" href="<?php echo site_url('grid') ?>" title="DBGrid">
                     <i class="icon-leaf icon-white"></i>
                     DBGrid
                 </a>
@@ -400,7 +420,7 @@
                 <div class="nav-collapse">
                     <ul class="nav">
                         <li class="" title="Главная">
-                            <a href="<?php echo site_url ('grid') ?>">
+                            <a href="<?php echo site_url('grid') ?>">
                                 <i class="icon-home icon-white"></i>
                                 &nbsp;Главная
                             </a>
@@ -412,13 +432,13 @@
                             </a>
                         </li>
                         <li class="" title="Помощь">
-                            <a href="<?php echo site_url ('help') ?>">
+                            <a href="<?php echo site_url('help') ?>">
                                 <i class="icon-flag icon-white"></i>
                                 &nbsp;Помощь
                             </a>
                         </li>
                         <li class="" title="Выйти">
-                            <a href="<?php echo site_url ('grid/logout') ?>">
+                            <a href="<?php echo site_url('grid/logout') ?>">
                                 <i class="icon-off icon-white"></i>
                                 &nbsp;Выйти
                             </a>

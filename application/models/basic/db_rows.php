@@ -54,7 +54,7 @@ class Db_rows extends CI_Model
             $k = 0;
             foreach ($old_values as $old_value)
             {
-                if ($k == $i)
+                if ($k == $i && !empty($old_value))
                     $old.="`" . $table_name . "`.`" . $field . "` = '" . $old_value . "' AND ";
                 $k++;
             }
@@ -66,6 +66,11 @@ class Db_rows extends CI_Model
         unset($str);
         unset($old);
 
+        $vasya = "UPDATE `" . $db_name . "`.`" . $table_name . "` 
+                            SET $query
+                            WHERE $old_query
+                            LIMIT 1";
+        
         $this->db->query("UPDATE `" . $db_name . "`.`" . $table_name . "` 
                             SET $query
                             WHERE $old_query

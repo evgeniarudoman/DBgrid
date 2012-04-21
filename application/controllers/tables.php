@@ -45,7 +45,7 @@ class Tables extends CI_Controller
                 unset ($i);
                 //var_dump($fields);
                 
-                $this->tables->create ($_POST['database'], $_POST['table_name'], $_POST['count'], $fields, $_POST['radio']);
+                $this->tables->create ($_POST['database'], $_POST['table_name'], $_POST['count'], $fields);
 
                 $this->database->db_name = "dbgrid";
                 $this->database->select (array ('name' => $_POST['database'], 'user_id' => $user_id));
@@ -65,10 +65,10 @@ class Tables extends CI_Controller
                     $this->field->setName ($_POST['field' . $i]);
                     //$this->field->setSize ($this->type->getSize());
                     $this->field->setWidth (20);
-                    if ($_POST['radio'] == $i)
+                    /*if ($_POST['radio'] == $i)
                     {
                         $this->field->setPrimaryKey (1);
-                    }
+                    }*/
                     $this->field->setTableId ($table_id);
                     $this->field->setUserId ($user_id);
                     $this->type->db_name = "dbgrid";

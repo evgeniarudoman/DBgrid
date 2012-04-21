@@ -1,19 +1,22 @@
+
 $(function() {            
     $("input[id^=photo]").uploadify({
         'uploader' : '/uploadify/uploadify.swf', 
         'script' : '/uploadify/uploadify.php', 
         'cancelImg': '/uploadify/cancel.png',
         'folder': '/upload',
-        //'buttonImg' : '/image/upload.png',
-        //'width' : 65,
+        'buttonImg'   : '/image/white.png',
+        //'hideButton'   : true,
+        //'wmode'      : 'transparent',
+        'width' : 82,
         //'height' : 20,
         'multi': false,
         'auto' : true,
         'removeCompleted' : false,
         'scriptAccess'         : 'always',
         'checkScript': '/uploadify/check.php',
-        'fileDesc'   : 'jpg;png;gif;jpeg',
-        'fileExt'   : '*.jpg;*.png;*.gif;*.jpeg',
+        'fileDesc'   : 'jpg;png;gif;jpeg;xls;xlsx;doc;docx;pdf;txt',
+        'fileExt'   : '*.jpg;*.png;*.gif;*.jpeg;*.xls;*.xlsx;*.doc;*.docx;*.pdf;*.txt',
         'onError'  : function (event,ID,fileObj,errorObj) {                                                                                   
             alert('<p>'+errorObj.type + ' Error: ' + errorObj.info+'</p>');
         },
@@ -21,20 +24,67 @@ $(function() {
         //$(".save").prop("disabled", true); 
         },
         'onComplete': function(event, ID, fileObj, response, data) {
-            if (response==1)
+            //alert (response);
+            
+            if (response== 1)
             {
+                alert("The file is bigger than this PHP installation allows");
                 $("input[id^=photo]").uploadifyCancel(ID);
-                alert('Превишен максимальный размер загрузки файла!');           
+            }
+            else if (response==2)
+            {
+                alert("The file is bigger than this form allows");
+                $("input[id^=photo]").uploadifyCancel(ID);
+            }
+            else if (response==3)
+            {
+                alert("Only part of the file was uploaded");
+                $("input[id^=photo]").uploadifyCancel(ID);
+            }
+            else if (response== 4)
+            {
+                alert("No file was uploaded");
+                $("input[id^=photo]").uploadifyCancel(ID);
+            }
+            else if (response== 6)
+            {
+                alert("Missing a temporary folder");
+                $("input[id^=photo]").uploadifyCancel(ID);
+            }
+            else if (response== 7)
+            {
+                alert("Failed to write file to disk");
+                $("input[id^=photo]").uploadifyCancel(ID);
+            }
+            else if (response== 8)
+            {
+                alert("File upload stopped by extension");
+                $("input[id^=photo]").uploadifyCancel(ID);
             }
             else
             {
-                $('#attachment').val(response); 
-                $('.thumbnail img').attr('src', "/resize/timthumb.php?src="+response+"&h=200&w=200&zc=1")
+                //alert(event.currentTarget.id);
+                $('input[type=hidden][name=attachment][class='+event.currentTarget.id+']').val(response);
+            }
+            
+            
+        /*
+            if (response==1)
+            {
+                $("input[id^=photo]").uploadifyCancel(ID);
+                alert('Превышен максимальный размер загрузки файла.');           
+            }
+            else
+            {
+                $('input[type=hidden][name=attachment][class='+event.currentTarget.id+']').val(response); 
+            // $('.thumbnail img').attr('src', "/resize/timthumb.php?src="+response+"&h=200&w=200&zc=1")
            
             }
+            */
         },
         'onCancel':function(event, ID, fileObj, data, remove, clearFast){
-            $('input[name=attachments]').val('');
+            $('input[name=attachment]').val('');
         }
     });
 });
+

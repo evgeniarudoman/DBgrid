@@ -35,7 +35,7 @@ class Rows extends CI_Controller
             {
                 $result = get_database_tree ($user_id);
 
-                $count = $_POST['count_input'] + $_POST['count_textarea'] + $_POST['count_select'] + $_POST['count_checkbox'];
+                $count = $_POST['count_input'] + $_POST['count_textarea'] + $_POST['count_select'] + $_POST['count_checkbox'] + $_POST['count_file'];
                 for ($i     = 0; $i < $count; $i++)
                 {
                     foreach ($result[$_POST['database_name'] . '_' . $_POST['table_name'] . '_field'] as $field)
@@ -59,6 +59,11 @@ class Rows extends CI_Controller
                         {
                             $values[] = 1;
                             $fields[] = $_POST['field_checkbox_' . $i];
+                        }
+                        elseif (isset ($_POST['field_file_' . $i]) && $field['name'] == $_POST['field_file_' . $i])
+                        {
+                            $values[] = $_POST['value_file_' . $i];
+                            $fields[] = $_POST['field_file_' . $i];
                         }
                     }
                 }
@@ -105,7 +110,7 @@ class Rows extends CI_Controller
             if (isset ($bool) && $bool == 1)
             {
                 $result = get_database_tree ($user_id);
-                $count  = $_POST['count_input'] + $_POST['count_textarea'] + $_POST['count_select'] + $_POST['count_checkbox'];
+                $count  = $_POST['count_input'] + $_POST['count_textarea'] + $_POST['count_select'] + $_POST['count_checkbox'] + $_POST['count_file'];
                 for ($i      = 0; $i < $count; $i++)
                 {
                     foreach ($result[$_POST['database_name'] . '_' . $_POST['table_name'] . '_field'] as $field)
@@ -133,6 +138,12 @@ class Rows extends CI_Controller
                             $values[]     = 1;
                             $fields[]     = $_POST['field_checkbox_' . $i];
                             $old_values[] = $_POST['old_checkbox_' . $i];
+                        }
+                        elseif (isset ($_POST['field_file_' . $i]) && $field['name'] == $_POST['field_file_' . $i])
+                        {
+                            $values[] = $_POST['value_file_' . $i];
+                            $fields[] = $_POST['field_file_' . $i];
+                            $old_values[] = $_POST['old_file_' . $i];
                         }
                     }
                 }

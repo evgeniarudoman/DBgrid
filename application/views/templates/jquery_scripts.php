@@ -10,27 +10,13 @@
             $( "#dialog-remove" ).dialog( "open" );
         });
         
-        $( "#create-table" ).click(function() {
-            //$('div#table-form ').append('<form class="table-form"><fieldset class="control-group"><label for="table">Имя таблицы</label><input type="text" name="table" id="table" class="text ui-widget-content ui-corner-all"><label for="count">Количество полей</label><input type="text" name="count" id="count" class="text ui-widget-content ui-corner-all"><label for="db">Имя базы данных</label><select name="db" id="db" class="text ui-widget-content ui-corner-all"></select></fieldset></form>');
-            /*$.ajax({
-                type: "POST",
-                dataType: "html",
-                url: '<?php //echo site_url ('tables/form');              ?>',
-                success: function(response){
-                    //change on something
-                    alert(response);
-                                    
-                    $('div#table-form').html(response);
-                }
-            });*/
-            
+        $( "#create-table" ).click(function() {            
             $.ajax({
                 type: "POST",
                 dataType: "json",
                 url: '<?php echo site_url('db/select'); ?>',
                 success: function(types){
                     var options="";
-                    // $('div#table-form form.field-form').hide();
                     
                     $.each( types, function(k, val){
                         options+=  "<option value='"+val.key+"'>"+val.key+"</option>";
@@ -76,7 +62,6 @@
         // @param max - max length
         function checkLength( o, n, min, max ) {
             if ( o.val().length > max || o.val().length < min ) {
-                //o.addClass( "ui-state-error" );
                 updateTips( "Length of " + n + " must be between " +
                     min + " and " + max + "." );
                 return false;
@@ -91,7 +76,6 @@
         // @param n - name of field
         function checkRegexp( o, regexp, n ) {
             if ( !( regexp.test( o.val() ) ) ) {
-                //o.addClass( "ui-state-error" );
                 updateTips( n );
                 return false;
             } else {
@@ -104,19 +88,29 @@
         // @param n - name of field
         function checkEmpty( o, n ) {
             if ( o.val() == "" ) {
-                //o.addClass( "ui-state-error" );
                 updateTips( n );
                 return false;
             } else {
                 return true;
             }
         }
+        
+        function jqueryForms () {
+            $.ajax({
+                type: "POST",
+                dataType:"html",
+                url: '<?php echo site_url('grid/jquery_forms'); ?>',
+                success: function(response){
+                    $('div#jquery-forms').html(response);
+                }
+            });
+        }
 	
         // modal of creating new database
         $( "#database-form" ).dialog({
             autoOpen: false,
             height: 300,
-            width: 400,
+            width: 360,
             modal: true,
             buttons: {
                 "Создать": function() {
@@ -147,7 +141,7 @@
                 }
             },
             open: function() {
-                $('#database-form div.ui-widget').empty();
+                $("div.ui-state-error").attr('class', 'ui-state-highlight');
                 allFields.val("");
             }
         });
@@ -157,7 +151,7 @@
         $( "#row-form" ).dialog({
             autoOpen: false,
             height: 380,
-            width: 400,
+            width: 360,
             modal: true,
             buttons: {
                 "Добавить": function() {
@@ -188,8 +182,12 @@
                         values += '&value_select_'+$(this).attr("number")+'='+$(this).text();
                     });
                     
-                    //alert(fields);
-                    //alert(values);
+                    var $files = $('#row-form input[type=hidden]');
+                    $files.each(function(k) {
+                        fields += '&field_file_'+$(this).attr("number")+'='+$(this).attr("file");
+                        values += '&value_file_'+$(this).attr("number")+'='+$(this).val();
+                    });
+                    
                     if ( $('input[type=hidden].db').val() == 0) 
                     {
                         // add new database by ajax
@@ -205,11 +203,9 @@
                                     "&count_input="+$inputs.length+
                                     "&count_textarea="+$textareas.length+
                                     "&count_select="+$selects.length+
-                                    "&count_checkbox="+$checkboxs.length,
+                                    "&count_checkbox="+$checkboxs.length+
+                                    "&count_file="+$files.length,
                                 success: function(response){
-                                    //change on something
-                                    //alert(response);
-                            
                                     $('#ajax-page').html(response);
                                 }
                             });
@@ -235,21 +231,10 @@
                                     "&count_textarea="+$textareas.length+
                                     "&count_select="+$selects.length+
                                     "&count_checkbox="+$checkboxs.length+
+                                    "&count_file="+$files.length+
                                     $('input[type=hidden].rows').val(),
                                 success: function(response){
-                                    //change on something
-                                    //alert(response);
-                                
-                                    //alert(response);
-                            
                                     $('#ajax-page').html(response);
-                                
-                                    /*if ($("td.check_one input:checked").val() == 'on')
-                                    {
-                                        $inputs.each(function() {
-                                            $("td.check_one input:checked").parent('td').siblings().text($(this).val());
-                                        });
-                                    }*/
                                 }
                             });
                         
@@ -262,8 +247,9 @@
                         $( this ).dialog( "close" );
                     }
                 },
-                close: function() {
-                    allFields.val( "" ).removeClass( "ui-state-error" );
+                open: function() {
+                    $("div.ui-state-error").attr('class', 'ui-state-highlight');
+                    allFields.val("");
                 }
             });
             // end of creating new field
@@ -272,7 +258,7 @@
             $( "#field-form" ).dialog({
                 autoOpen: false,
                 height: 380,
-                width: 400,
+                width: 360,
                 modal: true,
                 buttons: {
                     "Добавить": function() {
@@ -288,12 +274,8 @@
                                 "&table_name="+"<?php if (isset($_GET['table']))
                                 echo $_GET['table'] ?>"+
                                 "&field_name="+val+
-                                "&type="+$('select[name=type] option:selected').val(),//+
-                            //"&size="+$('input[name=size]').val(),
+                                "&type="+$('select[name=type] option:selected').val(),
                             success: function(response){
-                                //change on something
-                                //alert(response);
-                            
                                 $('div#structure').html(response);
                             
                                 $.ajax({
@@ -305,7 +287,6 @@
                                         "&table_name="+"<?php if (isset($_GET['table']))
                                         echo $_GET['table'] ?>",
                                     success: function(response){
-                                        //alert(response);
                                         $('#ajax-page').html(response);
                                     }
                                 });
@@ -324,6 +305,7 @@
                     $('#field-form div.ui-widget').empty();
                     $('#field-form input').val('');
                     $('#field-form select').val('');
+                    $("div.ui-state-error").attr('class', 'ui-state-highlight');
                     allFields.val("");
                 }
             });
@@ -333,7 +315,7 @@
             $( "#table-form" ).dialog({
                 autoOpen: false,
                 height: 390,
-                width: 400,
+                width: 360,
                 modal: true,
                 buttons: {
                     "Создать": function() {
@@ -356,14 +338,18 @@
                                 for (i=1;i<=count.val();i++)
                                 {
                                     $( "div#field-form-tb form.field-form" ).append(
-                                    '<fieldset style="border: 1px solid #DDD;padding-left: 5px;display: inline;margin-right: 10px;width: 190px;-moz-border-radius:5px 5px 5px 5px;-webkit-border-radius: 5px 5px 5px 5px;">'+
-                                        '<legend style="font-size: 13px;border: none;">Поле'+i+'</legend>'+
-                                        '<label for="field_name">Имя поля</label>'+
-                                        '<input type="text" name="field'+i+'" class="text ui-widget-content ui-corner-all" style="width: 150px;margin-left: 5px;"/>'+
-                                        '<label for="field_type">Тип</label>'+
-                                        "<select name='type"+i+"' class='text ui-widget-content ui-corner-all' style='width: 162px;'>"+
+                                    '<fieldset style="border: 1px solid #DDD;padding: 5px;display: inline;margin-right: 10px;">'+
+                                        '<legend style="font-size: 12px;border: none;">Поле'+i+'</legend>'+
+                                        '<table>'+'<tr>'+
+                                        '<td style="width:70px">'+'<label for="field_name">Имя поля</label>'+'</td>'+
+                                        '<td>'+'<input type="text" name="field'+i+'" class="text ui-widget-content ui-corner-all" style="width: 130px;height: 10px;"/>'+'</td>'+
+                                        '</tr>'+
+                                        '<tr>'+
+                                        '<td>'+'<label for="field_type">Тип</label>'+'</td>'+
+                                        '<td>'+"<select name='type"+i+"' class='text ui-widget-content ui-corner-all' style='width: 140px;height: 25px;'>"+
                                         '<option value="" selected="selected"> -- выбрать тип -- </option>'+
-                                        '</select>'+
+                                        '</select>'+'</td>'+
+                                        '</tr>'+'</table>'+
                                         '</fieldset>');
             
                                     $.ajax({
@@ -384,20 +370,6 @@
                                     })
                                     $('input[type=hidden].valid').val('false');
                                 }
-                            
-                                /* var i;
-                                for (i=1;i<=count.val();i++)
-                                {
-                                    $( "div#table-form form.field-form table" ).append(
-                                    "<tr><td><input type='radio' name='check' id='check' value='"+i+"' class='field ui-widget-content ui-corner-all'></td>"+
-                                        "<td><input type='text' name='field"+i+"' id='field"+i+"' style='width:100px;' class='field ui-widget-content ui-corner-all'></td>"+
-                                        "<td><select name='type"+i+"' id='type"+i+"' style='width:150px;' class='text ui-widget-content ui-corner-all'>"+
-                                        "<option value='' selected='selected'> -- выбрать тип -- </option>"+
-                                        "</select></td>"+
-                                        "<td><input type='text' name='size"+i+"' id='size"+i+"' class='field ui-widget-content ui-corner-all'></td></tr>");
-                                
-                                    $('input[type=hidden].valid').val('false');
-                                }*/
                             }
                             if ($('div#table-form form.table-form fieldset').length == 0){
                                 var fValid = true;
@@ -405,63 +377,27 @@
                                 {
                                     fValid = fValid && checkEmpty( $('input[name=field'+i+']'), "Имя поля #"+i+" не должно быть пустым.");
                                     fValid = fValid && checkEmpty( $('select[name=type'+i+']'), "Выберите тип для поля #"+i+".");
-                                    // fValid = fValid && checkEmpty( $('input[name=check]'), "Вы должны выбрать начальный ключ нажатием радиокнопки.");
-                                    //fValid = fValid && checkRegexp( $('input[name=size'+i+']'), /^[0-9]+$/i, "Размер поля должен содержать только числа." );
                                 }
                             }
                             else
                             {
                                 $('#table-form div.ui-widget').empty();
                             }
-                        
+
+                            $('input[type=hidden].db').val(db.val());
+                            $('input[type=hidden].tables').val(table.val());
+                            $('input[type=hidden].count').val(count.val());
                             
-                                
-                                
                             $( "#field-form-tb" ).dialog("open");
                             $( this ).dialog( "close" );
                         }
-                       /* if (fValid) 
-                        {
-                            $('div#ajax-loading-left').show();
-                            var fields = '';
-                            var types = '';
-                            var sizes = '';
-                        
-                            for (i=1;i<=count.val();i++)
-                            {
-                                fields += "&field"+i+"="+$('input#field'+i).val();
-                                types += "&type"+i+"="+$('#type'+i+' option:selected').text();
-                                sizes += "&size"+i+"="+$('input#size'+i).val();
-                            }
-                        
-                            // add table and fields by ajax
-                            $.ajax({
-                                type: "POST",
-                                dataType: "html",
-                                url: '<?php //echo site_url('tables/add'); ?>',
-                                data: "table_name="+table.val()+
-                                    "&count="+count.val()+
-                                    "&database="+db.val()+
-                                    "&radio="+$('input#check:checked').val()+
-                                    fields+types+sizes,
-                                success: function(response){
-                                
-                                
-                                
-                                    $('div#ajax-loading-left').hide();
-                                    $('div#accordion div.well').html(response);
-                                }
-                            });
-                            
-                            $( this ).dialog( "close" );
-                        }*/
                     },
                     "Отмена": function() {
                         $( this ).dialog( "close" );
                     }
                 },
                 open: function() {
-                    $('#table-form div.ui-widget').empty();
+                    $("div.ui-state-error").attr('class', 'ui-state-highlight');
                     allFields.val("");
                 }
             });
@@ -470,18 +406,16 @@
             $( "#field-form-tb" ).dialog({
                 autoOpen: false,
                 height:464,
-                width: 666,
+                width: 500,
                 modal: true,
                 buttons: {
                     "Добавить": function(){
                         var fValid = true;
                         var i;
-                        for (i=1;i<=count.val();i++)
+                        for (i=1;i<=$('input[type=hidden].count').val();i++)
                         {
                             fValid = fValid && checkEmpty( $('input[name=field'+i+']'), "Имя поля #"+i+" не должно быть пустым.");
                             fValid = fValid && checkEmpty( $('select[name=type'+i+']'), "Выберите тип для поля #"+i+".");
-                            // fValid = fValid && checkEmpty( $('input[name=check]'), "Вы должны выбрать начальный ключ нажатием радиокнопки.");
-                            //fValid = fValid && checkRegexp( $('input[name=size'+i+']'), /^[0-9]+$/i, "Размер поля должен содержать только числа." );
                         }
                             
                         if (fValid)
@@ -490,30 +424,23 @@
                             
                             var fields = '';
                             var types = '';
-                            //var sizes = '';
                         
-                            for (i=1;i<=count.val();i++)
+                            for (i=1;i<=$('input[type=hidden].count').val();i++)
                             {
                                 fields += "&field"+i+"="+$('#field-form-tb input[name=field'+i+']').val();
                                 types += "&type"+i+"="+$('#field-form-tb select[name=type'+i+'] option:selected').text();
-                                //sizes += "&size"+i+"="+$('input#size'+i).val();
                             }
-                            //alert(fields);
-                            //alert(types);
                             
                             $.ajax({
                                 type: "POST",
                                 dataType: "html",
                                 url: '<?php echo site_url('tables/add'); ?>',
-                                data: "table_name="+table.val()+
-                                    "&count="+count.val()+
-                                    "&database="+db.val()+
-                                    "&radio="+$('input#check:checked').val()+
-                                    fields+types,//+sizes,
+                                data: "table_name="+$('input[type=hidden].tables').val()+
+                                    "&count="+$('input[type=hidden].count').val()+
+                                    "&database="+$('input[type=hidden].db').val()+
+                                    //"&radio="+$('input#check:checked').val()+
+                                    fields+types,
                                 success: function(response){
-                                
-                                
-                                
                                     $('div#ajax-loading-left').hide();
                                     $('div#accordion div.well').html(response);
                                 }
@@ -525,6 +452,10 @@
                     "Отмена": function(){
                         $( this ).dialog( "close" );
                     }                  
+                },
+                open: function() {
+                    $("div.ui-state-error").attr('class', 'ui-state-highlight');
+                    allFields.val("");
                 }
             });
         });
@@ -533,12 +464,12 @@
             $( "#table-edit-form" ).dialog({
                 autoOpen: false,
                 height: 300,
-                width: 400,
+                width: 360,
                 modal: true,
                 buttons: {
                     "Редактировать": function(){
                         $('div#ajax-loading-left').show();
-                        //alert($('input#table-e').val()+', '+$('input[type=hidden].db').val()+', '+$('input[type=hidden].tables').val())
+                        
                         $.ajax({
                             type: "POST",
                             dataType: "html",
@@ -558,6 +489,10 @@
                     "Отмена": function(){
                         $( this ).dialog( "close" );
                     }                  
+                },
+                open: function() {
+                    $("div.ui-state-error").attr('class', 'ui-state-highlight');
+                    allFields.val("");
                 }
             });
         });
@@ -602,9 +537,7 @@
                                     "&table_name="+'<?php if (isset($_GET['table']))
                                     echo $_GET['table'] ?>'+fields+values+"&count="+$inputs.length,
                                 success: function(response){
-                                    //change on something
                                     checked.parent('td').parent('tr').slideUp();
-                                    //alert(response);
                                 }
                             });
                         }
@@ -614,6 +547,66 @@
                     "Нет": function(){
                         $( this ).dialog( "close" );
                     }                  
+                },
+                open: function() {
+                    $("div.ui-state-error").attr('class', 'ui-state-highlight');
+                    allFields.val("");
+                }
+            });
+        });
+        
+        
+        $(function() {
+            $( "#remove-field" ).click(function(){
+                alert('aaaaaaaaaa');
+            });
+            
+            $( "#remove-field" ).dialog({
+                autoOpen: false,
+                height: 300,
+                width: 400,
+                modal: true,
+                buttons: {
+                    "Да": function(){
+                        var checked = $("td.check_one input:checked");
+                        
+                        alert('aaa');
+                        
+                        if (checked.val() == 'on')
+                        {
+                            var $inputs = checked.parent('td');
+                            var $name = $("th");
+                            var row = '';
+                            var fields = '';
+                            var values = '';
+                    
+                            $inputs.each(function() {
+                                var $rows = $(this).siblings();
+                                $rows.each(function(j) {
+                                    row = $(this).text();
+                                    $name.each(function(z) {
+                                        if (z == j)
+                                        {
+                                            fields += "&field"+z+'='+$(this).attr("name");
+                                            values += "&value"+z+'='+row;
+                                        }   
+                                    });
+                                });
+                            });
+                            alert($inputs);
+                            alert(values);
+                        
+                        }
+                    
+                        $( this ).dialog( "close" );
+                    },
+                    "Нет": function(){
+                        $( this ).dialog( "close" );
+                    }                  
+                },
+                open: function() {
+                    $("div.ui-state-error").attr('class', 'ui-state-highlight');
+                    allFields.val("");
                 }
             });
         });
@@ -644,6 +637,10 @@
                     "Нет": function(){
                         $( this ).dialog( "close" );
                     }                  
+                },
+                open: function() {
+                    $("div.ui-state-error").attr('class', 'ui-state-highlight');
+                    allFields.val("");
                 }
             });
         });
@@ -676,6 +673,10 @@
                     "Нет": function(){
                         $( this ).dialog( "close" );
                     }                  
+                },
+                open: function() {
+                    $("div.ui-state-error").attr('class', 'ui-state-highlight');
+                    allFields.val("");
                 }
             });
         });
@@ -686,6 +687,7 @@
         $('.ui-dialog-buttonset > button:first-child').attr('class', 'btn btn-primary');
         $('.ui-dialog-buttonset > button:last-child').attr('class', 'btn');
         $('.ui-dialog-buttonpane.ui-widget-content.ui-helper-clearfix').appendTo('#dialog form fieldset');
+        
         //--------------------
         $('.datepicker').datepicker({ 
             dateFormat: "dd/mm/yy",
@@ -729,9 +731,9 @@
     .btn-toolbar {
         margin-top: -15px;
     }
-    label, input { display:block; }
-    input.text { margin-bottom:12px; width:95%; padding: .4em; }
-    select.text { display: inline; margin-left: 5px;}
+    label, input,textarea { display:inline; }
+    input.text { width:95%; padding: .4em; }
+    select.text { display: inline; /*margin-left: 5px;*/}
     input.field { display:inline;}
     input[id^=size] { display:inline; width: 30px;}
     fieldset { padding:0; border:0; /*margin-top:25px;*/ }
