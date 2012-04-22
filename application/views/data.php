@@ -119,3 +119,4 @@
     <?php endwhile; ?>
 </tbody> 
 </table>
+<input type="hidden" name="paging" value="<?php echo $result['num_rows']?>"/>

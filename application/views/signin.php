@@ -52,33 +52,25 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><span>Username <b>*</b></span></td>
+                                <td><span>Username <span class="star">*</span></span></td>
                             </tr>
                             <tr>
                                 <td><input type="text" name="username" class="val" value=""/></td>
                             </tr>
                             <tr>
-                                <td><span>Password <b>*</b></span></td>
+                                <td><span>Password <span class="star">*</span></span></td>
                             </tr>
                             <tr>
                                 <td><input type="password" name="password" class="val"/></td>
                             </tr>
                             <tr id="right">
-                                <td class="little">Forgot your password? <a href="/grid/forgot.php">CLICK HERE</a></td>
+                                <td class="little">If you are not an authorized user, please <a href="/grid/register">REGISTER</a></td>
                             </tr>
                             <tr>
                                 <td><input type="submit" name="signin" value="SIGN IN" class="btn btn-primary"/></td>
                             </tr>
                         </table>
                     </form>
-                </td>
-                <td>
-                    <div id="right">
-                        <span>Authorization</span>
-                        <br/><br/>                        
-                        <p>If you are not an authorized user,</p>
-                        <p>please <a href="/grid/register">REGISTER</a></p>
-                    </div>
                 </td>
             </tr>
         </table>

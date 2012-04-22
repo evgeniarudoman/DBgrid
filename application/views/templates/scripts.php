@@ -285,9 +285,9 @@
                     url: "<?php echo site_url('rows/select') ?>",
                     dataType: "html",
                     data: "database_name="+'<?php if (isset($_GET['database']))
-    echo $_GET['database'] ?>'+
+                        echo $_GET['database'] ?>'+
                         "&table_name="+'<?php if (isset($_GET['table']))
-    echo $_GET['table'] ?>'+
+                        echo $_GET['table'] ?>'+
                         "&offset="+offset,
                     success: function(res) {
                         $('#ajax-page').html(res);
@@ -295,6 +295,43 @@
                 });
                 return false;
             });
+            //-----------------------------------------------
+            $('div#pages input').change(function(){
+                var limit = $('div#pages select option:selected').text();
+                var offset = ($('div#pages input').val()*limit)-limit;
+                
+                paging(offset, limit);
+                
+                //$('span.total').text($('input[name=paging]').val());
+                return false;
+            });
+            //-----------------------------------------------
+            $('div#pages select').change(function(){
+                var limit = $('div#pages select option:selected').text();
+                var offset = ($('div#pages input').val()*limit)-limit;
+                
+                paging(offset, limit);
+                
+                //$('span.total').text($('input[name=paging]').val());
+                return false;
+            });
+            //-----------------------------------------------
+            function paging(offset, limit){
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo site_url('rows/select') ?>",
+                    dataType: "html",
+                    data: "database_name="+'<?php if (isset($_GET['database']))
+                        echo $_GET['database'] ?>'+
+                        "&table_name="+'<?php if (isset($_GET['table']))
+                        echo $_GET['table'] ?>'+
+                        "&offset="+offset+
+                        "&limit="+limit,
+                    success: function(res) {
+                        $('#ajax-page').html(res);
+                    }
+                });
+            }
         });
     </script>
     <?php
@@ -314,7 +351,7 @@
             $.ajax({
                 type: "POST",
                 dataType: "html",
-                url: '<?php echo site_url('ajax/search?database_name=') . $database . '&table_name=' . $table . '&term=' ?>'+$('#appendedInput').val(),
+                url: '<?php echo site_url('ajax/search?database_name=') . $database . '&table_name=' . $table . '&term=' ?>'+$('#prependedInput').val(),
                 success: function(response){
                     $('#ajax-page').html(response);
                 }

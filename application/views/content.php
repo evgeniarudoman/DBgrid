@@ -3,14 +3,14 @@
         <div class="span4"> 
             <div class="alert alert-info" style="">
                 <ul class="breadcrumb" style="background:none; border:none;box-shadow: none;color:#333;padding: 0;margin: 0;">
-                    <?php if (isset($_GET['database'])): ?>
+                    <?php if (isset ($_GET['database'])): ?>
                         <li>
-                            <a href="<?php echo site_url('grid') ?>">Home</a>
+                            <a href="<?php echo site_url ('grid') ?>">Home</a>
                             <span class="divider">/</span>
                         </li>
-                        <?php if (isset($_GET['table'])): ?>
+                        <?php if (isset ($_GET['table'])): ?>
                             <li>
-                                <a href="<?php echo site_url('grid/index?database=' . $_GET['database']) ?>">
+                                <a href="<?php echo site_url ('grid/index?database=' . $_GET['database']) ?>">
                                     <?php echo $_GET['database']; ?>
                                 </a> 
                                 <span class="divider">/</span>
@@ -33,7 +33,7 @@
             <div id="accordion">
                 <div class="well" style="padding: 8px 0;height: 360px;">
                     <ul class="nav nav-list">
-                        <?php if (isset($result['databases'])): ?>
+                        <?php if (isset ($result['databases'])): ?>
                             <?php foreach ($result['databases'] as $database): ?>
                                 <li class="active head" name="<?php echo $database; ?>">
                                     <a href="#">
@@ -41,13 +41,13 @@
                                     </a>
                                 </li>
                                 <table id="tables" name="<?php echo $database; ?>" style="margin-left: 15px;height: 30px;width:100%;">
-                                    <?php if (isset($result[$database . '_table'])): ?>
+                                    <?php if (isset ($result[$database . '_table'])): ?>
                                         <?php foreach ($result[$database . '_table'] as $table): ?>
                                             <tr name="<?php echo $table; ?>">
                                                 <td style="width: 20px;"><i class="icon-th"></i></td>
                                                 <td style="width:247px">
                                                     <a href='/grid/index?database=<?php echo $database ?>&table=<?php echo $table; ?>'>
-                                                        <?php echo $table . ' (<i>' . count($result[$database . '_' . $table . '_field']) . '</i>)'; ?>
+                                                        <?php echo $table . ' (<i>' . count ($result[$database . '_' . $table . '_field']) . '</i>)'; ?>
                                                     </a>
                                                 </td>
                                                 <td style="width:20px">
@@ -111,8 +111,8 @@
                     <li class="ui-state-default ui-corner-top "><a href="#tabs-1" onclick="return false;">Структура</a></li>
                     <li class="ui-state-default ui-corner-top ui-tabs-selected ui-state-active"><a href="#tabs-2" onclick="return false;">Обзор</a></li>
                 </ul>
-                <div class="wells" style="padding: 8px 0;height: 100%;position: relative;">
-                    <?php if (isset($_GET['table']) && !empty($_GET['table'])): ?>
+                <div class="wells" style="padding: 8px 0;min-height: 400px;height: 100%;position: relative;">
+                    <?php if (isset ($_GET['table']) && !empty ($_GET['table'])): ?>
                         <div id="tabs-1" class="ui-tabs-panel ui-widget-content ui-corner-bottom">
                             <div id="structure">
                                 <table id="myTables" class="tablesorter table-striped table-bordered table-condensed" style="margin-left: 20px;">
@@ -156,7 +156,7 @@
                                         <div class="controls">
                                             <div class="input-prepend" title="Поиск">
                                                 <span class="add-on btn" style="margin-right: -5px;" onclick="search_by();"><i class="icon-search"></i></span>
-                                                <input type="text" size="16" id="prependedInput" class="span2" onkeypress="if ( event.keyCode == 13 ) { search_by(); return false; }" onchange="search_by();">
+                                                <input type="text" size="16" id="prependedInput" placeholder="Search..." style="" class="span2" onkeypress="if ( event.keyCode == 13 ) { search_by(); return false; }" onchange="search_by();">
                                             </div>
                                         </div>
                                     </div>
@@ -191,8 +191,8 @@
                                     </tr>
                                     </thead>
                                     <tbody> 
-                                        <?php $j = 1; ?>
-                                        <?php while ($row = mysql_fetch_array($result['result'])): ?>
+                                        <?php $j   = 1; ?>
+                                        <?php while ($row = mysql_fetch_array ($result['result'])): ?>
                                             <tr class="real<?php echo $j; ?>">
                                                 <td class="check_one" title="Выбрать строку">
                                                     <input type="checkbox" name="<?php echo $j; ?>" />
@@ -200,22 +200,22 @@
                                                 <?php $i = 0; ?>
                                                 <?php foreach ($result[$_GET['database'] . '_' . $_GET['table'] . '_field'] as $key => $field): ?>
                                                     <?php if ($field['type_name'] == 'файл'): ?>
-                                                        <?php $ext = pathinfo($row[mysql_field_name($result['result'], $i)]); ?>
-                                                        <?php if (isset($ext["extension"]) && $ext["extension"] == 'docx'): ?>
+                                                        <?php $ext = pathinfo ($row[mysql_field_name ($result['result'], $i)]); ?>
+                                                        <?php if (isset ($ext["extension"]) && $ext["extension"] == 'docx'): ?>
                                                             <td><img src="/image/icons/docx.jpg" style="width: 25px;display: inline;" class="photo<?php echo $i ?>"/>&nbsp;<?php echo $ext["basename"]; ?></td>
-                                                        <?php elseif (isset($ext["extension"]) && $ext["extension"] == 'doc'): ?>
+                                                        <?php elseif (isset ($ext["extension"]) && $ext["extension"] == 'doc'): ?>
                                                             <td><img src="/image/icons/doc.jpg" style="width: 25px;display: inline;" class="photo<?php echo $i ?>"/>&nbsp;<?php echo $ext["basename"]; ?></td>
-                                                        <?php elseif (isset($ext["extension"]) && $ext["extension"] == 'xls'): ?>
+                                                        <?php elseif (isset ($ext["extension"]) && $ext["extension"] == 'xls'): ?>
                                                             <td><img src="/image/icons/xls.jpg" style="width: 25px;display: inline;" class="photo<?php echo $i ?>"/>&nbsp;<?php echo $ext["basename"]; ?></td>
-                                                        <?php elseif (isset($ext["extension"]) && $ext["extension"] == 'pdf'): ?>
+                                                        <?php elseif (isset ($ext["extension"]) && $ext["extension"] == 'pdf'): ?>
                                                             <td><img src="/image/icons/pdf.png" style="width: 25px;display: inline;" class="photo<?php echo $i ?>"/>&nbsp;<?php echo $ext["basename"]; ?></td>
-                                                        <?php elseif (isset($ext["extension"]) && $ext["extension"] == 'txt'): ?>
+                                                        <?php elseif (isset ($ext["extension"]) && $ext["extension"] == 'txt'): ?>
                                                             <td><img src="/image/icons/txt.png" style="width: 25px;display: inline;" class="photo<?php echo $i ?>"/>&nbsp;<?php echo $ext["basename"]; ?></td>
                                                         <?php else: ?>
-                                                            <td><img style="width: 60px;display: inline;" src="<?php echo $row[mysql_field_name($result['result'], $i)] ?>"/></td>
+                                                            <td><img style="width: 60px;display: inline;" src="<?php echo $row[mysql_field_name ($result['result'], $i)] ?>"/></td>
                                                         <?php endif; ?> 
                                                     <?php else: ?>
-                                                        <td><?php echo $row[mysql_field_name($result['result'], $i)] ?></td>
+                                                        <td><?php echo $row[mysql_field_name ($result['result'], $i)] ?></td>
                                                     <?php endif; ?>
                                                     <?php $i++; ?>
                                                 <?php endforeach; ?>
@@ -245,9 +245,9 @@
                                                             </select>
                                                         </td>
                                                     <?php elseif ($field['type_name'] == 'дата'): ?>
-                                                        <td><input type="text" class="datepicker" style="width:65px;height:10px;" value="<?php echo $row[mysql_field_name($result['result'], $i)] ?>"/></td>
+                                                        <td><input type="text" class="datepicker" style="width:65px;height:10px;" value="<?php echo $row[mysql_field_name ($result['result'], $i)] ?>"/></td>
                                                     <?php else: ?>
-                                                        <td><input type="text" style="width:65px;height:10px;" value="<?php echo $row[mysql_field_name($result['result'], $i)] ?>"/></td>
+                                                        <td><input type="text" style="width:65px;height:10px;" value="<?php echo $row[mysql_field_name ($result['result'], $i)] ?>"/></td>
                                                     <?php endif; ?>
                                                     <?php $i++; ?>
                                                 <?php endforeach; ?>
@@ -260,19 +260,36 @@
                                     </tbody> 
                                 </table>
                             </div>
-                            <i class="icon-plus" title="Добавить строку" style="cursor: pointer;position: absolute;bottom: 10px;left: 20px;" id="add-row"></i>
-                            <i class="icon-pencil" title="Редактировать строку" style="cursor: pointer;position: absolute;bottom: 10px;left: 40px;"></i>
-                            <i class="icon-trash" title="Удалить строку" style="cursor: pointer;position: absolute;bottom: 10px;left: 60px;"></i>
-                            <a href="<?php echo site_url('export/xls') . '?' . $_SERVER["QUERY_STRING"]; ?>">
-                                <i class="icon-file" title="Экспорт в XLS" style="cursor: pointer;position: absolute;bottom: 10px;left: 100px;"></i>
-                            </a>
+                            <!--
                             <div class="pagination">
                                 <ul style="position: absolute;left:20px;">
                                     <li class="active"><a href="#">1</a></li>
-                                    <?php for ($k = 2; $k <= ceil($result['num_rows'] / 8); $k++): ?>
-                                        <li><a href="#"><?php echo $k ?></a></li>
-                                    <?php endfor; ?>
+                                    <?php //for ($k = 2; $k <= ceil ($result['num_rows'] / 5); $k++): ?>
+                                        <li><a href="#"><?php //echo $k ?></a></li>
+                                    <?php //endfor; ?>
                                 </ul>
                             </div>
+                            -->
+                            <div style="display:inline;" id="pages">
+                                <i class="icon-plus" title="Добавить строку" style="cursor: pointer;bottom: 10px;margin-left: 20px;" id="add-row"></i>
+                                <i class="icon-pencil" title="Редактировать строку" style="cursor: pointer;bottom: 10px;margin-left: 5px;"></i>
+                                <i class="icon-trash" title="Удалить строку" style="cursor: pointer;bottom: 10px;margin-left: 5px;"></i>
+                                <a href="<?php echo site_url ('export/xls') . '?' . $_SERVER["QUERY_STRING"]; ?>">
+                                    <i class="icon-file" title="Экспорт в XLS" style="cursor: pointer;bottom: 10px;margin-left: 20px;"></i>
+                                </a>
+
+                                <span style="margin-left: 20%;">«</span>
+                                <span> | Page </span>
+                                <input type="text" value="1" style="height:14px;width:22px;"/>
+                                <span>of <span class="total"><?php echo ceil ($result['num_rows'] / 5); ?></span> | </span>
+                                <span>»</span>
+                                <select style="width:42px;height:24px;">
+                                    <option value="" selected="selected">5</option>
+                                    <option value="" >2</option>
+                                    <option value="" >3</option>
+                                    <option value="" >1</option>
+                                </select>
+                            </div>
+                            
                         <?php endif; ?>
                     </div>

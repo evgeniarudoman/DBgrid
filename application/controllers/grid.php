@@ -58,7 +58,7 @@ class Grid extends CI_Controller
                 break;
         }
 
-        $this->template = array ('title' => $title,
+        $this->template = array ('title' => 'DBGrid - '.$title,
             'scripts' => array (
                 //'1' => "/bootstrap/js/bootstrap.js",
                 '2' => "/bootstrap/js/bootstrap.min.js",
@@ -123,7 +123,7 @@ class Grid extends CI_Controller
                 $this->session->set_userdata ('error', 'Username or email is already exist.');
             }
 
-            $this->header ('REGISTRATION');
+            $this->header ('Signup');
             $this->load->view ('auth');
         }
     }
@@ -160,7 +160,7 @@ class Grid extends CI_Controller
                 }
             }
 
-            $this->header ('AUTHORIZATION');
+            $this->header ('Login');
             $this->load->view ('signin');
         }
     }
@@ -236,7 +236,7 @@ class Grid extends CI_Controller
 
                     if (isset ($err) && $err == 1)
                     {
-                        $result['result']   = mysql_query ("SELECT * FROM " . $_GET['database'] . '.' . $_GET['table'] . ' LIMIT 8');
+                        $result['result']   = mysql_query ("SELECT * FROM " . $_GET['database'] . '.' . $_GET['table'] . ' LIMIT 5');
                         $result['num_rows'] = mysql_num_rows (mysql_query ("SELECT * FROM " . $_GET['database'] . '.' . $_GET['table']));
                     }
                     elseif (isset ($err) && $err == 2)
@@ -342,7 +342,7 @@ class Grid extends CI_Controller
         }
 
         $result = get_database_tree ($user_id);
-        //$result['result'] = mysql_query("SELECT * FROM " . $_POST['database_name'] . '.' . $_POST['table_name'] . ' LIMIT 8');
+        //$result['result'] = mysql_query("SELECT * FROM " . $_POST['database_name'] . '.' . $_POST['table_name'] . ' LIMIT 5');
 
         json_encode ($this->load->view ('jquery_form', array (
                     'list_database' => $list_database,

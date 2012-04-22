@@ -56,49 +56,43 @@
                             <td>
                                 <span>
                                     <b>
-                                    <?php
-                                        $error = $this->session->userdata('error');
-                                        if (isset($error) && !empty($error))
+                                        <?php
+                                        $error = $this->session->userdata ('error');
+                                        if (isset ($error) && !empty ($error))
                                         {
                                             echo $error;
                                         }
-                                    ?>
+                                        ?>
                                     </b>
                                 </span>
                             </td>
                         </tr>
                         <tr>
-                            <td><span>Username <b>*</b></span></td>
+                            <td><span>Username <span class="star">*</span></span></td>
                         </tr>
                         <tr>
                             <td><input type="text" name="username" class="val"/></td>
                         </tr>
                         <tr>
-                            <td><span>Password <b>*</b></span></td>
+                            <td><span>Password <span class="star">*</span></span></td>
                         </tr>
                         <tr>
                             <td><input type="password" name="password" class="val" id="password"/></td>
                         </tr>
                         <tr>
-                            <td><span>Confirm password <b>*</b></span></td>
+                            <td><span>Confirm password <span class="star">*</span></span></td>
                         </tr>
                         <tr>
                             <td><input type="password" name="confirm_password" class="val"/></td>
                         </tr>
-
+                        <tr id="right">
+                            <td class="little">If you are already have an account, please <a href="/grid/login">SIGN IN</a></td>
+                        </tr>
                         <tr>
                             <td><input type="submit" name="regist" value="REGISTER" class="btn btn-primary"/></td>
                         </tr>
                     </table>
                 </form>
-            </td>
-            <td>
-                <div id="right">
-                    <span>Registration</span>
-                    <br/><br/>                        
-                    <p>If you are already have an account,</p>
-                    <p>please <a href="/grid/login">SIGN IN</a></p>
-                </div>
             </td>
         </tr>
     </table>

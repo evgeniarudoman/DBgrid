@@ -24,7 +24,7 @@ class Rows extends CI_Controller
         $success = TRUE;
         $this->load->model ('query');
         $this->load->model ('basic/db_rows', 'rows');
-        
+
         header ("Content-Type: text/html;charset=utf-8");
 
         try
@@ -141,8 +141,8 @@ class Rows extends CI_Controller
                         }
                         elseif (isset ($_POST['field_file_' . $i]) && $field['name'] == $_POST['field_file_' . $i])
                         {
-                            $values[] = $_POST['value_file_' . $i];
-                            $fields[] = $_POST['field_file_' . $i];
+                            $values[]     = $_POST['value_file_' . $i];
+                            $fields[]     = $_POST['field_file_' . $i];
                             $old_values[] = $_POST['old_file_' . $i];
                         }
                     }
@@ -164,7 +164,7 @@ class Rows extends CI_Controller
         {
             $success = FALSE;
         }
-        
+
         $result           = get_database_tree ($user_id);
         $result['result'] = mysql_query ("SELECT * FROM " . $_POST['database_name'] . '.' . $_POST['table_name'] . ' LIMIT 8');
 
@@ -235,8 +235,9 @@ class Rows extends CI_Controller
 
             if (isset ($bool) && $bool == 1)
             {
-                $result['result'] = mysql_query ("SELECT * FROM " . $_POST['database_name'] . '.' . $_POST['table_name'] . ' LIMIT 8 OFFSET ' . $_POST['offset']);
-                $success          = TRUE;
+                $result['result']   = mysql_query ("SELECT * FROM " . $_POST['database_name'] . '.' . $_POST['table_name'] . ' LIMIT ' . $_POST['limit'] . ' OFFSET ' . $_POST['offset']);
+                $result['num_rows'] = ceil (mysql_num_rows (mysql_query ("SELECT * FROM " . $_POST['database_name'] . '.' . $_POST['table_name'])) / $_POST['limit']);
+                $success            = TRUE;
             }
             else
             {

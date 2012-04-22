@@ -33,7 +33,7 @@ body {
 
 /*--------used for form--------*/
 #form {
-    background-image: url("/image/vert_line.png");
+    /*background-image: url("/image/vert_line.png");*/
     background-position: right center;
     background-repeat: no-repeat;
     padding-left: 15px;
@@ -50,7 +50,7 @@ body {
 #login {
     position: fixed;
     top: 10%;
-    left: 30%;
+    left: 40%;
     margin-left: auto;
     margin-right: auto;
     color: #333333;
@@ -113,7 +113,7 @@ body {
 #auth {
     position: fixed;
     top: 10%;
-    left: 30%;
+    left: 40%;
     margin-left: auto;
     margin-right: auto;
     color: #333333;
@@ -408,6 +408,6 @@ a:link, a:visited {
     z-index: 2;
     top: 30%;
 }
-span.star{
+#form span.star, span.star{
     color:#08c;
 }
