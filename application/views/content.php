@@ -264,9 +264,9 @@
                             <div class="pagination">
                                 <ul style="position: absolute;left:20px;">
                                     <li class="active"><a href="#">1</a></li>
-                                    <?php //for ($k = 2; $k <= ceil ($result['num_rows'] / 5); $k++): ?>
-                                        <li><a href="#"><?php //echo $k ?></a></li>
-                                    <?php //endfor; ?>
+                            <?php //for ($k = 2; $k <= ceil ($result['num_rows'] / 5); $k++): ?>
+                                        <li><a href="#"><?php //echo $k   ?></a></li>
+                            <?php //endfor; ?>
                                 </ul>
                             </div>
                             -->
@@ -278,11 +278,19 @@
                                     <i class="icon-file" title="Экспорт в XLS" style="cursor: pointer;bottom: 10px;margin-left: 20px;"></i>
                                 </a>
 
-                                <span style="margin-left: 20%;">«</span>
+                                <span style="margin-left: 20%;">
+                                    <a href="#" class="previous-page" >
+                                        «
+                                    </a>
+                                </span>
                                 <span> | Page </span>
                                 <input type="text" value="1" style="height:14px;width:22px;"/>
                                 <span>of <span class="total"><?php echo ceil ($result['num_rows'] / 5); ?></span> | </span>
-                                <span>»</span>
+                                <span>
+                                    <a href="#" class="next-page" >
+                                        »
+                                    </a>
+                                </span>
                                 <select style="width:42px;height:24px;">
                                     <option value="" selected="selected">5</option>
                                     <option value="" >2</option>
@@ -290,6 +298,6 @@
                                     <option value="" >1</option>
                                 </select>
                             </div>
-                            
+
                         <?php endif; ?>
                     </div>
