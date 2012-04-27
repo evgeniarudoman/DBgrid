@@ -72,7 +72,7 @@
                     <?php elseif (isset($ext["extension"]) && $ext["extension"] == 'xls'): ?>
                         <td><img src="/image/icons/xls.png" style="width: 25px;display: inline;" class="photo<?php echo $i ?>"/>&nbsp;<?php echo $ext["basename"]; ?></td>
                     <?php else: ?>
-                        <td><img style="width: 60px;display: inline;" src="<?php echo $row[mysql_field_name($result['result'], $i)] ?>"/></td>
+                        <td><img style="height: 45px;display: inline;" src="<?php echo $row[mysql_field_name($result['result'], $i)] ?>"/></td>
                     <?php endif; ?> 
                 <?php else: ?>
                     <td><?php echo $row[mysql_field_name($result['result'], $i)] ?></td>
@@ -119,4 +119,3 @@
     <?php endwhile; ?>
 </tbody> 
 </table>
-<input type="hidden" name="paging" value="<?php echo $result['num_rows']?>"/>

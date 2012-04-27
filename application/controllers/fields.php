@@ -16,6 +16,7 @@ class Fields extends CI_Controller
         $this->load->model('table');
         $this->load->model('field');
         $this->load->model('type');
+        $this->load->model('relations');
     }
 
 
@@ -127,12 +128,40 @@ class Fields extends CI_Controller
                     $this->field->load_collection("dbgrid");
 
                     $this->fields->add($_POST['database_name'], $_POST['table_name'], $_POST['field_name'], $this->type->getType(), $this->type->getSize(), $this->type->getDefault(), $after = NULL);
-
                     $this->field->setName($_POST['field_name']);
                     $this->field->setTypeId($this->type->getId());
                     $this->field->setTableId($this->table->getId());
                     $this->field->setUserId($user_id);
-                    $this->field->insert();
+                    $fieldId = $this->field->insert();
+
+                    if (isset($_POST['db']) && isset($_POST['table']) && isset($_POST['field']))
+                    {
+                        $this->relations->db_name = "dbgrid";
+                        $this->relations->load_collection("dbgrid");
+                        $this->relations->setField($fieldId);
+                        
+                        $this->database->db_name = "dbgrid";
+                        $this->database->select(array(
+                            'name' => $_POST['db'],
+                            'user_id' => $user_id
+                        ));
+
+                        $this->table->db_name = "dbgrid";
+                        $this->table->select(array(
+                            'db_id' => $this->database->getId(),
+                            'user_id' => $user_id,
+                            'name' => $_POST['table']
+                        ));
+                        
+                        $this->field->select(array(
+                            'name' => $_POST['field'],
+                            'table_id' => $this->table->getId(),
+                            'user_id' => $user_id
+                        ));
+                        
+                        $this->relations->setFieldKey($this->field->getId());
+                        $this->relations->insert();
+                    }
                 }
 
                 $success = TRUE;
@@ -147,15 +176,37 @@ class Fields extends CI_Controller
             $success = '* Message - ' . $e->getMessage() . "\r\n" . "* Line # - " . $e->getLine() . "\r\n" . "* File - " . $e->getFile();
         }
 
-        $result = get_database_tree ($user_id);
-        json_encode ( $this->load->view (
-                        'structure', array (
+        $result = get_database_tree($user_id);
+        json_encode($this->load->view(
+                        'structure', array(
                     'result' => $result,
                     'success' => $success,
-                            'database' => $_POST['database_name'],
-                            'table' => $_POST['table_name']
+                    'database' => $_POST['database_name'],
+                    'table' => $_POST['table_name']
                 ))
         );
+    }
+
+
+    public function select()
+    {
+        $user_id = $this->session->userdata('user_id');
+
+        $this->database->db_name = "dbgrid";
+        $this->database->select(array('name' => $_POST['db_name'], 'user_id' => $user_id));
+
+        $this->table->db_name = "dbgrid";
+        $this->table->select(array('name' => $_POST['table_name'], 'db_id' => $this->database->getId(), 'user_id' => $user_id));
+
+        $this->field->db_name = "dbgrid";
+        $fields = $this->field->load_collection("dbgrid", array('table_id' => $this->table->getId(), 'user_id' => $user_id));
+
+        foreach ($fields as $field)
+        {
+            $list_field[] = array('key' => $field->getName());
+        }
+
+        echo json_encode($list_field);
     }
 
 

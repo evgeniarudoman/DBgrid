@@ -1,5 +1,76 @@
 <script>
     $(function() {  
+        $('select.select-type').change(function(){
+            if ($('select.select-type option:selected').text() == 'список')
+            {
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: '<?php echo site_url ('db/select'); ?>',
+                    success: function(db){
+                        var options='';
+                        $.each( db, function(k, val){
+                            options+=  "<option value='"+val.key+"'>"+val.key+"</option>";
+                        });
+                    
+                        $( "select.select-db" ).show();
+                        $( "select.select-db" ).html(
+                        "<option value='' selected='selected'> -- выберите базу данных -- </option>"+
+                            options);
+                    
+                    }
+                }); 
+            }
+            else
+            {
+                $( "select.select-db" ).hide();
+                $( "select.select-table" ).hide();
+                $( "select.select-field" ).hide();
+            }
+        });
+        
+        $('select.select-db').change(function(){            
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: '<?php echo site_url ('tables/select'); ?>',
+                data: "db_name="+$('select.select-db option:selected').text(),
+                success: function(table){
+                    var options='';
+                    $.each( table, function(k, val){
+                        options+=  "<option value='"+val.key+"'>"+val.key+"</option>";
+                    });
+                    
+                    $( "select.select-table" ).show();
+                    $( "select.select-table" ).html(
+                    "<option value='' selected='selected'> -- выберите таблицу -- </option>"+
+                        options);
+                    
+                }
+            }); 
+        });
+        
+        $('select.select-table').change(function(){            
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: '<?php echo site_url ('fields/select'); ?>',
+                data: "db_name="+$('select.select-db option:selected').text()+"&table_name="+$('select.select-table option:selected').text(),
+                success: function(field){
+                    var options='';
+                    $.each( field, function(k, val){
+                        options+=  "<option value='"+val.key+"'>"+val.key+"</option>";
+                    });
+                    
+                    $( "select.select-field" ).show();
+                    $( "select.select-field" ).html(
+                    "<option value='' selected='selected'> -- выберите поле -- </option>"+
+                        options);
+                    
+                }
+            }); 
+        });
+        
         $( "#dialog:ui-dialog" ).dialog( "destroy" );
         
         $( "#create-database" ).click(function() {
@@ -14,7 +85,7 @@
             $.ajax({
                 type: "POST",
                 dataType: "json",
-                url: '<?php echo site_url('db/select'); ?>',
+                url: '<?php echo site_url ('db/select'); ?>',
                 success: function(types){
                     var options="";
                     
@@ -32,10 +103,19 @@
         });
         
         $( "#add-row" ).click(function() {
+            $('div#row-form input[type=text]').val('');         
+            $('div#row-form textarea').val('');
+            $('#row-form input[type=hidden]').val('');
+            $('div#row-form input[type=checkbox]').removeAttr('checked');
+            $('input.photo100').val('');
+            $('div#row-form img').hide().parent('td').prev().show();
+            
+            $('input[type=hidden].db').val(0);
+                
             $( "#row-form" ).dialog( "open" );
         });
         
-        $( "#add-field" ).click(function() {
+        $( "#add-field" ).click(function() {    
             $( "#field-form" ).dialog( "open" );
         });
 		
@@ -50,6 +130,7 @@
         // @function Highlight error
         // param t - field
         function updateTips( t ) {
+            $('div#ajax-loading-left').hide();
             $("div.ui-state-highlight").attr('class', 'ui-state-error');
             tips
             .html('<span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>'+t)
@@ -99,7 +180,7 @@
             $.ajax({
                 type: "POST",
                 dataType:"html",
-                url: '<?php echo site_url('grid/jquery_forms'); ?>',
+                url: '<?php echo site_url ('grid/jquery_forms'); ?>',
                 success: function(response){
                     $('div#jquery-forms').html(response);
                 }
@@ -125,7 +206,7 @@
                         $.ajax({
                             type: "POST",
                             dataType:"html",
-                            url: '<?php echo site_url('db/add'); ?>',
+                            url: '<?php echo site_url ('db/add'); ?>',
                             data: "database_name="+database.val(),
                             success: function(response){
                                 $('div#ajax-loading-left').hide();
@@ -178,8 +259,11 @@
                     
                     var $selects = $('#row-form select');
                     $selects.each(function(k) {
-                        fields += '&field_select_'+$(this).attr("number")+'='+this.name;
-                        values += '&value_select_'+$(this).attr("number")+'='+$(this).text();
+                        $(this).is(':selected')
+                        {
+                            fields += '&field_select_'+$(this).attr("number")+'='+this.name;
+                            values += '&value_select_'+$(this).attr("number")+'='+$(this).find("option:selected").text();
+                        }
                     });
                     
                     var $files = $('#row-form input[type=hidden]');
@@ -187,18 +271,23 @@
                         fields += '&field_file_'+$(this).attr("number")+'='+$(this).attr("file");
                         values += '&value_file_'+$(this).attr("number")+'='+$(this).val();
                     });
-                    
+                    alert(fields);
+                    alert(values);
                     if ( $('input[type=hidden].db').val() == 0) 
                     {
                         // add new database by ajax
                         $.ajax({
                             type: "POST",
                             dataType: "html",
-                            url: '<?php echo site_url('rows/add'); ?>',
-                            data: "database_name="+"<?php if (isset($_GET['database']))
-                                    echo $_GET['database'] ?>"+
-                                    "&table_name="+"<?php if (isset($_GET['table']))
-                                    echo $_GET['table'] ?>"+
+                            url: '<?php echo site_url ('rows/add'); ?>',
+                            data: "database_name="+"<?php
+if (isset ($_GET['database']))
+    echo $_GET['database']
+    ?>"+
+                                    "&table_name="+"<?php
+if (isset ($_GET['table']))
+    echo $_GET['table']
+    ?>"+
                                     fields+values+
                                     "&count_input="+$inputs.length+
                                     "&count_textarea="+$textareas.length+
@@ -212,20 +301,28 @@
                         }
                         else
                         {
-                            var $checkboxs = $('#row-form input');
+                            var $checkboxs = $('#row-form input[type=checkbox]');
                             $checkboxs.each(function(k) {
                                 fields += '&field_checkbox_'+$(this).attr("number")+'='+this.name;
-                                values += '&value_checkbox_'+$(this).attr("number")+'='+$(this).val();
+                                if ($(this).is(":checked"))
+                                    values += '&value_checkbox_'+$(this).attr("number")+'='+1;
+                                else
+                                    values += '&value_checkbox_'+$(this).attr("number")+'='+0;
                             });
-                    
+                            //alert(fields);
+                            //alert(values);
                             $.ajax({
                                 type: "POST",
                                 dataType: "html",
-                                url: '<?php echo site_url('rows/edit'); ?>',
-                                data: "database_name="+"<?php if (isset($_GET['database']))
-                                    echo $_GET['database'] ?>"+
-                                    "&table_name="+"<?php if (isset($_GET['table']))
-                                    echo $_GET['table'] ?>"+
+                                url: '<?php echo site_url ('rows/edit'); ?>',
+                                data: "database_name="+"<?php
+if (isset ($_GET['database']))
+    echo $_GET['database']
+    ?>"+
+                                    "&table_name="+"<?php
+if (isset ($_GET['table']))
+    echo $_GET['table']
+    ?>"+
                                     fields+values+
                                     "&count_input="+$inputs.length+
                                     "&count_textarea="+$textareas.length+
@@ -238,7 +335,7 @@
                                 }
                             });
                         
-                            $('input[type=hidden].db').val(0)
+                            $('input[type=hidden].db').val(0);
                         }
                         $( this ).dialog( "close" );
                     
@@ -248,8 +345,19 @@
                     }
                 },
                 open: function() {
+                    $('div#row-form div#photo100Queue').hide();
+                    
                     $("div.ui-state-error").attr('class', 'ui-state-highlight');
                     allFields.val("");
+                },
+                close: function(){
+                    /*  $('div#row-form input[type=text]').val('');         
+                    $('div#row-form textarea').val('');
+                    $('div#row-form select').text('');
+                    $('#row-form input[type=hidden]').val('');
+                    $('div#row-form input[type=checkbox]').removeAttr('checked');
+                    $('input.photo100').val('');
+                    $('div#row-form img').hide().parent('td').prev().show();*/
                 }
             });
             // end of creating new field
@@ -265,27 +373,48 @@
                         var bValid = true;
                         allFields.removeClass( "ui-state-error" );
                         var val = $('input[name=field_name]').val();
+                
+                        var db = "";
+                        var table = "";
+                        var field = "";
+                        
+                        if ($('select.select-type option:selected').text() == 'список')
+                        {
+                            db = "&db="+$('select.select-db option:selected').text();
+                            table = "&table="+$('select.select-table option:selected').text();
+                            field = "&field="+$('select.select-field option:selected').text();
+                        }
+                        
                         $.ajax({
                             type: "POST",
                             dataType: "html",
-                            url: '<?php echo site_url('fields/add'); ?>',
-                            data: "database_name="+"<?php if (isset($_GET['database']))
-                                echo $_GET['database'] ?>"+
-                                "&table_name="+"<?php if (isset($_GET['table']))
-                                echo $_GET['table'] ?>"+
+                            url: '<?php echo site_url ('fields/add'); ?>',
+                            data: "database_name="+"<?php
+if (isset ($_GET['database']))
+    echo $_GET['database']
+    ?>"+
+                                "&table_name="+"<?php
+if (isset ($_GET['table']))
+    echo $_GET['table']
+    ?>"+
                                 "&field_name="+val+
-                                "&type="+$('select[name=type] option:selected').val(),
+                                "&type="+$('select[name=type] option:selected').val()+
+                                db+table+field,
                             success: function(response){
                                 $('div#structure').html(response);
                             
                                 $.ajax({
                                     type: "POST",
                                     dataType: "html",
-                                    url: '<?php echo site_url('rows/get_table'); ?>',
-                                    data: "database_name="+"<?php if (isset($_GET['database']))
-                                        echo $_GET['database'] ?>"+
-                                        "&table_name="+"<?php if (isset($_GET['table']))
-                                        echo $_GET['table'] ?>",
+                                    url: '<?php echo site_url ('rows/get_table'); ?>',
+                                    data: "database_name="+"<?php
+if (isset ($_GET['database']))
+    echo $_GET['database']
+    ?>"+
+                                        "&table_name="+"<?php
+if (isset ($_GET['table']))
+    echo $_GET['table']
+    ?>",
                                     success: function(response){
                                         $('#ajax-page').html(response);
                                     }
@@ -332,13 +461,14 @@
                     
                         if ( bValid ) 
                         {
-                            if ( $('input[type=hidden].valid').val() == 'true') 
-                            {
+                            //if ( $('input[type=hidden].valid').val() == 'true') 
+                            //{
                                 var i;
+                                var data = '';
                                 for (i=1;i<=count.val();i++)
                                 {
-                                    $( "div#field-form-tb form.field-form" ).append(
-                                    '<fieldset style="border: 1px solid #DDD;padding: 5px;display: inline;margin-right: 10px;">'+
+                                    
+                                    data += '<fieldset style="border: 1px solid #DDD;padding: 5px;display: inline;margin-right: 10px;">'+
                                         '<legend style="font-size: 12px;border: none;">Поле'+i+'</legend>'+
                                         '<table>'+'<tr>'+
                                         '<td style="width:70px">'+'<label for="field_name">Имя поля</label>'+'</td>'+
@@ -350,12 +480,12 @@
                                         '<option value="" selected="selected"> -- выбрать тип -- </option>'+
                                         '</select>'+'</td>'+
                                         '</tr>'+'</table>'+
-                                        '</fieldset>');
+                                        '</fieldset>'
             
                                     $.ajax({
                                         type: "POST",
                                         dataType: "json",
-                                        url: '<?php echo site_url('tables/get_type'); ?>',
+                                        url: '<?php echo site_url ('tables/get_type'); ?>',
                                         success: function(types){
                                             var options='';
                                             $.each( types, function(k, val){
@@ -370,7 +500,9 @@
                                     })
                                     $('input[type=hidden].valid').val('false');
                                 }
-                            }
+                                //alert(data);
+                                $( "div#field-form-tb form.field-form" ).html(data);
+                            //}
                             if ($('div#table-form form.table-form fieldset').length == 0){
                                 var fValid = true;
                                 for (i=1;i<=count.val();i++)
@@ -397,6 +529,7 @@
                     }
                 },
                 open: function() {
+                    $('span.fill').text(' Все поля обязательны для заполнения.');
                     $("div.ui-state-error").attr('class', 'ui-state-highlight');
                     allFields.val("");
                 }
@@ -434,12 +567,12 @@
                             $.ajax({
                                 type: "POST",
                                 dataType: "html",
-                                url: '<?php echo site_url('tables/add'); ?>',
+                                url: '<?php echo site_url ('tables/add'); ?>',
                                 data: "table_name="+$('input[type=hidden].tables').val()+
                                     "&count="+$('input[type=hidden].count').val()+
                                     "&database="+$('input[type=hidden].db').val()+
                                     //"&radio="+$('input#check:checked').val()+
-                                    fields+types,
+                                fields+types,
                                 success: function(response){
                                     $('div#ajax-loading-left').hide();
                                     $('div#accordion div.well').html(response);
@@ -473,7 +606,7 @@
                         $.ajax({
                             type: "POST",
                             dataType: "html",
-                            url: '<?php echo site_url('tables/rename'); ?>',
+                            url: '<?php echo site_url ('tables/rename'); ?>',
                             data: "new_name="+$('input#table-e').val()+
                                 "&database_name="+$('input[type=hidden].db').val()+
                                 "&table_name="+$('input[type=hidden].tables').val(),
@@ -531,11 +664,15 @@
                         
                             $.ajax({
                                 type: "POST",
-                                url: '<?php echo site_url('rows/remove'); ?>',
-                                data: "database_name="+'<?php if (isset($_GET['database']))
-                                    echo $_GET['database'] ?>'+
-                                    "&table_name="+'<?php if (isset($_GET['table']))
-                                    echo $_GET['table'] ?>'+fields+values+"&count="+$inputs.length,
+                                url: '<?php echo site_url ('rows/remove'); ?>',
+                                data: "database_name="+'<?php
+if (isset ($_GET['database']))
+    echo $_GET['database']
+    ?>'+
+                                    "&table_name="+'<?php
+if (isset ($_GET['table']))
+    echo $_GET['table']
+    ?>'+fields+values+"&count="+$inputs.length,
                                 success: function(response){
                                     checked.parent('td').parent('tr').slideUp();
                                 }
@@ -624,7 +761,7 @@
                         $.ajax({
                             type: "POST",
                             dataType: "html",
-                            url: '<?php echo site_url('db/delete') ?>',
+                            url: '<?php echo site_url ('db/delete') ?>',
                             data: "database_name="+$('input[type=hidden].db').val(),
                             success: function(response){
                                 $('div#ajax-loading-left').hide();
@@ -659,7 +796,7 @@
                         $.ajax({
                             type: "POST",
                             dataType: "html",
-                            url: '<?php echo site_url('tables/delete') ?>',
+                            url: '<?php echo site_url ('tables/delete') ?>',
                             data: "database_name="+$('input[type=hidden].db').val()+
                                 "&table_name="+$('input[type=hidden].tables').val(),
                             success: function(response){

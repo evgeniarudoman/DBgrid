@@ -38,6 +38,7 @@ if (!function_exists('get_database_tree'))
                     $result[$database->getName() . '_' . $table->getName() . '_field'][$field->getId()]['name'] = $field->getName();
                     $result[$database->getName() . '_' . $table->getName() . '_field'][$field->getId()]['size'] = $field->getSize();
                     $result[$database->getName() . '_' . $table->getName() . '_field'][$field->getId()]['width'] = $field->getWidth();
+                    $result[$database->getName() . '_' . $table->getName() . '_field'][$field->getId()]['id'] = $field->getId();
 
                     $grid->type->select(array('id' => $type_id));
                     $result[$database->getName() . '_' . $table->getName() . '_field'][$field->getId()]['type'] = $grid->type->getType();

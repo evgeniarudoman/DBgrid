@@ -15,13 +15,13 @@
                     $.ajax({
                         type: "POST",
                         dataType: "json",
-                        url: '<?php echo site_url ('fields/save_width') ?>',
+                        url: '<?php echo site_url('fields/save_width') ?>',
                         data: "database_name="+'<?php
-if (isset ($_GET['database']))
+if (isset($_GET['database']))
     echo $_GET['database']
     ?>'+
                             "&table_name="+'<?php
-if (isset ($_GET['table']))
+if (isset($_GET['table']))
     echo $_GET['table']
     ?>'+
                             "&field_name="+$(this).children('input[type=hidden]').val()+
@@ -41,7 +41,7 @@ if (isset ($_GET['table']))
             $.ajax({
                 type: "POST",
                 dataType: "json",
-                url: '<?php echo site_url ('grid/save_theme') ?>',
+                url: '<?php echo site_url('grid/save_theme') ?>',
                 data: "theme="+theme,
                 success: function(response){
                     //change on something
@@ -67,7 +67,7 @@ if (isset ($_GET['table']))
             $.ajax({
                 type: "POST",
                 dataType: "json",
-                url: '<?php echo site_url ('rows/add') ?>',
+                url: '<?php echo site_url('rows/add') ?>',
                 data: "database_name="+db_name+
                     "&table_name="+table_name+
                     // "&count="+count+
@@ -139,9 +139,9 @@ if (isset ($_GET['table']))
                 return false;
             }).next().hide();
             
-<?php if (isset ($_GET['database']) && !empty ($_GET['database'])): ?>
+<?php if (isset($_GET['database']) && !empty($_GET['database'])): ?>
             $('table#tables[name=<?php echo $_GET['database'] ?>]').show();
-    <?php if (isset ($_GET['table']) && !empty ($_GET['table'])): ?>
+    <?php if (isset($_GET['table']) && !empty($_GET['table'])): ?>
                     $('table#tables[name=<?php echo $_GET['database'] ?>] tr[name=<?php echo $_GET['table'] ?>]').attr('style','background-color:#EFF1F1;');
     <?php endif; ?>
 <?php endif; ?>
@@ -156,7 +156,7 @@ if (isset ($_GET['table']))
                 $.ajax({
                     type: "POST",
                     dataType: "json",
-                    url: '<?php echo site_url ('rows/add') ?>',
+                    url: '<?php echo site_url('rows/add') ?>',
                     data: "database_name="+db_name+
                         "&table_name="+table_name,
                     success: function(response){
@@ -174,7 +174,7 @@ if (isset ($_GET['table']))
         $(document).ready(function() {
             $('i.icon-pencil').click(function(){
                 if ($("td.check_one input:checked").val() == 'on')
-                {
+                {                    
                     var $inputs = $("td.check_one input:checked").parent('td');
                     var $name = $("th div.resize");
                     var row = '';
@@ -201,7 +201,7 @@ if (isset ($_GET['table']))
                                         
                                     if($('div#row-form select[name='+$(this).attr("name")+']').length == 1)
                                     {
-                                        $('div#row-form select[name='+$(this).attr("name")+']').text(row);
+                                        //$('div#row-form select[name='+$(this).attr("name")+']').text(row);
                                         hidden += "&old_select_"+$(this).attr("number")+'='+row;
                                     }
                                     
@@ -211,26 +211,35 @@ if (isset ($_GET['table']))
                                         hidden += "&old_file_"+$(this).attr("number")+'='+row;
                                     }
                     
-                                    if($('div#row-form input[type=checkbox][name='+$(this).attr("name")+']').length == 1)
+                                    if($('div#row-form input[type=checkbox][name='+$(this).attr("name")+']').length >= 1)
                                     {
                                         if (row == 1)
                                             $('div#row-form input[type=checkbox][name='+$(this).attr("name")+']').attr('checked','checked');
+                                        else
+                                            $('div#row-form input[type=checkbox][name='+$(this).attr("name")+']').removeAttr('checked');
                                         hidden += "&old_checkbox_"+$(this).attr("number")+'='+row;    
                                     }
-                                    //alert(hidden);
-                                    //hidden += "&old"+z+'='+row;
+                                    
+                                    var img = $("td.check_one input:checked").parent('td').parent('tr').children('td').children('img').attr('src');
+                                    if (img != '')
+                                    {
+                                        $('input.photo100').val(img);
+                                        $('div#row-form img').show().parent('td').prev().hide();
+                                        $('div#row-form img').attr('src', img);
+                                    }
+                                    
                                     $('input[type=hidden].rows').val(hidden);    
                                 }   
                             });
                         });
                     });
-                    //alert(hidden);
+                    
                     $('input[type=hidden].db').val('<?php
-if (isset ($_GET['database']))
+if (isset($_GET['database']))
     echo $_GET['database']
     ?>');
-                    $( "#row-form" ).dialog( "open" );
-                    
+                                            
+                    $( "#row-form" ).dialog( "open" );                    
                 }
             })
         });
@@ -288,14 +297,14 @@ if (isset ($_GET['database']))
                 
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo site_url ('rows/select') ?>",
+                    url: "<?php echo site_url('rows/select') ?>",
                     dataType: "html",
                     data: "database_name="+'<?php
-if (isset ($_GET['database']))
+if (isset($_GET['database']))
     echo $_GET['database']
     ?>'+
                         "&table_name="+'<?php
-if (isset ($_GET['table']))
+if (isset($_GET['table']))
     echo $_GET['table']
     ?>'+
                         "&offset="+offset,
@@ -311,6 +320,8 @@ if (isset ($_GET['table']))
                 var offset = ($('div#pages input').val()*limit)-limit;
                 
                 paging(offset, limit);
+                
+                $('span.total').text();
                 
                 //$('span.total').text($('input[name=paging]').val());
                 return false;
@@ -353,14 +364,14 @@ if (isset ($_GET['table']))
             function paging(offset, limit){
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo site_url ('rows/select') ?>",
+                    url: "<?php echo site_url('rows/select') ?>",
                     dataType: "html",
                     data: "database_name="+'<?php
-if (isset ($_GET['database']))
+if (isset($_GET['database']))
     echo $_GET['database']
     ?>'+
                         "&table_name="+'<?php
-if (isset ($_GET['table']))
+if (isset($_GET['table']))
     echo $_GET['table']
     ?>'+
                         "&offset="+offset+
@@ -373,23 +384,23 @@ if (isset ($_GET['table']))
         });
     </script>
     <?php
-    if (isset ($_GET['database']))
+    if (isset($_GET['database']))
         $database = $_GET['database'];
     else
         $database = NULL;
     ?>
     <?php
-    if (isset ($_GET['table']))
-        $table    = $_GET['table'];
+    if (isset($_GET['table']))
+        $table = $_GET['table'];
     else
-        $table    = NULL;
+        $table = NULL;
     ?>
     <script>
         function search_by(){ 
             $.ajax({
                 type: "POST",
                 dataType: "html",
-                url: '<?php echo site_url ('ajax/search?database_name=') . $database . '&table_name=' . $table . '&term=' ?>'+$('#prependedInput').val(),
+                url: '<?php echo site_url('ajax/search?database_name=') . $database . '&table_name=' . $table . '&term=' ?>'+$('#prependedInput').val(),
                 success: function(response){
                     $('#ajax-page').html(response);
                 }
@@ -487,7 +498,7 @@ if (isset ($_GET['table']))
     <div class="navbar navbar-fixed-top">
         <div class="navbar-inner">
             <div class="container">
-                <a class="brand" href="<?php echo site_url ('grid') ?>" title="DBGrid">
+                <a class="brand" href="<?php echo site_url('grid') ?>" title="DBGrid">
                     <i class="icon-leaf icon-white"></i>
                     DBGrid
                 </a>
@@ -495,7 +506,7 @@ if (isset ($_GET['table']))
                 <div class="nav-collapse">
                     <ul class="nav">
                         <li class="" title="Главная">
-                            <a href="<?php echo site_url ('grid') ?>">
+                            <a href="<?php echo site_url('grid') ?>">
                                 <i class="icon-home icon-white"></i>
                                 &nbsp;Главная
                             </a>
@@ -507,13 +518,13 @@ if (isset ($_GET['table']))
                             </a>
                         </li>
                         <li class="" title="Помощь">
-                            <a href="<?php echo site_url ('help') ?>">
+                            <a href="<?php echo site_url('help') ?>">
                                 <i class="icon-flag icon-white"></i>
                                 &nbsp;Помощь
                             </a>
                         </li>
                         <li class="" title="Выйти">
-                            <a href="<?php echo site_url ('grid/logout') ?>">
+                            <a href="<?php echo site_url('grid/logout') ?>">
                                 <i class="icon-off icon-white"></i>
                                 &nbsp;Выйти
                             </a>

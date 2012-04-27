@@ -27,7 +27,7 @@
     <div class="ui-state-highlight" style="padding: 0 .7em;padding-top: 5px;margin-bottom: 15px;">
         <p>
             <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-            <strong></strong> Все поля обязательны для заполнения.
+            <span class="fill"> Все поля обязательны для заполнения.</span>
         </p>
     </div>
     <form>
@@ -64,12 +64,25 @@
                                 <td><input type="radio" name="<?php echo $field['name'] ?>" number="<?php echo $i; ?>"/><br/></td>
                             <?php elseif ($field['type_name'] == 'файл'): ?>
                                 <td><input id="photo100" style="display:inline;" number="<?php echo $i; ?>" class="input-file btn btn-primary" type="file" name="<?php echo $field['name'] ?>"/><br/></td>
+                                <td><img src="" style="height:45px; display:none;"/><br/></td>
                             <input class="photo100" number="<?php echo $i; ?>" file="<?php echo $field['name'] ?>" type="hidden" name="attachment"/>
                         <?php elseif ($field['type_name'] == 'список'): ?>
                             <td>
+                                <?php $query = get_select ($field['id']); //var_dump($query);?>
                                 <select number="<?php echo $i; ?>" name="<?php echo $field['name'] ?>" class="text ui-widget-content ui-corner-all">
-                                    <option value="" selected="selected"> -- choose -- </option>
-                                </select><br/>
+                                    <option value="" selected="selected"> -- выбрать -- </option>
+                                    <?php if (isset ($query['mysql']) && !empty ($query['mysql'])): ?>
+                                        <?php $k   = 0; ?>
+                                        <?php while ($row = mysql_fetch_array ($query['mysql'])): ?>
+                                            <?php //var_dump($field)?>
+                                            <?php if (!empty ($row[$query['name']])): ?>
+                                                <option value=""><?php echo $row[$query['name']]; ?></option>
+                                                <?php $k++; ?>
+                                            <?php endif; ?>
+                                        <?php endwhile; ?>
+                                    <?php endif; ?>
+                                </select>
+                                <br/>
                             </td>
                         <?php elseif ($field['type_name'] == 'дата'): ?>
                             <td><input type="text" number="<?php echo $i; ?>" style="height: 10px;width:200px;display: inline;font-weight: normal;" class="text ui-widget-content ui-corner-all datepicker" value="--/--/----" name="<?php echo $field['name'] ?>"/><br/></td>
@@ -87,6 +100,7 @@
         </fieldset>
     </form>
 </div>
+
 <!-- end row form -->
 
 <!-- create new row form  -->
@@ -94,7 +108,7 @@
     <div class="ui-state-highlight" style="padding: 0 .7em;padding-top: 5px;margin-bottom: 15px;">
         <p>
             <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-            <strong></strong> Все поля обязательны для заполнения.
+            <span class="fill"> Все поля обязательны для заполнения.</span>
         </p>
     </div>
     <form>
@@ -114,7 +128,7 @@
                             <label for="field_type">Тип</label>
                         </td>
                         <td>
-                            <select name='type' style='width: 210px;height: 25px;' class='text ui-widget-content ui-corner-all'>
+                            <select name='type' style='width: 210px;height: 25px;' class='select-type text ui-widget-content ui-corner-all'>
                                 <option value="" selected="selected"> -- выбрать тип -- </option>
                                 <?php if (isset ($list_type) && !empty ($list_type)): ?>
                                     <?php foreach ($list_type as $key => $type): ?>
@@ -122,6 +136,24 @@
                                     <?php endforeach; ?>
                                 <?php endif; ?>
                             </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <select name='db' style='width: 210px;height: 25px;display: none;' class='select-db text ui-widget-content ui-corner-all'></select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <select name='table' style='width: 210px;height: 25px;display: none;' class='select-table text ui-widget-content ui-corner-all'></select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <select name='field' style='width: 210px;height: 25px;display: none;' class='select-field text ui-widget-content ui-corner-all'></select>
                         </td>
                     </tr>
                 </table>
@@ -136,7 +168,7 @@
     <div class="ui-state-highlight" style="padding: 0 .7em;padding-top: 5px;margin-bottom: 15px;">
         <p>
             <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-            <strong></strong> Все поля обязательны для заполнения.
+            <span class="fill"> Все поля обязательны для заполнения.</span>
         </p>
     </div>
     <form class="table-form">
@@ -185,16 +217,16 @@
     <div class="ui-state-highlight" style="padding: 0 .7em;padding-top: 5px;margin-bottom: 15px;">
         <p>
             <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-            <strong></strong> Все поля обязательны для заполнения.
+            <span class="fill"> Все поля обязательны для заполнения.</span>
         </p>
     </div>
     <form class="field-form">
-        <input type="hidden" class="valid" value="true"/>
-        <input type="hidden" class="db" value="0"/>
-        <input type="hidden" class="tables" value="0"/>
-        <input type="hidden" class="rows" value="0"/>
-        <input type="hidden" class="count" value="0"/>
     </form>
+    <input type="hidden" class="valid" value="true"/>
+    <input type="hidden" class="db" value="0"/>
+    <input type="hidden" class="tables" value="0"/>
+    <input type="hidden" class="rows" value="0"/>
+    <input type="hidden" class="count" value="0"/>
 </div>
 <!-- end row form -->
 
@@ -203,7 +235,7 @@
     <div class="ui-state-highlight" style="padding: 0 .7em;padding-top: 5px;margin-bottom: 15px;">
         <p>
             <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-            <strong></strong> Все поля обязательны для заполнения.
+            <span class="fill"> Все поля обязательны для заполнения.</span>
         </p>
     </div>
     <form class="table-form">
