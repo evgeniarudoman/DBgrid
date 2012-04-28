@@ -9,9 +9,7 @@ if (!function_exists ('get_select'))
     function get_select ($field_id)
     {
         $grid = &get_instance ();
-
-        $user_id = $grid->session->userdata ('user_id');
-        $query   = '';
+        $result   = array();
 
         $grid->load->model ('database');
         $grid->load->model ('table');
@@ -34,17 +32,11 @@ if (!function_exists ('get_select'))
             
             $grid->table->select ($grid->field->getTableId());
             $grid->database->select ($grid->table->getDbId());
-            //echo "SELECT " . $grid->field->getName () . " FROM " . $grid->database->getName() . '.' . $grid->table->getName();
-            //$grid->field->select (array ('user_id' => $user_id, 'table_id' => $grid->table->getId (), 'name' => $field_name));
-
             
-            
-            //$fieldName = $grid->field->getName ();
             $result['mysql'] = mysql_query ("SELECT " . $grid->field->getName () . " FROM " . $grid->database->getName() . '.' . $grid->table->getName());
             $result['name'] = $grid->field->getName ();
         }
-
-        //$grid->field->select(array('user_id' => $user_id, 'table_id' => $grid->table->getId(), 'name' => $grid->relations->getFieldKey()));
+        
         return $result;
     }
 
