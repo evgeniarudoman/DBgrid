@@ -44,7 +44,6 @@ class Grid extends CI_Controller
 
     public function header ($title, $theme = NULL)
     {
-
         switch ($theme)
         {
             case 'серая':
@@ -224,7 +223,7 @@ class Grid extends CI_Controller
             }
 
             $username = $this->session->userdata ('username');
-            $this->header ($username, $this->theme->getStyle ());
+            $this->header ($username, $this->theme->getName ());
 
             $result = get_database_tree ($user_id);
 
@@ -303,7 +302,7 @@ class Grid extends CI_Controller
         $this->theme->db_name = "dbgrid";
         try
         {
-            $this->theme->select (array ('style' => $_POST['theme']));
+            $this->theme->select (array ('name' => $_POST['theme']));
 
             $this->user->select (array ('session_hash' => $session_hash, 'id' => $user_id));
             $this->user->setThemeId ($this->theme->getId ());
@@ -317,39 +316,26 @@ class Grid extends CI_Controller
         echo json_encode ($success);
     }
 
-    public function jquery_forms ()
+    public function jquery_row ()
     {
-        header ("Content-Type: text/html;charset=utf-8");
-        $user_id = $this->session->userdata ('user_id');
+        header("Content-Type: text/html;charset=utf-8");
+        $user_id = $this->session->userdata('user_id');
 
-        $this->load->model ('database');
-        $this->load->model ('type');
+        $bool = db_table_exists($user_id, $_POST['database_name'], $_POST['table_name']);
 
-        $databases = $this->database->load_collection ("dbgrid", array ('user_id' => $user_id));
-
-        foreach ($databases as $database)
+        if (isset($bool) && $bool == 1)
         {
-            $list_database[] = $database->getName ();
+            $result = get_database_tree($user_id);
+            $result['result'] = mysql_query("SELECT * FROM " . $_POST['database_name'] . '.' . $_POST['table_name'] . ' LIMIT 5');
+
+            json_encode($this->load->view(
+                            'templates/row-form', array(
+                        'result' => $result,
+                        'database' => $_POST['database_name'],
+                        'table' => $_POST['table_name'],
+                    ))
+            );
         }
-        if (!isset ($list_database))
-            $list_database   = NULL;
-
-        $types = $this->type->load_collection ("dbgrid");
-
-        foreach ($types as $type)
-        {
-            $list_type[] = $type->getName ();
-        }
-
-        $result = get_database_tree ($user_id);
-        //$result['result'] = mysql_query("SELECT * FROM " . $_POST['database_name'] . '.' . $_POST['table_name'] . ' LIMIT 5');
-
-        json_encode ($this->load->view ('jquery_form', array (
-                    'list_database' => $list_database,
-                    'list_type' => $list_type,
-                    'result' => $result
-                ))
-        );
     }
 
 }

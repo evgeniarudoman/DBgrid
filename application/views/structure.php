@@ -17,12 +17,8 @@
                 <td class="check_one" title="Выбрать строку">
                     <input type="checkbox" name="<?php echo $s; ?>" />
                 </td>
-                <td>
-                    <?php echo $field['name']; ?>
-                </td>
-                <td>
-                    <?php echo $field['type_name']; ?>
-                </td>
+                <td><?php echo $field['name']; ?></td>
+                <td><?php echo $field['type_name']; ?></td>
             </tr>
             <?php $s++; ?>
         <?php endforeach; ?>

@@ -213,8 +213,8 @@ class Rows extends CI_Controller
                             $fields[] = $_POST['field' . $i];
                         }
                     }
+                    $this->rows->remove($_POST['database_name'], $_POST['table_name'], $fields, $values);
                 }
-                $this->rows->remove($_POST['database_name'], $_POST['table_name'], $fields, $values);
 
                 $success = TRUE;
             }
@@ -227,7 +227,17 @@ class Rows extends CI_Controller
         {
             $success = FALSE;
         }
-        echo json_encode($success);
+        
+        $result = get_database_tree($user_id);
+        $result['result'] = mysql_query("SELECT * FROM " . $_POST['database_name'] . '.' . $_POST['table_name'] . ' LIMIT 5');
+
+        json_encode($this->load->view(
+                        'data', array(
+                    'result' => $result,
+                    'database' => $_POST['database_name'],
+                    'table' => $_POST['table_name'],
+                ))
+        );
     }
 
 

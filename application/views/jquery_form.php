@@ -76,7 +76,7 @@
                                         <?php while ($row = mysql_fetch_array ($query['mysql'])): ?>
                                             <?php //var_dump($field)?>
                                             <?php if (!empty ($row[$query['name']])): ?>
-                                                <option value=""><?php echo $row[$query['name']]; ?></option>
+                                                <option value="<?php echo $row[$query['name']]; ?>"><?php echo $row[$query['name']]; ?></option>
                                                 <?php $k++; ?>
                                             <?php endif; ?>
                                         <?php endwhile; ?>
@@ -120,7 +120,7 @@
                             <label for="field_name">Имя столбца</label>
                         </td>
                         <td>
-                            <input style="width: 200px;height: 10px;" type="text" name="field_name" class="text ui-widget-content ui-corner-all" />
+                            <input id="field-name" style="width: 200px;height: 10px;" type="text" name="field_name" class="text ui-widget-content ui-corner-all" />
                         </td>
                     </tr>
                     <tr>  
@@ -128,7 +128,7 @@
                             <label for="field_type">Тип</label>
                         </td>
                         <td>
-                            <select name='type' style='width: 210px;height: 25px;' class='select-type text ui-widget-content ui-corner-all'>
+                            <select id="select-type" name='type' style='width: 210px;height: 25px;' class='select-type text ui-widget-content ui-corner-all'>
                                 <option value="" selected="selected"> -- выбрать тип -- </option>
                                 <?php if (isset ($list_type) && !empty ($list_type)): ?>
                                     <?php foreach ($list_type as $key => $type): ?>

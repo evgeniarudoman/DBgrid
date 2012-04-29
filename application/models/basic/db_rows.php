@@ -97,7 +97,7 @@ class Db_rows extends CI_Model
         }
         $query = substr($str, 0, strlen($str) - 5);
         unset($str);
-
+        
         $this->db->query('DELETE FROM `' . $db_name . '`.`' . $table_name . '` 
                             WHERE ' . $query . '
                             LIMIT 1'

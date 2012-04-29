@@ -121,11 +121,14 @@
 		
         // announcement variables
         var table = $( "#table" )
+        var table_e = $( "#table-e" )
         var count = $( "#count" )
         var db = $( "#db" )
-        var database= $( "#database" ),
+        var database= $( "#database" )
+        var select_type= $( "#select-type" )
+        var field_name= $( "#field-name" ),
         allFields = $( [] ).add( db ).add( table ).add( count ).add( database ),
-        tips = $( "div.ui-state-highlight p" );
+        tips = $( "div.ui-state-highlight p span.fill" );
         
         // @function Highlight error
         // param t - field
@@ -133,7 +136,7 @@
             $('div#ajax-loading-left').hide();
             $("div.ui-state-highlight").attr('class', 'ui-state-error');
             tips
-            .html('<span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>'+t)
+            .html(t)
         }
 
         // @function Check length of field
@@ -223,6 +226,7 @@
             },
             open: function() {
                 $("div.ui-state-error").attr('class', 'ui-state-highlight');
+                $("div.ui-state-highlight p span.fill").html(' Все поля обязательны для заполнения.');
                 allFields.val("");
             }
         });
@@ -259,7 +263,7 @@
                     
                     var $selects = $('#row-form select');
                     $selects.each(function(k) {
-                        $(this).is(':selected')
+                        if ($(this).find("option:selected").val() != '')
                         {
                             fields += '&field_select_'+$(this).attr("number")+'='+this.name;
                             values += '&value_select_'+$(this).attr("number")+'='+$(this).find("option:selected").text();
@@ -345,12 +349,13 @@ if (isset ($_GET['table']))
                     }
                 },
                 open: function() {
-                    //$('div#row-form div#photo100Queue').hide();
+                    
                     
                     $("div.ui-state-error").attr('class', 'ui-state-highlight');
                     allFields.val("");
                 },
                 close: function(){
+                    $('div#row-form div#photo100Queue').empty();
                     /*  $('div#row-form input[type=text]').val('');         
                     $('div#row-form textarea').val('');
                     $('div#row-form select').text('');
@@ -370,60 +375,89 @@ if (isset ($_GET['table']))
                 modal: true,
                 buttons: {
                     "Добавить": function() {
+                        
                         var bValid = true;
-                        allFields.removeClass( "ui-state-error" );
+                    
+                        bValid = bValid && checkEmpty( field_name, "Поле имени столбца не должно быть пустым.");
+                        bValid = bValid && checkRegexp( field_name, /^[a-zа-я]([a-zа-я_])+$/i, "Поле имени столбца должно содержать буквы, нижнее подчерквание и начинаться с букв." );
+
+                        bValid = bValid && checkEmpty( select_type, "Поле типа не должно быть пустым.");                    
+
+                        
+                        //var bValid = true;
+                        //allFields.removeClass( "ui-state-error" );
                         var val = $('input[name=field_name]').val();
                 
                         var db = "";
                         var table = "";
                         var field = "";
                         
-                        if ($('select.select-type option:selected').text() == 'список')
-                        {
-                            db = "&db="+$('select.select-db option:selected').text();
-                            table = "&table="+$('select.select-table option:selected').text();
-                            field = "&field="+$('select.select-field option:selected').text();
-                        }
+                        if (bValid){
+                            if ($('select.select-type option:selected').text() == 'список')
+                            {
+                                db = "&db="+$('select.select-db option:selected').text();
+                                table = "&table="+$('select.select-table option:selected').text();
+                                field = "&field="+$('select.select-field option:selected').text();
+                            }
                         
-                        $.ajax({
-                            type: "POST",
-                            dataType: "html",
-                            url: '<?php echo site_url ('fields/add'); ?>',
-                            data: "database_name="+"<?php
+                            $.ajax({
+                                type: "POST",
+                                dataType: "html",
+                                url: '<?php echo site_url ('fields/add'); ?>',
+                                data: "database_name="+"<?php
 if (isset ($_GET['database']))
     echo $_GET['database']
     ?>"+
-                                "&table_name="+"<?php
+                                    "&table_name="+"<?php
 if (isset ($_GET['table']))
     echo $_GET['table']
     ?>"+
-                                "&field_name="+val+
-                                "&type="+$('select[name=type] option:selected').val()+
-                                db+table+field,
-                            success: function(response){
-                                $('div#structure').html(response);
+                                    "&field_name="+val+
+                                    "&type="+$('select[name=type] option:selected').val()+
+                                    db+table+field,
+                                success: function(response){
+                                    $('div#structure').html(response);
                             
-                                $.ajax({
-                                    type: "POST",
-                                    dataType: "html",
-                                    url: '<?php echo site_url ('rows/get_table'); ?>',
-                                    data: "database_name="+"<?php
+                                    $.ajax({
+                                        type: "POST",
+                                        dataType: "html",
+                                        url: '<?php echo site_url ('rows/get_table'); ?>',
+                                        data: "database_name="+"<?php
 if (isset ($_GET['database']))
     echo $_GET['database']
     ?>"+
-                                        "&table_name="+"<?php
+                                            "&table_name="+"<?php
 if (isset ($_GET['table']))
     echo $_GET['table']
     ?>",
-                                    success: function(response){
-                                        $('#ajax-page').html(response);
-                                    }
-                                });
-                            }
+                                        success: function(response){
+                                            $('#ajax-page').html(response);
+                                        }
+                                    });
+                                    
+                                    $.ajax({
+                                        type: "POST",
+                                        dataType: "html",
+                                        url: '<?php echo site_url ('grid/jquery_row'); ?>',
+                                        data: "database_name="+"<?php
+if (isset ($_GET['database']))
+    echo $_GET['database']
+    ?>"+
+                                            "&table_name="+"<?php
+if (isset ($_GET['table']))
+    echo $_GET['table']
+    ?>",
+                                        success: function(response){
+                                            $('#row-form fieldset').html(response);
+                                        }
+                                    });
+                                }
+                            
                         
-                        });
+                            });
                         
-                        $( this ).dialog( "close" );
+                            $( this ).dialog( "close" );
+                        }
                     
                     },
                     "Отмена": function() {
@@ -435,6 +469,7 @@ if (isset ($_GET['table']))
                     $('#field-form input').val('');
                     $('#field-form select').val('');
                     $("div.ui-state-error").attr('class', 'ui-state-highlight');
+                    $("div.ui-state-highlight p span.fill").html(' Все поля обязательны для заполнения.');
                     allFields.val("");
                 }
             });
@@ -463,45 +498,45 @@ if (isset ($_GET['table']))
                         {
                             //if ( $('input[type=hidden].valid').val() == 'true') 
                             //{
-                                var i;
-                                var data = '';
-                                for (i=1;i<=count.val();i++)
-                                {
+                            var i;
+                            var data = '';
+                            for (i=1;i<=count.val();i++)
+                            {
                                     
-                                    data += '<fieldset style="border: 1px solid #DDD;padding: 5px;display: inline;margin-right: 10px;">'+
-                                        '<legend style="font-size: 12px;border: none;">Поле'+i+'</legend>'+
-                                        '<table>'+'<tr>'+
-                                        '<td style="width:70px">'+'<label for="field_name">Имя поля</label>'+'</td>'+
-                                        '<td>'+'<input type="text" name="field'+i+'" class="text ui-widget-content ui-corner-all" style="width: 130px;height: 10px;"/>'+'</td>'+
-                                        '</tr>'+
-                                        '<tr>'+
-                                        '<td>'+'<label for="field_type">Тип</label>'+'</td>'+
-                                        '<td>'+"<select name='type"+i+"' class='text ui-widget-content ui-corner-all' style='width: 140px;height: 25px;'>"+
-                                        '<option value="" selected="selected"> -- выбрать тип -- </option>'+
-                                        '</select>'+'</td>'+
-                                        '</tr>'+'</table>'+
-                                        '</fieldset>'
+                                data += '<fieldset style="border: 1px solid #DDD;padding: 5px;display: inline;margin-right: 10px;">'+
+                                    '<legend style="font-size: 12px;border: none;">Поле'+i+'</legend>'+
+                                    '<table>'+'<tr>'+
+                                    '<td style="width:70px">'+'<label for="field_name">Имя поля</label>'+'</td>'+
+                                    '<td>'+'<input type="text" name="field'+i+'" class="text ui-widget-content ui-corner-all" style="width: 130px;height: 10px;"/>'+'</td>'+
+                                    '</tr>'+
+                                    '<tr>'+
+                                    '<td>'+'<label for="field_type">Тип</label>'+'</td>'+
+                                    '<td>'+"<select name='type"+i+"' class='text ui-widget-content ui-corner-all' style='width: 140px;height: 25px;'>"+
+                                    '<option value="" selected="selected"> -- выбрать тип -- </option>'+
+                                    '</select>'+'</td>'+
+                                    '</tr>'+'</table>'+
+                                    '</fieldset>'
             
-                                    $.ajax({
-                                        type: "POST",
-                                        dataType: "json",
-                                        url: '<?php echo site_url ('tables/get_type'); ?>',
-                                        success: function(types){
-                                            var options='';
-                                            $.each( types, function(k, val){
-                                                options+=  "<option value='"+val.key+"'>"+val.key+"</option>";
-                                            });
+                                $.ajax({
+                                    type: "POST",
+                                    dataType: "json",
+                                    url: '<?php echo site_url ('tables/get_type'); ?>',
+                                    success: function(types){
+                                        var options='';
+                                        $.each( types, function(k, val){
+                                            options+=  "<option value='"+val.key+"'>"+val.key+"</option>";
+                                        });
                     
-                                            $( "div#field-form-tb form.field-form select" ).html(
-                                            "<option value='' selected='selected'> -- выбрать тип -- </option>"+
-                                                options);
+                                        $( "div#field-form-tb form.field-form select" ).html(
+                                        "<option value='' selected='selected'> -- выбрать тип -- </option>"+
+                                            options);
                     
-                                        }
-                                    })
-                                    $('input[type=hidden].valid').val('false');
-                                }
-                                //alert(data);
-                                $( "div#field-form-tb form.field-form" ).html(data);
+                                    }
+                                })
+                                $('input[type=hidden].valid').val('false');
+                            }
+                            //alert(data);
+                            $( "div#field-form-tb form.field-form" ).html(data);
                             //}
                             if ($('div#table-form form.table-form fieldset').length == 0){
                                 var fValid = true;
@@ -529,8 +564,8 @@ if (isset ($_GET['table']))
                     }
                 },
                 open: function() {
-                    $('span.fill').text(' Все поля обязательны для заполнения.');
                     $("div.ui-state-error").attr('class', 'ui-state-highlight');
+                    $("div.ui-state-highlight p span.fill").html(' Все поля обязательны для заполнения.');
                     allFields.val("");
                 }
             });
@@ -588,12 +623,11 @@ if (isset ($_GET['table']))
                 },
                 open: function() {
                     $("div.ui-state-error").attr('class', 'ui-state-highlight');
+                    $("div.ui-state-highlight p span.fill").html(' Все поля обязательны для заполнения.');
                     allFields.val("");
                 }
             });
-        });
-    
-        $(function() {
+        
             $( "#table-edit-form" ).dialog({
                 autoOpen: false,
                 height: 300,
@@ -603,21 +637,28 @@ if (isset ($_GET['table']))
                     "Редактировать": function(){
                         $('div#ajax-loading-left').show();
                         
-                        $.ajax({
-                            type: "POST",
-                            dataType: "html",
-                            url: '<?php echo site_url ('tables/rename'); ?>',
-                            data: "new_name="+$('input#table-e').val()+
-                                "&database_name="+$('input[type=hidden].db').val()+
-                                "&table_name="+$('input[type=hidden].tables').val(),
-                            success: function(response){
-                                $('div#ajax-loading-left').hide();
-                                $('div#accordion div.well').html(response);
-                            }
-                        });
+                        var bValid = true;
+                    
+                        bValid = bValid && checkEmpty( table_e, "Поле имени таблицы не должно быть пустым.");
+                        bValid = bValid && checkRegexp( table_e, /^[a-zа-я]([a-zа-я_])+$/i, "Поле имени таблицы должно содержать буквы, нижнее подчерквание и начинаться с букв." );
                         
-                        $('input[type=hidden].db').val(0);
-                        $( this ).dialog( "close" );
+                        if (bValid){
+                            $.ajax({
+                                type: "POST",
+                                dataType: "html",
+                                url: '<?php echo site_url ('tables/rename'); ?>',
+                                data: "new_name="+$('input#table-e').val()+
+                                    "&database_name="+$('input[type=hidden].db').val()+
+                                    "&table_name="+$('input[type=hidden].tables').val(),
+                                success: function(response){
+                                    $('div#ajax-loading-left').hide();
+                                    $('div#accordion div.well').html(response);
+                                }
+                            });
+                        
+                            $('input[type=hidden].db').val(0);
+                            $( this ).dialog( "close" );
+                        }
                     },
                     "Отмена": function(){
                         $( this ).dialog( "close" );
@@ -625,6 +666,7 @@ if (isset ($_GET['table']))
                 },
                 open: function() {
                     $("div.ui-state-error").attr('class', 'ui-state-highlight');
+                    $("div.ui-state-highlight p span.fill").html(' Все поля обязательны для заполнения.');
                     allFields.val("");
                 }
             });
@@ -645,24 +687,28 @@ if (isset ($_GET['table']))
                             var $inputs = checked.parent('td');
                             var $name = $("th div.resize");
                             var row = '';
-                            var fields = '';
-                            var values = '';
+                            //var fields = '';
+                            //var values = '';
                     
+                            
                             $inputs.each(function() {
                                 var $rows = $(this).siblings();
+                                var fields = '';
+                                var values = '';
+                                var k=0;
                                 $rows.each(function(j) {
                                     row = $(this).text();
                                     $name.each(function(z) {
                                         if (z == j)
                                         {
-                                            fields += "&field"+z+'='+$(this).attr("name");
-                                            values += "&value"+z+'='+row;
-                                        }   
+                                            fields += "&field"+k+'='+$(this).attr("name");
+                                            values += "&value"+k+'='+row;
+                                            k++;
+                                        } 
                                     });
                                 });
-                            });
-                        
-                            $.ajax({
+                                
+                                $.ajax({
                                 type: "POST",
                                 url: '<?php echo site_url ('rows/remove'); ?>',
                                 data: "database_name="+'<?php
@@ -672,10 +718,12 @@ if (isset ($_GET['database']))
                                     "&table_name="+'<?php
 if (isset ($_GET['table']))
     echo $_GET['table']
-    ?>'+fields+values+"&count="+$inputs.length,
+    ?>'+fields+values+"&count="+k,
                                 success: function(response){
-                                    checked.parent('td').parent('tr').slideUp();
+                                    $('#ajax-page').html(response);
+                                    //checked.parent('td').parent('tr').slideUp();
                                 }
+                            });
                             });
                         }
                     
@@ -694,9 +742,9 @@ if (isset ($_GET['table']))
         
         
         $(function() {
-            $( "#remove-field" ).click(function(){
+            /*  $( "#remove-field" ).click(function(){
                 alert('aaaaaaaaaa');
-            });
+            });*/
             
             $( "#remove-field" ).dialog({
                 autoOpen: false,
@@ -707,31 +755,85 @@ if (isset ($_GET['table']))
                     "Да": function(){
                         var checked = $("td.check_one input:checked");
                         
-                        alert('aaa');
+                        //alert('aaa');
                         
                         if (checked.val() == 'on')
                         {
                             var $inputs = checked.parent('td');
                             var $name = $("th");
                             var row = '';
-                            var fields = '';
                             var values = '';
                     
+                            var k=0;
                             $inputs.each(function() {
-                                var $rows = $(this).siblings();
+                                var $rows = $(this).next();
                                 $rows.each(function(j) {
                                     row = $(this).text();
                                     $name.each(function(z) {
                                         if (z == j)
                                         {
-                                            fields += "&field"+z+'='+$(this).attr("name");
-                                            values += "&value"+z+'='+row;
+                                            values += "&value"+k+'='+row;
+                                            k++;
                                         }   
                                     });
                                 });
                             });
-                            alert($inputs);
                             alert(values);
+                            $.ajax({
+                                type: "POST",
+                                dataType: "html",
+                                url: '<?php echo site_url ('fields/remove'); ?>',
+                                data: "database_name="+"<?php
+if (isset ($_GET['database']))
+    echo $_GET['database']
+    ?>"+
+                                    "&table_name="+"<?php
+if (isset ($_GET['table']))
+    echo $_GET['table']
+    ?>"+
+                                    "&count="+k+
+                                    values,
+                                success: function(response){
+                                    $('div#structure').html(response);
+                                    
+                                    $.ajax({
+                                        type: "POST",
+                                        dataType: "html",
+                                        url: '<?php echo site_url ('rows/get_table'); ?>',
+                                        data: "database_name="+"<?php
+if (isset ($_GET['database']))
+    echo $_GET['database']
+    ?>"+
+                                            "&table_name="+"<?php
+if (isset ($_GET['table']))
+    echo $_GET['table']
+    ?>",
+                                        success: function(response){
+                                            $('#ajax-page').html(response);
+                                        }
+                                    });
+                                    
+                                    $.ajax({
+                                        type: "POST",
+                                        dataType: "html",
+                                        url: '<?php echo site_url ('grid/jquery_row'); ?>',
+                                        data: "database_name="+"<?php
+if (isset ($_GET['database']))
+    echo $_GET['database']
+    ?>"+
+                                            "&table_name="+"<?php
+if (isset ($_GET['table']))
+    echo $_GET['table']
+    ?>",
+                                        success: function(response){
+                                            $('#row-form fieldset').html(response);
+                                        }
+                                    });
+                                }
+                            });
+                            
+                            
+                            //alert(k);
                         
                         }
                     

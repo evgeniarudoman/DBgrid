@@ -1,65 +1,64 @@
 <?php
 
-if (!defined('BASEPATH'))
-    exit('No direct script access allowed');
+if (!defined ('BASEPATH'))
+    exit ('No direct script access allowed');
 
 class Fields extends CI_Controller
 {
 
-    public function __construct()
+    public function __construct ()
     {
-        parent::__construct();
-        $this->load->helper(array('form', 'url', 'html', 'database_tree'));
-        $this->load->library('session');
+        parent::__construct ();
+        $this->load->helper (array ('form', 'url', 'html', 'database_tree'));
+        $this->load->library ('session');
 
-        $this->load->model('database');
-        $this->load->model('table');
-        $this->load->model('field');
-        $this->load->model('type');
-        $this->load->model('relations');
+        $this->load->model ('database');
+        $this->load->model ('table');
+        $this->load->model ('field');
+        $this->load->model ('type');
+        $this->load->model ('relations');
     }
 
-
-    public function save_width()
+    public function save_width ()
     {
-        $user_id = $this->session->userdata('user_id');
+        $user_id = $this->session->userdata ('user_id');
         $success = TRUE;
-        $this->load->model('query');
+        $this->load->model ('query');
 
         try
         {
-            $bool = db_table_exists($user_id, $_POST['database_name'], $_POST['table_name']);
+            $bool = db_table_exists ($user_id, $_POST['database_name'], $_POST['table_name']);
 
-            if (isset($bool) && $bool == 1)
+            if (isset ($bool) && $bool == 1)
             {
-                $result = get_database_tree($user_id);
+                $result = get_database_tree ($user_id);
 
                 foreach ($result[$_POST['database_name'] . '_' . $_POST['table_name'] . '_field'] as $field)
                 {
                     if ($field['name'] == $_POST['field_name'])
                     {
                         $this->database->db_name = "dbgrid";
-                        $this->database->select(array(
+                        $this->database->select (array (
                             'name' => $_POST['database_name'],
                             'user_id' => $user_id
                         ));
 
                         $this->table->db_name = "dbgrid";
-                        $this->table->select(array(
-                            'db_id' => $this->database->getId(),
+                        $this->table->select (array (
+                            'db_id' => $this->database->getId (),
                             'user_id' => $user_id,
                             'name' => $_POST['table_name']
                         ));
 
                         $this->field->db_name = "dbgrid";
-                        $this->field->select(array(
-                            'table_id' => $this->table->getId(),
+                        $this->field->select (array (
+                            'table_id' => $this->table->getId (),
                             'user_id' => $user_id,
                             'name' => $_POST['field_name']
                         ));
 
-                        $this->field->setWidth($_POST['field_size']);
-                        $this->field->update();
+                        $this->field->setWidth ($_POST['field_size']);
+                        $this->field->update ();
                     }
                 }
 
@@ -72,30 +71,29 @@ class Fields extends CI_Controller
         }
         catch (Exception $e)
         {
-            $success = '* Message - ' . $e->getMessage() . "\r\n" . "* Line # - " . $e->getLine() . "\r\n" . "* File - " . $e->getFile();
+            $success = '* Message - ' . $e->getMessage () . "\r\n" . "* Line # - " . $e->getLine () . "\r\n" . "* File - " . $e->getFile ();
         }
 
-        echo json_encode($success);
+        echo json_encode ($success);
     }
 
-
-    public function add()
+    public function add ()
     {
-        $user_id = $this->session->userdata('user_id');
+        $user_id = $this->session->userdata ('user_id');
         $success = TRUE;
-        $var = TRUE;
-        $this->load->model('query');
-        $this->load->model('basic/db_fields', 'fields');
+        $var     = TRUE;
+        $this->load->model ('query');
+        $this->load->model ('basic/db_fields', 'fields');
 
-        header("Content-Type: text/html;charset=utf-8");
+        header ("Content-Type: text/html;charset=utf-8");
 
         try
         {
-            $bool = db_table_exists($user_id, $_POST['database_name'], $_POST['table_name']);
+            $bool = db_table_exists ($user_id, $_POST['database_name'], $_POST['table_name']);
 
-            if (isset($bool) && $bool == 1)
+            if (isset ($bool) && $bool == 1)
             {
-                $result = get_database_tree($user_id);
+                $result = get_database_tree ($user_id);
 
                 foreach ($result[$_POST['database_name'] . '_' . $_POST['table_name'] . '_field'] as $field)
                 {
@@ -107,60 +105,60 @@ class Fields extends CI_Controller
                 if ($var == TRUE)
                 {
                     $this->database->db_name = "dbgrid";
-                    $this->database->select(array(
+                    $this->database->select (array (
                         'name' => $_POST['database_name'],
                         'user_id' => $user_id
                     ));
 
                     $this->table->db_name = "dbgrid";
-                    $this->table->select(array(
-                        'db_id' => $this->database->getId(),
+                    $this->table->select (array (
+                        'db_id' => $this->database->getId (),
                         'user_id' => $user_id,
                         'name' => $_POST['table_name']
                     ));
 
                     $this->type->db_name = "dbgrid";
-                    $this->type->select(array(
+                    $this->type->select (array (
                         'name' => $_POST['type']
                     ));
 
                     $this->field->db_name = "dbgrid";
-                    $this->field->load_collection("dbgrid");
+                    $this->field->load_collection ("dbgrid");
 
-                    $this->fields->add($_POST['database_name'], $_POST['table_name'], $_POST['field_name'], $this->type->getType(), $this->type->getSize(), $this->type->getDefault(), $after = NULL);
-                    $this->field->setName($_POST['field_name']);
-                    $this->field->setTypeId($this->type->getId());
-                    $this->field->setTableId($this->table->getId());
-                    $this->field->setUserId($user_id);
-                    $fieldId = $this->field->insert();
+                    $this->fields->add ($_POST['database_name'], $_POST['table_name'], $_POST['field_name'], $this->type->getType (), $this->type->getSize (), $this->type->getDefault (), $after   = NULL);
+                    $this->field->setName ($_POST['field_name']);
+                    $this->field->setTypeId ($this->type->getId ());
+                    $this->field->setTableId ($this->table->getId ());
+                    $this->field->setUserId ($user_id);
+                    $fieldId = $this->field->insert ();
 
-                    if (isset($_POST['db']) && isset($_POST['table']) && isset($_POST['field']))
+                    if (isset ($_POST['db']) && isset ($_POST['table']) && isset ($_POST['field']))
                     {
                         $this->relations->db_name = "dbgrid";
-                        $this->relations->load_collection("dbgrid");
-                        $this->relations->setField($fieldId);
-                        
+                        $this->relations->load_collection ("dbgrid");
+                        $this->relations->setField ($fieldId);
+
                         $this->database->db_name = "dbgrid";
-                        $this->database->select(array(
+                        $this->database->select (array (
                             'name' => $_POST['db'],
                             'user_id' => $user_id
                         ));
 
                         $this->table->db_name = "dbgrid";
-                        $this->table->select(array(
-                            'db_id' => $this->database->getId(),
+                        $this->table->select (array (
+                            'db_id' => $this->database->getId (),
                             'user_id' => $user_id,
                             'name' => $_POST['table']
                         ));
-                        
-                        $this->field->select(array(
+
+                        $this->field->select (array (
                             'name' => $_POST['field'],
-                            'table_id' => $this->table->getId(),
+                            'table_id' => $this->table->getId (),
                             'user_id' => $user_id
                         ));
-                        
-                        $this->relations->setFieldKey($this->field->getId());
-                        $this->relations->insert();
+
+                        $this->relations->setFieldKey ($this->field->getId ());
+                        $this->relations->insert ();
                     }
                 }
 
@@ -173,12 +171,12 @@ class Fields extends CI_Controller
         }
         catch (Exception $e)
         {
-            $success = '* Message - ' . $e->getMessage() . "\r\n" . "* Line # - " . $e->getLine() . "\r\n" . "* File - " . $e->getFile();
+            $success = '* Message - ' . $e->getMessage () . "\r\n" . "* Line # - " . $e->getLine () . "\r\n" . "* File - " . $e->getFile ();
         }
 
-        $result = get_database_tree($user_id);
-        json_encode($this->load->view(
-                        'structure', array(
+        $result = get_database_tree ($user_id);
+        json_encode ($this->load->view (
+                        'structure', array (
                     'result' => $result,
                     'success' => $success,
                     'database' => $_POST['database_name'],
@@ -187,27 +185,74 @@ class Fields extends CI_Controller
         );
     }
 
-
-    public function select()
+    public function remove ()
     {
-        $user_id = $this->session->userdata('user_id');
+        $user_id = $this->session->userdata ('user_id');
+        $success = TRUE;
+        $this->load->model ('query');
+        $this->load->model ('basic/db_fields', 'fields');
+        header ("Content-Type: text/html;charset=utf-8");
+
+        try
+        {
+            $bool = db_table_exists ($user_id, $_POST['database_name'], $_POST['table_name']);
+
+            if (isset ($bool) && $bool == 1)
+            {
+                for ($i = 0; $i < $_POST['count']; $i++)
+                {
+                    $this->fields->remove ($_POST['database_name'], $_POST['table_name'], $_POST['value' . $i]);
+
+                    $this->database->db_name = "dbgrid";
+                    $this->database->select (array ('name' => $_POST['database_name'], 'user_id' => $user_id));
+
+                    $this->table->db_name = "dbgrid";
+                    $this->table->select (array ('name' => $_POST['table_name'], 'db_id' => $this->database->getId (), 'user_id' => $user_id));
+
+                    $this->field->db_name = "dbgrid";
+                    $this->field->delete (array ('table_id' => $this->table->getId (), 'user_id' => $user_id, 'name' => $_POST['value' . $i]));
+                }
+                $success   = TRUE;
+            }
+            else
+            {
+                $success = FALSE;
+            }
+        }
+        catch (Exception $e)
+        {
+            $success = FALSE;
+        }
+        $result  = get_database_tree ($user_id);
+        json_encode ($this->load->view (
+                        'structure', array (
+                    'result' => $result,
+                    'success' => $success,
+                    'database' => $_POST['database_name'],
+                    'table' => $_POST['table_name']
+                ))
+        );
+    }
+
+    public function select ()
+    {
+        $user_id = $this->session->userdata ('user_id');
 
         $this->database->db_name = "dbgrid";
-        $this->database->select(array('name' => $_POST['db_name'], 'user_id' => $user_id));
+        $this->database->select (array ('name' => $_POST['db_name'], 'user_id' => $user_id));
 
         $this->table->db_name = "dbgrid";
-        $this->table->select(array('name' => $_POST['table_name'], 'db_id' => $this->database->getId(), 'user_id' => $user_id));
+        $this->table->select (array ('name' => $_POST['table_name'], 'db_id' => $this->database->getId (), 'user_id' => $user_id));
 
         $this->field->db_name = "dbgrid";
-        $fields = $this->field->load_collection("dbgrid", array('table_id' => $this->table->getId(), 'user_id' => $user_id));
+        $fields = $this->field->load_collection ("dbgrid", array ('table_id' => $this->table->getId (), 'user_id' => $user_id));
 
         foreach ($fields as $field)
         {
-            $list_field[] = array('key' => $field->getName());
+            $list_field[] = array ('key' => $field->getName ());
         }
 
-        echo json_encode($list_field);
+        echo json_encode ($list_field);
     }
-
 
 }

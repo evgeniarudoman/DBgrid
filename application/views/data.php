@@ -5,6 +5,36 @@
     } 
 ); 
 </script>
+<script language="javascript">
+        $(document).ready(function() {
+            //-----------------------------
+            $("div.resize").resizable({ 
+                handles: "e, w",
+                stop: function() {
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: '<?php echo site_url ('fields/save_width') ?>',
+                        data: "database_name="+'<?php
+if (isset ($database))
+    echo $database
+    ?>'+
+                            "&table_name="+'<?php
+if (isset ($table))
+    echo $table
+    ?>'+
+                            "&field_name="+$(this).children('input[type=hidden]').val()+
+                            "&field_size="+$(this).width(),
+                        success: function(response){
+                            //change on something
+                            alert(response);
+                        }
+                    });
+                }
+            });
+            //-----------------------------
+        });
+    </script>
 <script>
     $(document).ready(function(){
         $('input[type=checkbox]').click(function(){ 
@@ -38,8 +68,8 @@
             </td>
             <?php $n = 0; ?>
             <?php foreach ($result[$database . '_' . $table . '_field'] as $key => $field): ?>
-                <th class="header" style="width:<?php echo $field['width'] . 'px'; ?>;position:relative;" onclick="$('.caret#up').hide();$('.caret#down').show();return false;">
-        <div class='resize' number="<?php echo $n; ?>" name="<?php echo $field['name']; ?>" >
+                <th class="header">
+        <div class='resize' number="<?php echo $n; ?>" name="<?php echo $field['name']; ?>" style="width:<?php echo $field['width'] . 'px'; ?>;">
             <?php echo $field['name']; ?>
             <input type="hidden" value="<?php echo $field['name']; ?>" />
             <input type="hidden" name="sorting" value="0" />
@@ -47,12 +77,12 @@
     </th>
     <?php $n++; ?>
 <?php endforeach; ?>
-<td></td>
+<!--<td></td>-->
 </tr>
 </thead>
 <tbody> 
-    <?php $j = 1; ?>
-    <?php while ($row = mysql_fetch_array($result['result'])): ?>
+    <?php $j   = 1; ?>
+    <?php while ($row = mysql_fetch_array ($result['result'])): ?>
         <tr class="real<?php echo $j; ?>">
             <td class="check_one" title="Выбрать строку">
                 <input type="checkbox" name="<?php echo $j; ?>" />
@@ -60,28 +90,28 @@
             <?php $i = 0; ?>
             <?php foreach ($result[$database . '_' . $table . '_field'] as $key => $field): ?>
                 <?php if ($field['type_name'] == 'файл'): ?>
-                    <?php $ext = pathinfo($row[mysql_field_name($result['result'], $i)]); ?>
-                    <?php if (isset($ext["extension"]) && $ext["extension"] == 'docx'): ?>
+                    <?php $ext = pathinfo ($row[mysql_field_name ($result['result'], $i)]); ?>
+                    <?php if (isset ($ext["extension"]) && $ext["extension"] == 'docx'): ?>
                         <td><img src="/image/icons/docx.jpg" style="width: 25px;display: inline;" class="photo<?php echo $i ?>"/>&nbsp;<?php echo $ext["basename"]; ?></td>
-                    <?php elseif (isset($ext["extension"]) && $ext["extension"] == 'doc'): ?>
+                    <?php elseif (isset ($ext["extension"]) && $ext["extension"] == 'doc'): ?>
                         <td><img src="/image/icons/doc.jpg" style="width: 25px;display: inline;" class="photo<?php echo $i ?>"/>&nbsp;<?php echo $ext["basename"]; ?></td>
-                    <?php elseif (isset($ext["extension"]) && $ext["extension"] == 'txt'): ?>
+                    <?php elseif (isset ($ext["extension"]) && $ext["extension"] == 'txt'): ?>
                         <td><img src="/image/icons/txt.png" style="width: 25px;display: inline;" class="photo<?php echo $i ?>"/>&nbsp;<?php echo $ext["basename"]; ?></td>
-                    <?php elseif (isset($ext["extension"]) && $ext["extension"] == 'pdf'): ?>
+                    <?php elseif (isset ($ext["extension"]) && $ext["extension"] == 'pdf'): ?>
                         <td><img src="/image/icons/pdf.png" style="width: 25px;display: inline;" class="photo<?php echo $i ?>"/>&nbsp;<?php echo $ext["basename"]; ?></td>
-                    <?php elseif (isset($ext["extension"]) && $ext["extension"] == 'xls'): ?>
+                    <?php elseif (isset ($ext["extension"]) && $ext["extension"] == 'xls'): ?>
                         <td><img src="/image/icons/xls.png" style="width: 25px;display: inline;" class="photo<?php echo $i ?>"/>&nbsp;<?php echo $ext["basename"]; ?></td>
                     <?php else: ?>
-                        <td><img style="height: 45px;display: inline;" src="<?php echo $row[mysql_field_name($result['result'], $i)] ?>"/></td>
+                        <td><img style="height: 45px;display: inline;" src="<?php echo $row[mysql_field_name ($result['result'], $i)] ?>"/></td>
                     <?php endif; ?> 
                 <?php else: ?>
-                    <td><?php echo $row[mysql_field_name($result['result'], $i)] ?></td>
+                    <td><?php echo $row[mysql_field_name ($result['result'], $i)] ?></td>
                 <?php endif; ?>
                 <?php $i++; ?>
             <?php endforeach; ?>
-            <td class="edit_one" >
-                <i class="icon-pencil" title="Редактировать строку" style="cursor:pointer" name="<?php echo $j; ?>"></i>
-            </td>
+    <!-- <td class="edit_one" >
+        <i class="icon-pencil" title="Редактировать строку" style="cursor:pointer" name="<?php echo $j; ?>"></i>
+    </td>-->
         </tr>
         <tr style="display:none;" class="edit<?php echo $j; ?>">
             <td class="check_one" >
@@ -105,9 +135,9 @@
                         </select>
                     </td>
                 <?php elseif ($field['type_name'] == 'дата'): ?>
-                    <td><input type="text" class="datepicker" style="width:65px;height:10px;" value="<?php echo $row[mysql_field_name($result['result'], $i)] ?>"/></td>
+                    <td><input type="text" class="datepicker" style="width:65px;height:10px;" value="<?php echo $row[mysql_field_name ($result['result'], $i)] ?>"/></td>
                 <?php else: ?>
-                    <td><input type="text" style="width:65px;height:10px;" value="<?php echo $row[mysql_field_name($result['result'], $i)] ?>"/></td>
+                    <td><input type="text" style="width:65px;height:10px;" value="<?php echo $row[mysql_field_name ($result['result'], $i)] ?>"/></td>
                 <?php endif; ?>
                 <?php $i++; ?>
             <?php endforeach; ?>

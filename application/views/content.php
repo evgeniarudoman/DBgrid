@@ -134,12 +134,8 @@
                                                 <td class="check_one" title="Выбрать строку">
                                                     <input type="checkbox" name="<?php echo $s; ?>" />
                                                 </td>
-                                                <td>
-                                                    <?php echo $field['name']; ?>
-                                                </td>
-                                                <td>
-                                                    <?php echo $field['type_name']; ?>
-                                                </td>
+                                                <td><?php echo $field['name']; ?></td>
+                                                <td><?php echo $field['type_name']; ?></td>
                                             </tr>
                                             <?php $s++; ?>
                                         <?php endforeach; ?>
@@ -162,13 +158,14 @@
                                     </div>
                                 </fieldset>
                             </form>
+                            <!--
                             <div class="save-changes ui-state-highlight" style="padding-left: 10px;padding-top: 5px;margin-bottom: 15px;width: 275px;margin-left: 25px;height:20px;display:inline;display:none;">
                                 <p>
                                     <span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
                                     <strong></strong> Вы должны сохранить все изменения.
                                 </p>
                             </div>
-
+                            -->
                             <div id="ajax-page" style="margin-bottom: 40px;">
                                 <table id="myTable" class="tablesorter table-striped table-bordered table-condensed" style="margin-left: 20px;">
                                     <thead>
@@ -178,8 +175,8 @@
                                             </td>
                                             <?php $n = 0; ?>
                                             <?php foreach ($result[$_GET['database'] . '_' . $_GET['table'] . '_field'] as $key => $field): ?>
-                                                <th class="header" style="width:<?php echo $field['width'] . 'px'; ?>;position:relative;">
-                                        <div class='resize' number="<?php echo $n; ?>" name="<?php echo $field['name']; ?>" >
+                                                    <th class="header" >
+                                        <div class='resize' number="<?php echo $n; ?>" name="<?php echo $field['name']; ?>" style="width:<?php echo $field['width'] . 'px'; ?>;" >
                                             <?php echo $field['name']; ?>
                                             <input type="hidden" value="<?php echo $field['name']; ?>" />
                                             <input type="hidden" name="sorting" value="0" />
@@ -187,7 +184,7 @@
                                         </th>
                                         <?php $n++; ?>
                                     <?php endforeach; ?>
-                                    <td></td>
+                                    <!--<td></td>-->
                                     </tr>
                                     </thead>
                                     <tbody> 
@@ -219,9 +216,11 @@
                                                     <?php endif; ?>
                                                     <?php $i++; ?>
                                                 <?php endforeach; ?>
+                                                        <!--
                                                 <td class="edit_one" >
                                                     <i class="icon-pencil" title="Редактировать строку" style="cursor:pointer" name="<?php echo $j; ?>"></i>
                                                 </td>
+                                                        -->
                                             </tr>
                                             <tr style="display:none;" class="edit<?php echo $j; ?>">
                                                 <td class="check_one" >
