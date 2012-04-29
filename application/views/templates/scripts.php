@@ -329,9 +329,6 @@ if (isset ($_GET['table']))
                 
                 paging(offset, limit);
                 
-                $('span.total').text();
-                
-                //$('span.total').text($('input[name=paging]').val());
                 return false;
             });
             //-----------------------------------------------
@@ -341,7 +338,6 @@ if (isset ($_GET['table']))
                 
                 paging(offset, limit);
                 
-                //$('span.total').text($('input[name=paging]').val());
                 return false;
             });
             //-----------------------------------------------

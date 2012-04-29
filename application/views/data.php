@@ -58,6 +58,8 @@ if (isset ($table))
                 $('input[type=checkbox]').removeAttr('checked').parent('td').parent('tr').children('td').removeAttr('style');
             }
         });
+        //---------------------------------------------------------------------
+        $('span.total').text("<?php echo $result['num_rows']?>");
     });
 </script>
 <table id="myTable" class="tablesorter table-striped table-bordered table-condensed" style="margin-left: 20px;">

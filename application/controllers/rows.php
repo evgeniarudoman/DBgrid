@@ -291,7 +291,8 @@ class Rows extends CI_Controller
         {
             $result = get_database_tree($user_id);
             $result['result'] = mysql_query("SELECT * FROM " . $_POST['database_name'] . '.' . $_POST['table_name'] . ' LIMIT 5');
-
+            $result['num_rows'] = mysql_num_rows (mysql_query ("SELECT * FROM " . $_POST['database_name'] . '.' . $_POST['table_name']));
+            
             json_encode($this->load->view(
                             'data', array(
                         'result' => $result,

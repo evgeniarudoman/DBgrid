@@ -106,6 +106,7 @@
             $('div#row-form input[type=text]').val('');         
             $('div#row-form textarea').val('');
             $('#row-form input[type=hidden]').val('');
+            $('#row-form select').val('');
             $('div#row-form input[type=checkbox]').removeAttr('checked');
             $('input.photo100').val('');
             $('div#row-form img').hide().parent('td').prev().show();
@@ -465,6 +466,9 @@ if (isset ($_GET['table']))
                     }
                 },
                 open: function() {
+                    $( "select.select-db" ).hide();
+                    $( "select.select-table" ).hide();
+                    $( "select.select-field" ).hide();
                     $('#field-form div.ui-widget').empty();
                     $('#field-form input').val('');
                     $('#field-form select').val('');
@@ -709,21 +713,21 @@ if (isset ($_GET['table']))
                                 });
                                 
                                 $.ajax({
-                                type: "POST",
-                                url: '<?php echo site_url ('rows/remove'); ?>',
-                                data: "database_name="+'<?php
+                                    type: "POST",
+                                    url: '<?php echo site_url ('rows/remove'); ?>',
+                                    data: "database_name="+'<?php
 if (isset ($_GET['database']))
     echo $_GET['database']
     ?>'+
-                                    "&table_name="+'<?php
+                                        "&table_name="+'<?php
 if (isset ($_GET['table']))
     echo $_GET['table']
     ?>'+fields+values+"&count="+k,
-                                success: function(response){
-                                    $('#ajax-page').html(response);
-                                    //checked.parent('td').parent('tr').slideUp();
-                                }
-                            });
+                                    success: function(response){
+                                        $('#ajax-page').html(response);
+                                        //checked.parent('td').parent('tr').slideUp();
+                                    }
+                                });
                             });
                         }
                     
