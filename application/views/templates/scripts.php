@@ -228,7 +228,7 @@ if (isset ($_GET['table']))
                                         {
                                             $('input.photo100').val(img);
                                             $('div#row-form img').show().parent('td').prev().hide();
-                                            $('div#row-form img').attr('src', img);
+                                            $('div#row-form img.img').attr('src', img);
                                         }
                                     
                                         $('input[type=hidden].rows').val(hidden);    
@@ -297,31 +297,6 @@ if (isset ($_GET['database']))
 
     <script>
         $(document).ready(function() {
-            $('.pagination li a').click(function(){
-                
-                var offset = ($(this).text()*8)-8;
-                $('.pagination li.active').removeClass('active');
-                $(this).parent('li').addClass('active');
-                
-                $.ajax({
-                    type: "POST",
-                    url: "<?php echo site_url ('rows/select') ?>",
-                    dataType: "html",
-                    data: "database_name="+'<?php
-if (isset ($_GET['database']))
-    echo $_GET['database']
-    ?>'+
-                        "&table_name="+'<?php
-if (isset ($_GET['table']))
-    echo $_GET['table']
-    ?>'+
-                        "&offset="+offset,
-                    success: function(res) {
-                        $('#ajax-page').html(res);
-                    }
-                });
-                return false;
-            });
             //-----------------------------------------------
             $('div#pages input').change(function(){
                 var limit = $('div#pages select option:selected').text();
@@ -355,12 +330,16 @@ if (isset ($_GET['table']))
             });
             //-----------------------------------------------
             $('a.next-page').click(function(){
-                var limit = $('div#pages select option:selected').text();
-                var offset = ((Number($('div#pages input').val())+1)*limit)-limit;
+                if ($('a.next-page:disabled').length == 0)
+                { 
+                    alert($('a.next-page:disabled').length);
+                    var limit = $('div#pages select option:selected').text();
+                    var offset = ((Number($('div#pages input').val())+1)*limit)-limit;
                                 
-                $('div#pages input').val(Number($('div#pages input').val())+1)
+                    $('div#pages input').val(Number($('div#pages input').val())+1)
                                 
-                paging(offset, limit);                         
+                    paging(offset, limit);
+                }
                 return false;
             });
                 
@@ -451,6 +430,14 @@ if (isset ($_GET['table']))
             $("#myTable").tablesorter(); 
         } 
     ); 
+    </script>
+
+    <script>
+        function cancel_img(){
+            $('input[name=attachment]').val('');
+            $('input.photo100').val('');
+            $('div#row-form img').hide().parent('td').prev().show();
+        }
     </script>
 
     <style>

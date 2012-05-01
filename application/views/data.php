@@ -6,16 +6,16 @@
 ); 
 </script>
 <script language="javascript">
-        $(document).ready(function() {
-            //-----------------------------
-            $("div.resize").resizable({ 
-                handles: "e, w",
-                stop: function() {
-                    $.ajax({
-                        type: "POST",
-                        dataType: "json",
-                        url: '<?php echo site_url ('fields/save_width') ?>',
-                        data: "database_name="+'<?php
+    $(document).ready(function() {
+        //-----------------------------
+        $("div.resize").resizable({ 
+            handles: "e, w",
+            stop: function() {
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: '<?php echo site_url ('fields/save_width') ?>',
+                    data: "database_name="+'<?php
 if (isset ($database))
     echo $database
     ?>'+
@@ -34,7 +34,7 @@ if (isset ($table))
             });
             //-----------------------------
         });
-    </script>
+</script>
 <script>
     $(document).ready(function(){
         $('input[type=checkbox]').click(function(){ 
@@ -59,7 +59,14 @@ if (isset ($table))
             }
         });
         //---------------------------------------------------------------------
-        $('span.total').text("<?php echo $result['num_rows']?>");
+        $('span.total').text("<?php echo $result['num_rows'] ?>");
+        if ($('div#pages input').val() == $('span.total').text())
+        {
+            $('a.next-page').click(function(){
+                //alert('aaaaa');
+                $('a.next-page').attr('onclick' , 'return false;');
+            });
+        }
     });
 </script>
 <table id="myTable" class="tablesorter table-striped table-bordered table-condensed" style="margin-left: 20px;">
@@ -112,7 +119,7 @@ if (isset ($table))
                 <?php $i++; ?>
             <?php endforeach; ?>
     <!-- <td class="edit_one" >
-        <i class="icon-pencil" title="Редактировать строку" style="cursor:pointer" name="<?php echo $j; ?>"></i>
+    <i class="icon-pencil" title="Редактировать строку" style="cursor:pointer" name="<?php echo $j; ?>"></i>
     </td>-->
         </tr>
         <tr style="display:none;" class="edit<?php echo $j; ?>">

@@ -79,13 +79,14 @@ body {
 }
 
 #login label {
+    width: 348px;
     color: #C84663;
     font-size: 12px;
     font-style: italic;
-    left: 443px;
-    margin-top: 20px;
-    position: absolute;
-    right: 720px;
+    left: 489px;
+    margin-top: -18px;
+    position: fixed;
+    right: 583px;
 }
 #login img {
     position: absolute;
@@ -106,7 +107,7 @@ body {
     text-align: center;
 }
 #login b {
-    color:#C84663;
+    font-size: 12px;color: #FF0084;font-style: italic;
 }
 
 /*--------registration--------*/
@@ -145,13 +146,14 @@ body {
 }
 
 #auth label {
+    width: 348px;
     color: #C84663;
     font-size: 12px;
     font-style: italic;
-    left: 395px;
-    margin-top: 20px;
+    left: 489px;
+    margin-top: -18px;
     position: fixed;
-    right: 720px;
+    right: 583px;
 }
 #auth img {
     position: absolute;

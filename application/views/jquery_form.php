@@ -64,7 +64,7 @@
                                 <td><input type="radio" name="<?php echo $field['name'] ?>" number="<?php echo $i; ?>"/><br/></td>
                             <?php elseif ($field['type_name'] == 'файл'): ?>
                                 <td><input id="photo100" style="display:inline;" number="<?php echo $i; ?>" class="input-file btn btn-primary" type="file" name="<?php echo $field['name'] ?>"/><br/></td>
-                                <td><img src="" style="height:45px; display:none;"/><button type="button" class="cancel"/><br/></td>
+                                <td><img src="" style="height:45px; display:none;" class="img"/><a href="" onclick="cancel_img();return false;"><img src="/uploadify/cancel.png" class="cancel" style="position: absolute;right: 140px;"/></a><br/></td>
                             <input class="photo100" number="<?php echo $i; ?>" file="<?php echo $field['name'] ?>" type="hidden" name="attachment"/>
                         <?php elseif ($field['type_name'] == 'список'): ?>
                             <td>

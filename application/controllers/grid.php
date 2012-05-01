@@ -57,7 +57,7 @@ class Grid extends CI_Controller
                 break;
         }
 
-        $this->template = array ('title' => 'DBGrid - '.$title,
+        $this->template = array ('title' => 'DBGrid - ' . $title,
             'scripts' => array (
                 //'1' => "/bootstrap/js/bootstrap.js",
                 '2' => "/bootstrap/js/bootstrap.min.js",
@@ -65,7 +65,7 @@ class Grid extends CI_Controller
                 '4' => "/js/jquery-1.6.2.min.js",
                 '5' => "/js/jquery-ui-1.8.16.custom.min.js",
                 '6' => "/js/tablesorter.js",
-                //'7' => "/js/validation.js",
+                '7' => "/js/validation.js",
                 '8' => "/js/jquery.countdown.js",
                 '9' => "/js/script.js",
                 '10' => "/uploadify/swfobject.js",
@@ -97,7 +97,7 @@ class Grid extends CI_Controller
 
         if (isset ($session_hash) && $session_hash == TRUE)
         {
-            redirect (site_url ('grid/login'));
+            redirect (site_url ('grid/index'));
         }
         else
         {
@@ -111,15 +111,20 @@ class Grid extends CI_Controller
                 {
                     $this->user->setUsername (trim (str_replace (' ', '_', $_POST['username'])));
                     $this->user->setPassword (trim (md5 ($_POST['password'])));
-                    $this->user->setSessionHash ('');
+                    $session_hash = md5 ($_POST['username'] . md5 ($_POST['password']));
+                    $this->user->setSessionHash ($session_hash);
                     $this->user->setThemeId (1);
                     $this->user->setNumberOfDb (0);
-                    $this->user->insert ('dbgrid');
+                    $user_id = $this->user->insert ('dbgrid');
 
-                    redirect (site_url ('grid/login'));
+                    $this->session->set_userdata ('user_id', $user_id);
+                    $this->session->set_userdata ('username', $this->user->getUsername ());
+                    $this->session->set_userdata ('session_hash', $session_hash);
+
+                    redirect (site_url ('grid/index'));
                 }
 
-                $this->session->set_userdata ('error', 'Username or email is already exist.');
+                $this->session->set_userdata ('error', 'Username is already exist.');
             }
 
             $this->header ('Signup');
@@ -318,18 +323,18 @@ class Grid extends CI_Controller
 
     public function jquery_row ()
     {
-        header("Content-Type: text/html;charset=utf-8");
-        $user_id = $this->session->userdata('user_id');
+        header ("Content-Type: text/html;charset=utf-8");
+        $user_id = $this->session->userdata ('user_id');
 
-        $bool = db_table_exists($user_id, $_POST['database_name'], $_POST['table_name']);
+        $bool = db_table_exists ($user_id, $_POST['database_name'], $_POST['table_name']);
 
-        if (isset($bool) && $bool == 1)
+        if (isset ($bool) && $bool == 1)
         {
-            $result = get_database_tree($user_id);
-            $result['result'] = mysql_query("SELECT * FROM " . $_POST['database_name'] . '.' . $_POST['table_name'] . ' LIMIT 5');
+            $result           = get_database_tree ($user_id);
+            $result['result'] = mysql_query ("SELECT * FROM " . $_POST['database_name'] . '.' . $_POST['table_name'] . ' LIMIT 5');
 
-            json_encode($this->load->view(
-                            'templates/row-form', array(
+            json_encode ($this->load->view (
+                            'templates/row-form', array (
                         'result' => $result,
                         'database' => $_POST['database_name'],
                         'table' => $_POST['table_name'],
