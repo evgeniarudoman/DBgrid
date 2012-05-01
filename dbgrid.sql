@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 03, 2012 at 08:34 PM
+-- Generation Time: May 01, 2012 at 07:54 PM
 -- Server version: 5.1.61
 -- PHP Version: 5.3.3-1ubuntu9.10
 
@@ -57,6 +57,21 @@ CREATE TABLE IF NOT EXISTS `fields` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `relations`
+--
+
+CREATE TABLE IF NOT EXISTS `relations` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `table_id_primary` int(11) NOT NULL,
+  `field_id_primary` int(11) NOT NULL,
+  `table_id` int(11) NOT NULL,
+  `field_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
 
 -- --------------------------------------------------------
 
@@ -75,8 +90,6 @@ CREATE TABLE IF NOT EXISTS `tables` (
   KEY `tables_2` (`user_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
---
-
 
 -- --------------------------------------------------------
 
@@ -86,8 +99,8 @@ CREATE TABLE IF NOT EXISTS `tables` (
 
 CREATE TABLE IF NOT EXISTS `themes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
   `style` varchar(100) NOT NULL,
-  `color` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
@@ -95,9 +108,9 @@ CREATE TABLE IF NOT EXISTS `themes` (
 -- Dumping data for table `themes`
 --
 
-INSERT INTO `themes` (`id`, `style`, `color`) VALUES
-(1, 'blue', ''),
-(2, 'gray', '');
+INSERT INTO `themes` (`id`, `name`, `style`) VALUES
+(1, 'голубая', ''),
+(2, 'серая', '');
 
 -- --------------------------------------------------------
 
@@ -107,17 +120,24 @@ INSERT INTO `themes` (`id`, `style`, `color`) VALUES
 
 CREATE TABLE IF NOT EXISTS `types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
   `type` varchar(100) NOT NULL,
+  `size` int(11) NOT NULL,
+  `default` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 --
 -- Dumping data for table `types`
 --
 
-INSERT INTO `types` (`id`, `type`) VALUES
-(1, 'int'),
-(2, 'text');
+INSERT INTO `types` (`id`, `name`, `type`, `size`, `default`) VALUES
+(1, 'число', 'bigint', 20, ''),
+(2, 'текст', 'varchar', 255, ''),
+(3, 'дата', 'varchar', 40, '00/00/0000'),
+(4, 'файл', 'varchar', 40, ''),
+(5, 'чекбокс', 'tinyint', 1, '0'),
+(6, 'список', 'varchar', 255, '');
 
 -- --------------------------------------------------------
 
@@ -130,12 +150,10 @@ CREATE TABLE IF NOT EXISTS `users` (
   `username` varchar(100) NOT NULL,
   `password` varchar(50) NOT NULL,
   `session_hash` varchar(100) NOT NULL,
-  `mysql_username` varchar(100) NOT NULL,
-  `mysql_password` varchar(50) NOT NULL,
   `theme_id` int(10) NOT NULL,
   `number_of_db` int(10) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `username` (`username`,`email`),
+  UNIQUE KEY `username` (`username`),
   KEY `users_1` (`theme_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -170,3 +188,12 @@ ALTER TABLE `tables`
 --
 ALTER TABLE `users`
   ADD CONSTRAINT `users_1` FOREIGN KEY (`theme_id`) REFERENCES `themes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `relations`
+--
+ALTER TABLE `relations`
+  ADD CONSTRAINT `relations_1` FOREIGN KEY (`table_id_primary`) REFERENCES `tables` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `relations_2` FOREIGN KEY (`field_id_primary`) REFERENCES `fields` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `relations_3` FOREIGN KEY (`table_id`) REFERENCES `tables` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `relations_4` FOREIGN KEY (`field_id`) REFERENCES `fields` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
