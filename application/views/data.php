@@ -27,7 +27,7 @@ if (isset ($table))
                             "&field_size="+$(this).width(),
                         success: function(response){
                             //change on something
-                            alert(response);
+                            //alert(response);
                         }
                     });
                 }
@@ -60,13 +60,6 @@ if (isset ($table))
         });
         //---------------------------------------------------------------------
         $('span.total').text("<?php echo $result['num_rows'] ?>");
-        if ($('div#pages input').val() == $('span.total').text())
-        {
-            $('a.next-page').click(function(){
-                //alert('aaaaa');
-                $('a.next-page').attr('onclick' , 'return false;');
-            });
-        }
     });
 </script>
 <table id="myTable" class="tablesorter table-striped table-bordered table-condensed" style="margin-left: 20px;">

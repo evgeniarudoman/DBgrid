@@ -46,7 +46,7 @@ if (isset ($_GET['table']))
                 data: "theme="+theme,
                 success: function(response){
                     //change on something
-                    alert(response);
+                    //alert(response);
                     location.reload();
                 }
             });
@@ -330,9 +330,9 @@ if (isset ($_GET['database']))
             });
             //-----------------------------------------------
             $('a.next-page').click(function(){
-                if ($('a.next-page:disabled').length == 0)
+                if ($('div#pages input').val() < $('span.total').text())
                 { 
-                    alert($('a.next-page:disabled').length);
+                    //alert($('a.next-page:disabled').length);
                     var limit = $('div#pages select option:selected').text();
                     var offset = ((Number($('div#pages input').val())+1)*limit)-limit;
                                 

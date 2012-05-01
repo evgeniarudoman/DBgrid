@@ -15,7 +15,7 @@
             <?php elseif ($field['type_name'] == 'список'): ?>
                 <td>
                     <?php $query = get_select ($field['id']); //var_dump($query);?>
-                    <select number="<?php echo $i; ?>" name="<?php echo $field['name'] ?>" class="text ui-widget-content ui-corner-all">
+                    <select style="width:210px;" number="<?php echo $i; ?>" name="<?php echo $field['name'] ?>" class="text ui-widget-content ui-corner-all">
                         <option value="" selected="selected"> -- выбрать -- </option>
                         <?php if (isset ($query['mysql']) && !empty ($query['mysql'])): ?>
                             <?php $k   = 0; ?>
