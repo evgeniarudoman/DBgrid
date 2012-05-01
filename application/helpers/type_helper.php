@@ -23,7 +23,7 @@ if (!function_exists ('get_select'))
         $grid->relations->db_name = "dbgrid";
 
 
-        $relation = $grid->relations->load_collection ("dbgrid", array ('field1' => $field_id));
+        $relation = $grid->relations->load_collection ("dbgrid", array ('field_id_primary' => $field_id));
 
         foreach ($relation as $rel)
         {

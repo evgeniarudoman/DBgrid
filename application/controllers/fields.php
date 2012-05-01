@@ -137,6 +137,7 @@ class Fields extends CI_Controller
                         $this->relations->db_name = "dbgrid";
                         $this->relations->load_collection ("dbgrid");
                         $this->relations->setField ($fieldId);
+                        $this->relations->setTable ($this->table->getId());
 
                         $this->database->db_name = "dbgrid";
                         $this->database->select (array (
@@ -158,6 +159,7 @@ class Fields extends CI_Controller
                         ));
 
                         $this->relations->setFieldKey ($this->field->getId ());
+                        $this->relations->setTableKey ($this->table->getId ());
                         $this->relations->insert ();
                     }
                 }
